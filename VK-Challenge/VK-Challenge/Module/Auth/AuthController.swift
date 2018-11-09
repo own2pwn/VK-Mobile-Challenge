@@ -9,14 +9,28 @@
 import UIKit
 import VK_ios_sdk
 
+typealias VoidBlock = ()->Void
+
 protocol AuthControllerViewModelOutput: class {
     var loginButtonEnabled: ((Bool) -> Void)? { get set }
+
+    var onNeedPresent: ((UIViewController) -> Void)? { get set }
+
+    var onNeedShowError: ((String?) -> Void)? { get set }
+
+    var onNeedShowFeed: VoidBlock? { get set }
 }
 
 final class AuthControllerViewModel: AuthControllerViewModelOutput {
     // MARK: - Output
 
     var loginButtonEnabled: ((Bool) -> Void)?
+
+    var onNeedPresent: ((UIViewController) -> Void)?
+
+    var onNeedShowError: ((String?) -> Void)?
+
+    var onNeedShowFeed: VoidBlock?
 
     // MARK: - Members
 
@@ -29,14 +43,21 @@ final class AuthControllerViewModel: AuthControllerViewModelOutput {
     init(authService: AuthService) {
         self.authService = authService
 
+        setupLocalBind()
         checkIfAuthorized()
+    }
+
+    private func setupLocalBind() {
+        authService.onNeedPresent = { [weak self] controller in
+            self?.onNeedPresent?(controller)
+        }
     }
 
     // MARK: - Interface
 
-
-
-    func authorize() {}
+    func authorize() {
+        authService.authorize(with: authScope, completion: handleAuthCallback)
+    }
 
     // MARK: - Private
 
@@ -44,8 +65,14 @@ final class AuthControllerViewModel: AuthControllerViewModelOutput {
         authService.checkIfAuthorized(with: authScope, completion: handleAuthCallback)
     }
 
-    private func handleAuthCallback(_ isAuthorized: Bool) {
+    private func handleAuthCallback(_ isAuthorized: Bool, errorMessage: String?) {
         loginButtonEnabled?(!isAuthorized)
+
+        if !isAuthorized {
+            onNeedShowError?(errorMessage)
+        } else {
+            onNeedShowFeed?()
+        }
     }
 }
 
@@ -93,6 +120,16 @@ final class AuthController: UIViewController {
         viewModel.loginButtonEnabled = { [unowned self] isEnabled in
             self.loginButton.isEnabled = isEnabled
         }
+        viewModel.onNeedPresent = { [unowned self] controller in
+            self.present(controller, animated: true)
+        }
+        viewModel.onNeedShowError = { [unowned self] message in
+            self.showError(with: message)
+        }
+
+        viewModel.onNeedShowFeed = { [unowned self] in
+            print("gotcha")
+        }
 
 //        authService.onAuthChange = handleAuthCallback
 //        authService.onIsLoggedIn = { [weak self] _ in
@@ -120,7 +157,7 @@ final class AuthController: UIViewController {
     @IBAction
     private func authorize() {
         let scope = CONST.VK.authScope
-        //authService.authorize(with: scope)
+        // authService.authorize(with: scope)
     }
 
     private func showFeed() {
@@ -136,57 +173,52 @@ final class AuthController: UIViewController {
 
 typealias VKAuthCallback = ((Bool, String?) -> Void)
 
-protocol AuthServiceOutput: class {
-    var onIsLoggedIn: ((Bool) -> Void)? { get set }
+protocol AuthService: AuthServiceOutput {
+    func authorize(with scope: [VKScope], completion: @escaping VKAuthCallback)
 
-    var onAuthChange: VKAuthCallback? { get set }
-
-    var onNeedPresent: ((UIViewController) -> Void)? { get set }
+    func checkIfAuthorized(with scope: [VKScope], completion: @escaping VKAuthCallback)
 }
 
-protocol AuthService: AuthServiceOutput {
-    func checkIfAuthorized(with scope: [VKScope], completion: @escaping ((Bool) -> Void))
-
-    func authorize(with scope: [VKScope])
+protocol AuthServiceOutput: class {
+    var onNeedPresent: ((UIViewController) -> Void)? { get set }
 }
 
 final class AuthServiceImp: NSObject, AuthService {
     // MARK: - Output
 
-    var onIsLoggedIn: ((Bool) -> Void)?
-
-    var onAuthChange: VKAuthCallback?
-
     var onNeedPresent: ((UIViewController) -> Void)?
 
     // MARK: - Interface
 
-    func checkIfAuthorized(with scope: [VKScope], completion: @escaping ((Bool) -> Void)) {
+    func authorize(with scope: [VKScope], completion: @escaping VKAuthCallback) {
+        let perms = scope.map { $0.rawValue }
+        VK_SDK.authorize(perms)
+    }
+
+    func checkIfAuthorized(with scope: [VKScope], completion: @escaping VKAuthCallback) {
         let perms = scope.map { $0.rawValue }
         VK_SDK.wakeUpSession(perms) { state, err in
-            guard err == nil else {
-                completion(false)
+            if let e = err {
+                completion(false, e.localizedDescription)
                 return
             }
 
             let isAuthorized = (state == VKAuthorizationState.authorized)
-            completion(isAuthorized)
+            completion(isAuthorized, nil)
         }
-    }
-
-    func authorize(with scope: [VKScope]) {
-        let perms = scope.map { $0.rawValue }
-        VK_SDK.authorize(perms)
     }
 
     // MARK: - Members
 
     private let store: TokenStore
 
+    private var authCallback: VKAuthCallback?
+
     // MARK: - Init
 
     init(store: TokenStore) {
         self.store = store
+        presenter = presenter
         super.init()
         initSDK()
     }
@@ -207,14 +239,14 @@ final class AuthServiceImp: NSObject, AuthService {
 extension AuthServiceImp: VKSdkDelegate {
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
         guard let token = result.token.accessToken else {
-            onAuthChange?(false, result?.error?.localizedDescription)
+            authCallback?(false, result?.error?.localizedDescription)
             return
         }
         store.save(token)
     }
 
     func vkSdkUserAuthorizationFailed() {
-        onAuthChange?(false, nil)
+        authCallback?(false, nil)
     }
 }
 
