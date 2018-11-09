@@ -9,8 +9,6 @@
 import UIKit
 import VK_ios_sdk
 
-typealias VoidBlock = ()->Void
-
 protocol AuthControllerViewModelOutput: class {
     var loginButtonEnabled: ((Bool) -> Void)? { get set }
 
@@ -21,7 +19,11 @@ protocol AuthControllerViewModelOutput: class {
     var onNeedShowFeed: VoidBlock? { get set }
 }
 
-final class AuthControllerViewModel: AuthControllerViewModelOutput {
+protocol AuthControllerViewModel: AuthControllerViewModelOutput {
+    func authorize()
+}
+
+final class AuthControllerViewModelImp: AuthControllerViewModel {
     // MARK: - Output
 
     var loginButtonEnabled: ((Bool) -> Void)?
@@ -62,16 +64,26 @@ final class AuthControllerViewModel: AuthControllerViewModelOutput {
     // MARK: - Private
 
     private func checkIfAuthorized() {
-        authService.checkIfAuthorized(with: authScope, completion: handleAuthCallback)
+        authService.checkIfAuthorized(with: authScope) { authorized, _ in
+            DispatchQueue.main.async {
+                if authorized {
+                    self.onNeedShowFeed?()
+                }
+
+                self.loginButtonEnabled?(!authorized)
+            }
+        }
     }
 
     private func handleAuthCallback(_ isAuthorized: Bool, errorMessage: String?) {
-        loginButtonEnabled?(!isAuthorized)
+        DispatchQueue.main.async {
+            guard isAuthorized else {
+                self.loginButtonEnabled?(true)
+                self.onNeedShowError?(errorMessage)
+                return
+            }
 
-        if !isAuthorized {
-            onNeedShowError?(errorMessage)
-        } else {
-            onNeedShowFeed?()
+            self.onNeedShowFeed?()
         }
     }
 }
@@ -80,7 +92,7 @@ final class Dependency {
     // MARK: - Interface
 
     static func makeAuthViewModel() -> AuthControllerViewModel {
-        let viewModel = AuthControllerViewModel(authService: authService)
+        let viewModel = AuthControllerViewModelImp(authService: authService)
 
         return viewModel
     }
@@ -112,7 +124,7 @@ final class AuthController: UIViewController {
 
     // MARK: - Members
 
-    private lazy var viewModel: AuthControllerViewModel = Dependency.makeAuthViewModel()
+    private lazy var viewModel = Dependency.makeAuthViewModel()
 
     // MARK: - Methods
 
@@ -128,24 +140,11 @@ final class AuthController: UIViewController {
         }
 
         viewModel.onNeedShowFeed = { [unowned self] in
-            print("gotcha")
-        }
-
-//        authService.onAuthChange = handleAuthCallback
-//        authService.onIsLoggedIn = { [weak self] _ in
-//        }
-//
-//        authService.onNeedPresent = { [weak self] controller in
-//            self?.present(controller, animated: true)
-//        }
-    }
-
-    private func handleAuthCallback(_ succeed: Bool, errorMessage: String?) {
-        guard succeed else {
-            showError(with: errorMessage)
-            return
+            self.showFeed()
         }
     }
+
+    // MARK: - Helpers
 
     private func showError(with message: String? = nil) {
         let alert = UIAlertController(title: "Authorization failed", message: message, preferredStyle: .alert)
@@ -154,18 +153,19 @@ final class AuthController: UIViewController {
         present(alert, animated: true)
     }
 
-    @IBAction
-    private func authorize() {
-        let scope = CONST.VK.authScope
-        // authService.authorize(with: scope)
-    }
-
     private func showFeed() {
         let main = UIStoryboard(name: "Main", bundle: nil)
         let feed = main.instantiateViewController(withIdentifier: "Feed")
 
         guard let wnd = UIApplication.shared.keyWindow else { assertionFailure(); return }
         wnd.rootViewController = feed
+    }
+
+    // MARK: - Actions
+
+    @IBAction
+    private func authorize() {
+        viewModel.authorize()
     }
 }
 
@@ -191,6 +191,8 @@ final class AuthServiceImp: NSObject, AuthService {
     // MARK: - Interface
 
     func authorize(with scope: [VKScope], completion: @escaping VKAuthCallback) {
+        authCallback = completion
+
         let perms = scope.map { $0.rawValue }
         VK_SDK.authorize(perms)
     }
@@ -218,7 +220,6 @@ final class AuthServiceImp: NSObject, AuthService {
 
     init(store: TokenStore) {
         self.store = store
-        presenter = presenter
         super.init()
         initSDK()
     }
@@ -238,15 +239,19 @@ final class AuthServiceImp: NSObject, AuthService {
 
 extension AuthServiceImp: VKSdkDelegate {
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
+        defer { authCallback = nil }
+
         guard let token = result.token.accessToken else {
             authCallback?(false, result?.error?.localizedDescription)
             return
         }
+        authCallback?(true, nil)
         store.save(token)
     }
 
     func vkSdkUserAuthorizationFailed() {
         authCallback?(false, nil)
+        authCallback = nil
     }
 }
 
@@ -256,6 +261,7 @@ extension AuthServiceImp: VKSdkUIDelegate {
     }
 
     func vkSdkNeedCaptchaEnter(_ captchaError: VKError!) {
-        onAuthChange?(false, captchaError?.errorMessage)
+        authCallback?(false, captchaError?.errorMessage)
+        authCallback = nil
     }
 }
