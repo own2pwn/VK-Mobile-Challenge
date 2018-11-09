@@ -15,6 +15,9 @@
 		B90F57122195874B001B11CE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B90F57102195874B001B11CE /* LaunchScreen.storyboard */; };
 		B9943A24219597140045D56C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9943A23219597140045D56C /* Constants.swift */; };
 		B9943A27219597FA0045D56C /* VK+Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9943A26219597FA0045D56C /* VK+Scope.swift */; };
+		B9CAA0FD2195A02900DAB134 /* TokenStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA0FC2195A02900DAB134 /* TokenStore.swift */; };
+		B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA0FE2195A24D00DAB134 /* AuthController.swift */; };
+		B9CAA1012195A2BF00DAB134 /* UIColor+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		B90F57132195874B001B11CE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9943A23219597140045D56C /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B9943A26219597FA0045D56C /* VK+Scope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VK+Scope.swift"; sourceTree = "<group>"; };
+		B9CAA0FC2195A02900DAB134 /* TokenStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStore.swift; sourceTree = "<group>"; };
+		B9CAA0FE2195A24D00DAB134 /* AuthController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthController.swift; sourceTree = "<group>"; };
+		B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Init.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +88,7 @@
 		B90F57062195874A001B11CE /* VK-Challenge */ = {
 			isa = PBXGroup;
 			children = (
+				B9CAA0FB21959FE300DAB134 /* Service */,
 				B9943A25219597EE0045D56C /* Extension */,
 				B9943A222195970B0045D56C /* Common */,
 				B9943A20219596800045D56C /* Module */,
@@ -106,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				B90F57092195874A001B11CE /* ViewController.swift */,
+				B9CAA0FE2195A24D00DAB134 /* AuthController.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -121,9 +129,18 @@
 		B9943A25219597EE0045D56C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */,
 				B9943A26219597FA0045D56C /* VK+Scope.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		B9CAA0FB21959FE300DAB134 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B9CAA0FC2195A02900DAB134 /* TokenStore.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,10 +255,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9CAA0FD2195A02900DAB134 /* TokenStore.swift in Sources */,
+				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B90F570A2195874A001B11CE /* ViewController.swift in Sources */,
 				B90F57082195874A001B11CE /* AppDelegate.swift in Sources */,
 				B9943A24219597140045D56C /* Constants.swift in Sources */,
 				B9943A27219597FA0045D56C /* VK+Scope.swift in Sources */,
+				B9CAA1012195A2BF00DAB134 /* UIColor+Init.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

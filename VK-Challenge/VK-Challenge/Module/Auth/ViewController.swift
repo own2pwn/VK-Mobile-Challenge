@@ -24,6 +24,8 @@ final class ViewController: UIViewController {
 
     // MARK: - Members
 
+    private let store: TokenStore = { TokenStore() }()
+
     // MARK: - Methods
 
     private func initVK() {
