@@ -65,6 +65,7 @@ final class FeedController: UIViewController {
         super.viewDidLoad()
 
         bindViewModel()
+        postCollection.contentInset.top = 36
     }
 
     // MARK: - Members
@@ -115,7 +116,7 @@ final class FeedController: UIViewController {
 
 // ===
 
-extension FeedController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 18
     }
@@ -126,7 +127,19 @@ extension FeedController: UICollectionViewDataSource, UICollectionViewDelegateFl
         return cell
     }
 
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
+
+        return view
+    }
+}
+
+extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 256)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 58)
     }
 }
