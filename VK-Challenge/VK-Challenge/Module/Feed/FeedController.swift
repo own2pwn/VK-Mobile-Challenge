@@ -123,6 +123,19 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
+        // cell.testShadow()
+        // cell.updateShadow()
+
+        cell.contentView.layer.cornerRadius = 2.0
+        cell.contentView.layer.borderWidth = 1.0
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
+        cell.contentView.layer.masksToBounds = true
+        cell.layer.shadowColor = UIColor.red.cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 24)
+        cell.layer.shadowRadius = 9
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.masksToBounds = false
+        cell.layer.shadowPath = UIBezierPath(roundedRect: cell.bounds, cornerRadius: cell.contentView.layer.cornerRadius).cgPath
 
         return cell
     }
@@ -141,5 +154,54 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 58)
+    }
+
+    func test() {
+        let shadows = UIView()
+        shadows.frame = view.frame
+        shadows.clipsToBounds = false
+        view.addSubview(shadows)
+
+        let shadowPath0 = UIBezierPath(roundedRect: shadows.bounds, cornerRadius: 10)
+
+        let layer0 = CALayer()
+        layer0.shadowPath = shadowPath0.cgPath
+        layer0.shadowColor = UIColor(red: 0.39, green: 0.4, blue: 0.44, alpha: 0.07).cgColor
+        layer0.shadowOpacity = 1
+        layer0.shadowRadius = 18
+        layer0.shadowOffset = CGSize(width: 0, height: 24)
+        layer0.bounds = shadows.bounds
+        layer0.position = shadows.center
+        shadows.layer.addSublayer(layer0)
+
+        let shapes = UIView()
+
+        shapes.frame = view.frame
+
+        shapes.clipsToBounds = true
+
+        view.addSubview(shapes)
+
+        let layer1 = CALayer()
+
+        layer1.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 1).cgColor
+
+        layer1.bounds = shapes.bounds
+
+        layer1.position = shapes.center
+
+        shapes.layer.addSublayer(layer1)
+
+        shapes.layer.cornerRadius = 10
+
+        let parent = view!
+
+        parent.addSubview(view)
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.leadingAnchor.constraint(equalTo: parent.leadingAnchor, constant: 8).isActive = true
+
+        view.trailingAnchor.constraint(equalTo: parent.trailingAnchor, constant: -8).isActive = true
     }
 }

@@ -28,13 +28,61 @@ final class FeedCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        internalInit()
+        setupCell()
+
+        // ==
+
+//        clipsToBounds = false
+//
+//        let shadowLayer = CALayer()
+//        shadowLayer.shadowColor = UIColor.red.cgColor
+//        shadowLayer.shadowRadius = 9
+//        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
+//        shadowLayer.shadowOpacity = 1
+//        shadowLayer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
+//        layer.insertSublayer(shadowLayer, at: 1)
     }
 
-    private func internalInit() {
-        layer.cornerRadius = 8
+    private func setupCell() {
+        backgroundColor = .clear
+        layer.shadowOffset = CGSize(width: 0, height: 24)
+        layer.shadowRadius = 9
+        layer.shadowOpacity = 0.07
+        layer.shadowColor = UIColor.rgb(99 103, 111).cgColor
 
-        setText()
+        contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 10
+
+//        clipsToBounds = false
+//        layer.cornerRadius = 10
+//        shadowView.layer.cornerRadius = 10
+
+//        backgroundColor = .clear
+//        contentView.backgroundColor = .white
+//        contentView.layer.cornerRadius = 10
+//        shadowView.layer.cornerRadius = 10
+//
+//        updateShadow()
+
+//        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10)
+//        let shadowLayer = CALayer()
+//        shadowLayer.shadowPath = shadowPath.cgPath
+//        shadowLayer.shadowColor = UIColor(red: 0.39, green: 0.4, blue: 0.44, alpha: 0.07).cgColor
+//        shadowLayer.shadowOpacity = 1
+//        shadowLayer.shadowRadius = 18
+//        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
+//        shadowLayer.bounds = bounds
+//        shadowLayer.position = center
+//        contentView.layer.addSublayer(shadowLayer)
+        // setText()
+    }
+
+    func updateShadow() {
+//        shadowView.layer.shadowColor = UIColor.red.cgColor
+//        shadowView.layer.shadowRadius = 9
+//        shadowView.layer.shadowOffset = CGSize(width: 0, height: 24)
+//        shadowView.layer.shadowOpacity = 1
+//        shadowView.layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
     }
 
     // MARK: - Layout
@@ -43,6 +91,19 @@ final class FeedCell: UICollectionViewCell {
         super.layoutSubviews()
 
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
+
+        // ==
+    }
+
+    func testShadow() {
+        let shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 10)
+        let shadowLayer = contentView.layer
+        shadowLayer.shadowPath = shadowPath.cgPath
+        shadowLayer.shadowColor = UIColor.red.cgColor
+        // shadowLayer.shadowColor = UIColor(red: 0.39, green: 0.4, blue: 0.44, alpha: 1).cgColor
+        shadowLayer.shadowOpacity = 1 // 0.07
+        shadowLayer.shadowRadius = 9
+        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
     }
 
     func testWidth() {
