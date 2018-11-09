@@ -9,8 +9,6 @@
 import UIKit
 import VK_ios_sdk
 
-public typealias VK_SDK = VKSdk
-
 final class ViewController: UIViewController {
     // MARK: - Outlets
 
