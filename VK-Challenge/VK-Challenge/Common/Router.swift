@@ -9,6 +9,7 @@
 import UIKit
 
 enum AppModule {
+    case auth
     case feed
 }
 
@@ -38,6 +39,8 @@ final class Router {
 private extension AppModule {
     var storyboardID: String {
         switch self {
+        case .auth:
+            return "Auth"
         case .feed:
             return "Feed"
         }

@@ -71,7 +71,7 @@ extension AuthServiceImp: VKSdkDelegate {
     func vkSdkAccessAuthorizationFinished(with result: VKAuthorizationResult!) {
         defer { authCallback = nil }
 
-        guard let token = result.token.accessToken else {
+        guard let token = result?.token?.accessToken else {
             authCallback?(false, result?.error?.localizedDescription)
             store.reset()
             return
