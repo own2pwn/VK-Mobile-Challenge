@@ -29,60 +29,18 @@ final class FeedCell: UICollectionViewCell {
         super.awakeFromNib()
 
         setupCell()
-
-        // ==
-
-//        clipsToBounds = false
-//
-//        let shadowLayer = CALayer()
-//        shadowLayer.shadowColor = UIColor.red.cgColor
-//        shadowLayer.shadowRadius = 9
-//        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
-//        shadowLayer.shadowOpacity = 1
-//        shadowLayer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
-//        layer.insertSublayer(shadowLayer, at: 1)
     }
 
     private func setupCell() {
+        clipsToBounds = false
         backgroundColor = .clear
         layer.shadowOffset = CGSize(width: 0, height: 24)
         layer.shadowRadius = 9
         layer.shadowOpacity = 0.07
-        layer.shadowColor = UIColor.rgb(99 103, 111).cgColor
+        layer.shadowColor = UIColor.rgb(99, 103, 111).cgColor
 
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
-
-//        clipsToBounds = false
-//        layer.cornerRadius = 10
-//        shadowView.layer.cornerRadius = 10
-
-//        backgroundColor = .clear
-//        contentView.backgroundColor = .white
-//        contentView.layer.cornerRadius = 10
-//        shadowView.layer.cornerRadius = 10
-//
-//        updateShadow()
-
-//        let shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10)
-//        let shadowLayer = CALayer()
-//        shadowLayer.shadowPath = shadowPath.cgPath
-//        shadowLayer.shadowColor = UIColor(red: 0.39, green: 0.4, blue: 0.44, alpha: 0.07).cgColor
-//        shadowLayer.shadowOpacity = 1
-//        shadowLayer.shadowRadius = 18
-//        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
-//        shadowLayer.bounds = bounds
-//        shadowLayer.position = center
-//        contentView.layer.addSublayer(shadowLayer)
-        // setText()
-    }
-
-    func updateShadow() {
-//        shadowView.layer.shadowColor = UIColor.red.cgColor
-//        shadowView.layer.shadowRadius = 9
-//        shadowView.layer.shadowOffset = CGSize(width: 0, height: 24)
-//        shadowView.layer.shadowOpacity = 1
-//        shadowView.layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 10).cgPath
     }
 
     // MARK: - Layout
@@ -91,23 +49,56 @@ final class FeedCell: UICollectionViewCell {
         super.layoutSubviews()
 
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
-
-        // ==
     }
 
-    func testShadow() {
-        let shadowPath = UIBezierPath(roundedRect: contentView.bounds, cornerRadius: 10)
-        let shadowLayer = contentView.layer
-        shadowLayer.shadowPath = shadowPath.cgPath
-        shadowLayer.shadowColor = UIColor.red.cgColor
-        // shadowLayer.shadowColor = UIColor(red: 0.39, green: 0.4, blue: 0.44, alpha: 1).cgColor
-        shadowLayer.shadowOpacity = 1 // 0.07
-        shadowLayer.shadowRadius = 9
-        shadowLayer.shadowOffset = CGSize(width: 0, height: 24)
+    func getTextMaxHeight() -> CGFloat {
+        let maxWidth = UIScreen.main.bounds.width - 40
+        let maxFrame = CGSize(width: maxWidth, height: 0)
+
+        let maxLines = 8
+        let dummy = String(repeating: "\n", count: maxLines)
+
+        let font = UIFont.systemFont(ofSize: 15)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineSpacing = 4
+
+        let result = dummy.boundingRect(with: maxFrame, options: .usesLineFragmentOrigin,
+                                        attributes: [.font: font, .paragraphStyle: paragraph],
+                                        context: nil)
+
+        return ceil(result.height)
+    }
+
+    func getTextHeight(_ text: String) -> CGFloat {
+        let maxWidth = UIScreen.main.bounds.width - 40
+        let maxFrame = CGSize(width: maxWidth, height: 0)
+
+        let font = UIFont.systemFont(ofSize: 15)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineSpacing = 4
+
+        let result = text.boundingRect(with: maxFrame, options: .usesLineFragmentOrigin,
+                                       attributes: [.font: font, .paragraphStyle: paragraph],
+                                       context: nil)
+
+        return ceil(result.height)
     }
 
     func testWidth() {
-        let frameWidth = contentView.frame.width
+        let bounds = UIScreen.main.bounds
+        let frameWidth = bounds.width - 40
+
+        let font = UIFont.systemFont(ofSize: 15)
+        let paragraph = NSMutableParagraphStyle()
+        paragraph.lineSpacing = 4
+
+        let maxSize = CGSize(width: frameWidth, height: 0)
+        let size = dummyText.boundingRect(with: maxSize, options: .usesLineFragmentOrigin, attributes: [.font: font, .paragraphStyle: paragraph], context: nil)
+
+        let r = size.height
+
+        // let fontAttributes = [NSAttributedStringKey.font: font]
+        // let size = dummyText.size(withAttributes: fontAttributes)
     }
 
     private func setText() {
