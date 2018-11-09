@@ -16,6 +16,10 @@ final class TokenStore {
 
     // MARK: - Interface
 
+    func reset() {
+        defaults.set(nil, forKey: kTokenKey)
+    }
+
     func save(_ token: String) {
         // we're not going use keychain coz lack of time
         defaults.set(token, forKey: kTokenKey)
