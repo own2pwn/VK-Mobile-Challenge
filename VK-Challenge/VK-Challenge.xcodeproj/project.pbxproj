@@ -33,6 +33,9 @@
 		B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10C2195B77F00DAB134 /* AuthControllerViewModelImp.swift */; };
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
+		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
+		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
+		DEB250F021960BAE003388EA /* SF-Pro-Text-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = DEB250EF21960BAE003388EA /* SF-Pro-Text-Regular.otf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +69,9 @@
 		B9CAA10C2195B77F00DAB134 /* AuthControllerViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModelImp.swift; sourceTree = "<group>"; };
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
+		DEB250EF21960BAE003388EA /* SF-Pro-Text-Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Text-Regular.otf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +138,7 @@
 		B93150052195C8C6000752DD /* support */ = {
 			isa = PBXGroup;
 			children = (
+				DEB250EE21960B99003388EA /* Fonts */,
 				B90F570E2195874B001B11CE /* Assets.xcassets */,
 				B90F57072195874A001B11CE /* AppDelegate.swift */,
 				B90F57102195874B001B11CE /* LaunchScreen.storyboard */,
@@ -241,6 +248,7 @@
 		B9943A25219597EE0045D56C /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				DEB250EC2195FE48003388EA /* Cell+Reuse.swift */,
 				B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */,
 				B9943A26219597FA0045D56C /* VK+Scope.swift */,
 			);
@@ -287,9 +295,26 @@
 		B9CAA1132195C88500DAB134 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				DEB250E92195FE0C003388EA /* View */,
 				B90F57092195874A001B11CE /* FeedController.swift */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		DEB250E92195FE0C003388EA /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DEB250EA2195FE15003388EA /* FeedCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DEB250EE21960B99003388EA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				DEB250EF21960BAE003388EA /* SF-Pro-Text-Regular.otf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,6 +379,7 @@
 			files = (
 				B90F57122195874B001B11CE /* LaunchScreen.storyboard in Resources */,
 				B90F570F2195874B001B11CE /* Assets.xcassets in Resources */,
+				DEB250F021960BAE003388EA /* SF-Pro-Text-Regular.otf in Resources */,
 				B90F570D2195874A001B11CE /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -422,7 +448,9 @@
 				B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */,
 				B943A5552195EC8200CB11DA /* ImageLoader.swift in Sources */,
 				B9CAA1122195B81900DAB134 /* Router.swift in Sources */,
+				DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */,
 				B943A54F2195DCD100CB11DA /* VKAPI+Method.swift in Sources */,
+				DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */,
 				B9CAA1032195B3D700DAB134 /* Common+Types.swift in Sources */,
 				B9CAA1012195A2BF00DAB134 /* UIColor+Init.swift in Sources */,
 				B9CAA10A2195B6FB00DAB134 /* AuthServiceImp.swift in Sources */,

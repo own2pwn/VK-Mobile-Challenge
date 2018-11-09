@@ -49,7 +49,7 @@ final class Dependency {
     // MARK: - Instance
 
     private static let vkAPIFactory: VKAPIFactory = {
-        let token = tokenStore.get()!
+        let token = tokenStore.get() ?? "non-valid"
 
         return VKAPIFactory(token: token)
     }()

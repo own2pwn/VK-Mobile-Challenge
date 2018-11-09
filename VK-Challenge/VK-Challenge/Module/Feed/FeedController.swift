@@ -56,18 +56,15 @@ final class FeedController: UIViewController {
     @IBOutlet
     private var avatarImageView: UIImageView!
 
+    @IBOutlet
+    private var postCollection: UICollectionView!
+
     // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         bindViewModel()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
     }
 
     // MARK: - Members
@@ -106,6 +103,30 @@ final class FeedController: UIViewController {
         alert.addAction(ok)
         present(alert, animated: true)
     }
+
+    // MARK: - Layout
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
+    }
 }
 
 // ===
+
+extension FeedController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 18
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
+
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 256)
+    }
+}
