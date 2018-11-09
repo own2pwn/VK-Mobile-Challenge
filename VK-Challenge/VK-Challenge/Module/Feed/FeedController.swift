@@ -9,23 +9,78 @@
 import UIKit
 import VK_ios_sdk
 
+protocol FeedViewModelOutput: class {
+    var onAvatarLoaded: ((UIImage?) -> Void)? { get set }
+}
+
+protocol FeedViewModel: FeedViewModelOutput {
+    func loadInitialData()
+}
+
+final class FeedViewModelImp: FeedViewModel {
+    // MARK: - Output
+
+    var onAvatarLoaded: ((UIImage?) -> Void)?
+
+    // MARK: - Members
+
+    private let profileService: MyProfileService
+
+    private let imageLoader: ImageLoader
+
+    // MARK: - Init
+
+    init(profileService: MyProfileService, imageLoader: ImageLoader) {
+        self.profileService = profileService
+        self.imageLoader = imageLoader
+
+        loadInitialData()
+    }
+
+    // MARK: - Methods
+
+    func loadInitialData() {
+        profileService.getMyProfile(completion: loadMyAvatar)
+    }
+
+    private func loadMyAvatar(from profile: VKProfileModel) {
+        imageLoader.load(from: profile.avatarURL100) { avatar in
+            DispatchQueue.main.async { self.onAvatarLoaded?(avatar) }
+        }
+    }
+}
+
 final class FeedController: UIViewController {
     // MARK: - Outlets
+
+    @IBOutlet
+    private var avatarImageView: UIImageView!
 
     // MARK: - Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let s = VKAPIProfileService()
-        s.getMyProfile()
+        bindViewModel()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
     }
 
     // MARK: - Members
 
-    private let store: TokenStore = { TokenStore() }()
+    private let viewModel: FeedViewModel = { Dependency.makeFeedViewModel() }()
 
     // MARK: - Methods
+
+    private func bindViewModel() {
+        viewModel.onAvatarLoaded = { [unowned self] avatar in
+            self.avatarImageView.image = avatar
+        }
+    }
 
     private func authorize(with scope: [VKScope]) {
         let perms = scope.map { $0.rawValue }
@@ -34,8 +89,9 @@ final class FeedController: UIViewController {
 
     @IBAction
     private func testCode() {
-        let scope: [VKScope] = [.friends, .photos, .wall, .offline]
-        authorize(with: scope)
+        viewModel.loadInitialData()
+        // let scope: [VKScope] = [.friends, .photos, .wall, .offline]
+        // authorize(with: scope)
     }
 
     @IBAction

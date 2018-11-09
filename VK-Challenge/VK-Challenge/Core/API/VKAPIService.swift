@@ -15,23 +15,48 @@ final class VKAPIService<M: VKAPIMethod, F: VKAPIField> {
 
     private let endpoint: URL
 
+    private lazy var session: URLSession = {
+        var config = URLSession.shared.configuration
+        config.timeoutIntervalForRequest = 10
+        config.timeoutIntervalForResource = 20
+        let custom = URLSession(configuration: config)
+
+        return custom
+    }()
+
     // MARK: - Interface
 
-    func buildRequest(for method: M, with fields: [F]) -> URLRequest? {
+    func getArray<R: Decodable>(_ method: M, fields: [F], completion: @escaping (([R]) -> Void)) {
         var concrete = endpoint
         concrete.appendPathComponent(method.value)
 
-        guard var components = URLComponents(url: concrete, resolvingAgainstBaseURL: false) else { return nil }
+        guard var components = URLComponents(url: concrete, resolvingAgainstBaseURL: false) else { return }
         components.queryItems = makeQueryItems(with: fields)
 
-        guard let result = components.url else {
-            return nil
+        guard let url = components.url else {
+            return
         }
 
-        return URLRequest(url: result)
+        let task = session.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                print("^W: [\(String(describing: error))] | [\(String(describing: response))]")
+                return
+            }
+
+            self.handleArrayResponse(data, httpResponse: response, error: error, with: completion)
+        }
+
+        task.resume()
     }
 
     // MARK: - Helpers
+
+    private func handleArrayResponse<R: Decodable>(_ data: Data, httpResponse: URLResponse?, error: Error?, with completion: @escaping (([R]) -> Void)) {
+        let decoder = JSONDecoder()
+        if let model = try? decoder.decode(VKAPIArrayResponse<R>.self, from: data) {
+            completion(model.response)
+        }
+    }
 
     private func makeQueryItems(with params: [F]) -> [URLQueryItem] {
         let fields = params.map { $0.value }.joined(separator: ",")

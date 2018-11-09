@@ -9,13 +9,13 @@
 import Foundation
 
 enum VKAPIMethodUsers {
-    case get
+    case usersGet
 }
 
 extension VKAPIMethodUsers: VKAPIMethod {
     var value: String {
         switch self {
-        case .get:
+        case .usersGet:
             return "users.get"
         }
     }
