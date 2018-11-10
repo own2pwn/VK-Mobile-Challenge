@@ -19,14 +19,24 @@ final class Dependency {
     }
 
     static func makeFeedViewModel() -> FeedViewModel {
-        let service = makeMyProfileService()
+        let profileService = makeMyProfileService()
         let loader = makeImageLoader()
-        let viewModel = FeedViewModelImp(profileService: service, imageLoader: loader)
+        let feedService = makeFeedService()
+
+        let viewModel = FeedViewModelImp(profileService: profileService,
+                                         feedService: feedService,
+                                         imageLoader: loader)
 
         return viewModel
     }
 
     // MARK: - Private
+
+    private static func makeFeedService() -> FeedService {
+        let apiService = vkAPIFactory.makeFeedService()
+
+        return FeedService(api: apiService)
+    }
 
     private static func makeImageLoader() -> ImageLoader {
         let loader = ImageLoader()

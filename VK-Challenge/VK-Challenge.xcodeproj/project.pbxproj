@@ -33,6 +33,7 @@
 		B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10C2195B77F00DAB134 /* AuthControllerViewModelImp.swift */; };
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
+		DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
 		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
 /* End PBXBuildFile section */
@@ -68,6 +69,7 @@
 		B9CAA10C2195B77F00DAB134 /* AuthControllerViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModelImp.swift; sourceTree = "<group>"; };
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelImp.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -292,10 +294,19 @@
 		B9CAA1132195C88500DAB134 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
+				DE725AE72196CAB30031B35A /* ViewModel */,
 				DEB250E92195FE0C003388EA /* View */,
 				B90F57092195874A001B11CE /* FeedController.swift */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		DE725AE72196CAB30031B35A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		DEB250E92195FE0C003388EA /* View */ = {
@@ -431,6 +442,7 @@
 				B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */,
 				B943A5452195DC1900CB11DA /* VKAPI+Type.swift in Sources */,
 				B9943A27219597FA0045D56C /* VK+Scope.swift in Sources */,
+				DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */,
 				B9CAA1072195B6F200DAB134 /* AuthService.swift in Sources */,
 				B943A5522195E10300CB11DA /* VKAPIFactory.swift in Sources */,
 				B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */,
