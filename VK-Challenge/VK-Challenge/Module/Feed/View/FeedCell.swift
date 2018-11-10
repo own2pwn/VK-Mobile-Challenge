@@ -15,6 +15,11 @@ struct FeedCellViewModel {
     let shortText: NSAttributedString?
     let avatarURL: String
     let imageLoader: ImageLoader
+
+    let likesCount: Int
+    let commentsCount: Int
+    let repostCount: Int
+    let viewsCount: Int?
 }
 
 final class FeedCell: UICollectionViewCell {
@@ -31,6 +36,21 @@ final class FeedCell: UICollectionViewCell {
 
     @IBOutlet
     private var contentLabel: UILabel!
+
+    @IBOutlet
+    private var likesCountLabel: UILabel!
+
+    @IBOutlet
+    private var commentsCountLabel: UILabel!
+
+    @IBOutlet
+    private var repostsCountLabel: UILabel!
+
+    @IBOutlet
+    private var viewsCountImageView: UIImageView!
+
+    @IBOutlet
+    private var viewsCountLabel: UILabel!
 
     // MARK: - Private
 
@@ -82,12 +102,12 @@ final class FeedCell: UICollectionViewCell {
 
         titleLabel.text = viewModel.titleText
         dateLabel.text = viewModel.dateText
-
-        if let shortText = viewModel.shortText {
-            contentLabel.attributedText = shortText
-        } else {
-            contentLabel.attributedText = viewModel.contentText
-        }
+        contentLabel.attributedText = viewModel.shortText ?? viewModel.contentText
+        likesCountLabel.text = viewModel.likesCount.stringValue
+        commentsCountLabel.text = viewModel.commentsCount.stringValue
+        repostsCountLabel.text = viewModel.repostCount.stringValue
+        viewsCountImageView.isHidden = viewModel.viewsCount == nil
+        viewsCountLabel.text = viewModel.viewsCount?.stringValue
 
         imageLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
             self?.avatarImageView.image = image
@@ -115,5 +135,11 @@ final class FeedCell: UICollectionViewCell {
         } else {
             contentLabel.attributedText = viewModel?.contentText
         }
+    }
+}
+
+private extension Int {
+    var stringValue: String? {
+        return self > 0 ? "\(self)" : nil
     }
 }

@@ -56,7 +56,7 @@ struct VKFeedItem: Decodable {
     let comments: VKFeedItemComment
     let likes: VKFeedItemLike
     let reposts: VKFeedItemRepost
-    let views: VKFeedItemView
+    let views: VKFeedItemView?
 }
 
 struct VKFeedItemComment: Decodable {

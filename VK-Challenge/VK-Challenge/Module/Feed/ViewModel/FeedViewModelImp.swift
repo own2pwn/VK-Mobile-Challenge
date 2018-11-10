@@ -90,7 +90,11 @@ final class FeedViewModelImp: FeedViewModel {
 
             let viewModel = FeedCellViewModel(titleText: title, dateText: item.date.humanString,
                                               contentText: full, shortText: short,
-                                              avatarURL: avatar, imageLoader: imageLoader)
+                                              avatarURL: avatar, imageLoader: imageLoader,
+                                              likesCount: item.likes.count,
+                                              commentsCount: item.comments.count,
+                                              repostCount: item.reposts.count,
+                                              viewsCount: item.views?.count)
 
             result.append(viewModel)
         }
