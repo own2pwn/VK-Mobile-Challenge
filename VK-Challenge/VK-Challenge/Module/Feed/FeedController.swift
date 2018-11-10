@@ -62,7 +62,9 @@ extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
         let model = getViewModel(at: indexPath)
-        cell.setup(with: model)
+        let shouldExpand = indexPath == expandedIndexPath && isCellExpanded
+
+        cell.setup(with: model, isExpanded: shouldExpand)
         cell.expandDelegate = self
 
         return cell
@@ -83,10 +85,7 @@ extension FeedController: FeedCellExpandDelegate {
     func cell(_ cell: FeedCell, wantsExpand: Bool) {
         expandedIndexPath = postCollection.indexPath(for: cell)
         isCellExpanded = wantsExpand
-        if let path = expandedIndexPath {
-            postCollection.reloadItems(at: [path])
-            //cell.setExpanded(true)
-        }
+        postCollection.collectionViewLayout.invalidateLayout()
     }
 }
 
@@ -100,11 +99,6 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         let cellHeight = model.shortContentHeight ?? model.contentHeight
 
         if indexPath == expandedIndexPath {
-            defer {
-                expandedIndexPath = nil
-                isCellExpanded = false
-            }
-
             if isCellExpanded {
                 return CGSize(width: collectionView.frame.width, height: model.contentHeight)
             }

@@ -30,15 +30,11 @@ protocol FeedCellExpandDelegate: class {
 }
 
 final class FeedCell: UICollectionViewCell {
-    // MARK: - Output
-
-    var onNeedShowFull: ((Bool) -> Void)?
-
     // MARK: - Interface
 
     weak var expandDelegate: FeedCellExpandDelegate?
 
-    var isExpanded = false
+    private var isExpanded = false
 
     // MARK: - Outlets
 
@@ -112,24 +108,30 @@ final class FeedCell: UICollectionViewCell {
 
     // MARK: - Setup
 
-    func setup(with viewModel: FeedCellViewModel) {
+    func setup(with viewModel: FeedCellViewModel, isExpanded: Bool = false) {
         self.viewModel = viewModel
+        self.isExpanded = isExpanded
 
         titleLabel.text = viewModel.titleText
         dateLabel.text = viewModel.dateText
-        contentLabel.attributedText = viewModel.shortText ?? viewModel.contentText
         likesCountLabel.text = viewModel.likesCount.stringValue
         commentsCountLabel.text = viewModel.commentsCount.stringValue
         repostsCountLabel.text = viewModel.repostCount.stringValue
         viewsCountImageView.isHidden = viewModel.viewsCount == nil
         viewsCountLabel.text = viewModel.viewsCount?.stringValue
 
+        if isExpanded {
+            contentLabel.attributedText = viewModel.contentText
+        } else {
+            contentLabel.attributedText = viewModel.shortText ?? viewModel.contentText
+        }
+
         imageLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
             self?.avatarImageView.image = image
         }
     }
 
-    func setExpanded(_ expanded: Bool) {
+    private func setExpanded(_ expanded: Bool) {
         if expanded {
             contentLabel.attributedText = viewModel?.contentText
         } else {
