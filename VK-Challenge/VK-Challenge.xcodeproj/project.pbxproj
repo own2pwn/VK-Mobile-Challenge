@@ -37,6 +37,7 @@
 		DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AEA2196F65C0031B35A /* FeedHeader.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
 		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
+		DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C02197348A007419F8 /* FeedCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		DE725AEA2196F65C0031B35A /* FeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeader.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
+		DECB59C02197348A007419F8 /* FeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -314,10 +316,19 @@
 		DEB250E92195FE0C003388EA /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DEB250EA2195FE15003388EA /* FeedCell.swift */,
+				DECB59BF21973483007419F8 /* Cell */,
 				DE725AEA2196F65C0031B35A /* FeedHeader.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DECB59BF21973483007419F8 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				DEB250EA2195FE15003388EA /* FeedCell.swift */,
+				DECB59C02197348A007419F8 /* FeedCellViewModel.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -434,6 +445,7 @@
 			files = (
 				B9CAA0FD2195A02900DAB134 /* TokenStore.swift in Sources */,
 				B943A54D2195DC8D00CB11DA /* MyProfileService.swift in Sources */,
+				DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */,
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B943A54A2195DC6C00CB11DA /* VKAPI+Response.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,

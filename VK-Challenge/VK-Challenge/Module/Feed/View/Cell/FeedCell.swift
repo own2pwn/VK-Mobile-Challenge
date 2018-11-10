@@ -8,23 +8,6 @@
 
 import UIKit
 
-struct FeedCellViewModel {
-    let titleText: String
-    let dateText: String
-    let contentText: NSAttributedString
-    let shortText: NSAttributedString?
-    let avatarURL: String
-    let imageLoader: ImageLoader
-
-    let likesCount: Int
-    let commentsCount: Int
-    let repostCount: Int
-    let viewsCount: Int?
-
-    let contentHeight: CGFloat
-    let shortContentHeight: CGFloat?
-}
-
 protocol FeedCellExpandDelegate: class {
     func cell(_ cell: FeedCell, wantsExpand: Bool)
 }
@@ -131,14 +114,6 @@ final class FeedCell: UICollectionViewCell {
         }
     }
 
-    private func setExpanded(_ expanded: Bool) {
-        if expanded {
-            contentLabel.attributedText = viewModel?.contentText
-        } else {
-            contentLabel.attributedText = viewModel?.shortText
-        }
-    }
-
     // MARK: - Layout
 
     override func layoutSubviews() {
@@ -155,7 +130,12 @@ final class FeedCell: UICollectionViewCell {
         isExpanded.toggle()
 
         expandDelegate?.cell(self, wantsExpand: isExpanded)
-        setExpanded(isExpanded)
+
+        if isExpanded {
+            contentLabel.attributedText = viewModel?.contentText
+        } else {
+            contentLabel.attributedText = viewModel?.shortText
+        }
     }
 }
 
