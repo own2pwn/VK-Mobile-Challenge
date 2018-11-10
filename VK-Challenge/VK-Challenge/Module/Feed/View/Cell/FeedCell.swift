@@ -124,6 +124,8 @@ final class FeedCell: UICollectionViewCell {
         imageLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
             self?.avatarImageView.image = image
         }
+
+        layoutViews()
     }
 
     // MARK: - Layout
@@ -205,6 +207,10 @@ final class FeedCell: UICollectionViewCell {
         repostsCountLabel.frame.origin.x = maxLeftX + 4
         maxLeftX = repostsCountLabel.frame.maxX
 
+        layoutViews()
+    }
+
+    private func layoutViews() {
         viewsCountLabel.sizeToFit()
         viewsCountLabel.center.y = likeImageView.center.y
         viewsCountLabel.frame.origin.x = frame.width - 16 - viewsCountLabel.frame.width

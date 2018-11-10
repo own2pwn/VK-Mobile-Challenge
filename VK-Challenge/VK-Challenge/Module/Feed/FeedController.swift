@@ -20,7 +20,7 @@ final class FeedController: UIViewController {
         super.viewDidLoad()
 
         bindViewModel()
-        postCollection.contentInset.top = 36
+        setupCollectionView()
     }
 
     // MARK: - Members
@@ -41,13 +41,25 @@ final class FeedController: UIViewController {
         }
         viewModel.onNewItemsLoaded = { [unowned self] items in
             self.datasource.append(contentsOf: items)
+            self.updateFooter()
             self.postCollection.reloadData()
         }
+    }
+
+    private func setupCollectionView() {
+        postCollection.contentInset.top = 36
+        postCollection.contentInset.bottom = 64
     }
 
     private func updateAvatar(with image: UIImage?) {
         if let header = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
             header.setAvatar(image)
+        }
+    }
+
+    private func updateFooter() {
+        if let footer = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
+            footer.setLoadedPostCount(datasource.count)
         }
     }
 }
@@ -81,9 +93,15 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
+        if kind == UICollectionElementKindSectionHeader {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
+        }
 
-        return view
+        if kind == UICollectionElementKindSectionFooter {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath)
+        }
+
+        return UICollectionReusableView()
     }
 }
 
@@ -105,5 +123,9 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 58)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 64)
     }
 }

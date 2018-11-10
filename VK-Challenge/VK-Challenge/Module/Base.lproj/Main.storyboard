@@ -24,7 +24,7 @@
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="12" minimumInteritemSpacing="0.0" id="Nzj-nh-vuY">
                                     <size key="itemSize" width="350" height="443"/>
                                     <size key="headerReferenceSize" width="50" height="56"/>
-                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="50" height="64"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="16"/>
                                 </collectionViewFlowLayout>
                                 <cells>
@@ -178,6 +178,36 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="avatarImageView" destination="Njk-Ug-dXh" id="8mc-OZ-Gnr"/>
+                                    </connections>
+                                </collectionReusableView>
+                                <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="FeedFooter" id="lUD-T1-sV5" customClass="FeedFooter" customModule="VK_Challenge" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="515" width="359" height="64"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3LG-F5-wnA">
+                                            <rect key="frame" x="0.0" y="0.0" width="359" height="64"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100 записей" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SNy-YQ-j1n">
+                                                    <rect key="frame" x="140.5" y="24" width="78" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                    <color key="textColor" red="0.56470588235294117" green="0.58039215686274503" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="SNy-YQ-j1n" firstAttribute="centerX" secondItem="3LG-F5-wnA" secondAttribute="centerX" id="LpW-qk-Mvf"/>
+                                                <constraint firstItem="SNy-YQ-j1n" firstAttribute="centerY" secondItem="3LG-F5-wnA" secondAttribute="centerY" id="XPJ-sd-Mmo"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="3LG-F5-wnA" secondAttribute="trailing" id="QCQ-Mz-23s"/>
+                                        <constraint firstItem="3LG-F5-wnA" firstAttribute="leading" secondItem="lUD-T1-sV5" secondAttribute="leading" id="VwJ-Bb-cbW"/>
+                                        <constraint firstItem="3LG-F5-wnA" firstAttribute="top" secondItem="lUD-T1-sV5" secondAttribute="top" id="bAr-ts-d3F"/>
+                                        <constraint firstAttribute="bottom" secondItem="3LG-F5-wnA" secondAttribute="bottom" id="tGq-Ok-6Pr"/>
+                                    </constraints>
+                                    <connections>
+                                        <outlet property="loadedPostCountLabel" destination="SNy-YQ-j1n" id="65u-KZ-0sE"/>
                                     </connections>
                                 </collectionReusableView>
                                 <connections>
