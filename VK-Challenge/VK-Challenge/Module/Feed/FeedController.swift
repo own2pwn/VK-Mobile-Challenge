@@ -106,7 +106,7 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionElementKindSectionFooter && !datasource.isEmpty {
-            print("gotta load more!")
+            viewModel.loadNextPage()
         }
     }
 }

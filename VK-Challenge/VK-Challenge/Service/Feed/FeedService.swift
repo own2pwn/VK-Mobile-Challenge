@@ -26,6 +26,16 @@ final class FeedService {
         api.get(method: .feedGet, params: query, completion: result)
     }
 
+    func getNextPage(token: String, result: @escaping VKFeedBlock) {
+        let filters = makeQueryItem(field: .filters, params: [.post])
+        let fields = makeQueryItem(field: .fields, params: [.photo100])
+        let nextPage = QueryItem(field: VKAPIFeedField.startFrom, value: token)
+
+        let query = [filters, fields, nextPage]
+
+        api.get(method: .feedGet, params: query, completion: result)
+    }
+
     // MARK: - Helpers
 
     private func makeQueryItem(field: VKAPIFeedField, params: [VKAPIFieldValue]) -> QueryItem {

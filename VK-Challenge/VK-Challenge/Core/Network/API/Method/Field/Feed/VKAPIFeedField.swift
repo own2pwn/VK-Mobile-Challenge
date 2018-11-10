@@ -11,6 +11,7 @@ import Foundation
 enum VKAPIFeedField: RequestField {
     case filters
     case fields
+    case startFrom
 }
 
 extension VKAPIFeedField {
@@ -20,6 +21,8 @@ extension VKAPIFeedField {
             return "filters"
         case .fields:
             return "fields"
+        case .startFrom:
+            return "start_from"
         }
     }
 }

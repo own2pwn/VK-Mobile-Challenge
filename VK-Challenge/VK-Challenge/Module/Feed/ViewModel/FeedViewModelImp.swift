@@ -47,7 +47,13 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Methods
 
-    func loadNextPage() {}
+    func loadNextPage() {
+        guard let token = nextPageToken else { return }
+
+        feedService.getNextPage(token: token) { response in
+            self.handleNewPosts(response)
+        }
+    }
 
     private func loadInitialData() {
         profileService.getMyProfile(completion: loadMyAvatar)
@@ -62,12 +68,16 @@ final class FeedViewModelImp: FeedViewModel {
 
     private func loadPosts() {
         feedService.getNews { response in
-            let cells = self.makeCellViewModels(from: response)
-            self.nextPageToken = response.next
+            self.handleNewPosts(response)
+        }
+    }
 
-            DispatchQueue.main.async {
-                self.onNewItemsLoaded?(cells)
-            }
+    private func handleNewPosts(_ response: VKFeedResponseModel) {
+        let cells = makeCellViewModels(from: response)
+        nextPageToken = response.next
+
+        DispatchQueue.main.async {
+            self.onNewItemsLoaded?(cells)
         }
     }
 
