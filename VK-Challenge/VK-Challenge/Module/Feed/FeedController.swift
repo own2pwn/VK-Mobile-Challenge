@@ -52,7 +52,13 @@ final class FeedController: UIViewController {
     }
 }
 
-// ===
+extension FeedController: FeedCellExpandDelegate {
+    func cell(_ cell: FeedCell, wantsExpand: Bool) {
+        expandedIndexPath = postCollection.indexPath(for: cell)
+        isCellExpanded = wantsExpand
+        postCollection.collectionViewLayout.invalidateLayout()
+    }
+}
 
 extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -81,27 +87,17 @@ extension FeedController: UICollectionViewDataSource {
     }
 }
 
-extension FeedController: FeedCellExpandDelegate {
-    func cell(_ cell: FeedCell, wantsExpand: Bool) {
-        expandedIndexPath = postCollection.indexPath(for: cell)
-        isCellExpanded = wantsExpand
-        postCollection.collectionViewLayout.invalidateLayout()
-    }
-}
-
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let row = indexPath.row
-        guard row < datasource.count else {
+        guard indexPath.row < datasource.count else {
             return CGSize(width: collectionView.frame.width, height: 256)
         }
+
         let model = getViewModel(at: indexPath)
         let cellHeight = model.shortContentHeight ?? model.contentHeight
 
-        if indexPath == expandedIndexPath {
-            if isCellExpanded {
-                return CGSize(width: collectionView.frame.width, height: model.contentHeight)
-            }
+        if indexPath == expandedIndexPath, isCellExpanded {
+            return CGSize(width: collectionView.frame.width, height: model.contentHeight)
         }
 
         return CGSize(width: collectionView.frame.width, height: cellHeight)

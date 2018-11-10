@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import VK_ios_sdk
 
 final class TokenStore {
     // MARK: - Members
