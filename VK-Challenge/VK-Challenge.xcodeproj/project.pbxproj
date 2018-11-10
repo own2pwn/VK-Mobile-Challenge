@@ -16,7 +16,7 @@
 		B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A53F2195DBE300CB11DA /* VKProfileModel.swift */; };
 		B943A5452195DC1900CB11DA /* VKAPI+Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A5442195DC1900CB11DA /* VKAPI+Type.swift */; };
 		B943A5472195DC4B00CB11DA /* VKAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A5462195DC4B00CB11DA /* VKAPIService.swift */; };
-		B943A54A2195DC6C00CB11DA /* VKAPIArrayResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A5492195DC6C00CB11DA /* VKAPIArrayResponse.swift */; };
+		B943A54A2195DC6C00CB11DA /* VKAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A5492195DC6C00CB11DA /* VKAPI+Response.swift */; };
 		B943A54D2195DC8D00CB11DA /* MyProfileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A54C2195DC8D00CB11DA /* MyProfileService.swift */; };
 		B943A54F2195DCD100CB11DA /* VKAPI+Method.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A54E2195DCD100CB11DA /* VKAPI+Method.swift */; };
 		B943A5522195E10300CB11DA /* VKAPIFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B943A5512195E10300CB11DA /* VKAPIFactory.swift */; };
@@ -51,7 +51,7 @@
 		B943A53F2195DBE300CB11DA /* VKProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKProfileModel.swift; sourceTree = "<group>"; };
 		B943A5442195DC1900CB11DA /* VKAPI+Type.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VKAPI+Type.swift"; sourceTree = "<group>"; };
 		B943A5462195DC4B00CB11DA /* VKAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIService.swift; sourceTree = "<group>"; };
-		B943A5492195DC6C00CB11DA /* VKAPIArrayResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIArrayResponse.swift; sourceTree = "<group>"; };
+		B943A5492195DC6C00CB11DA /* VKAPI+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VKAPI+Response.swift"; sourceTree = "<group>"; };
 		B943A54C2195DC8D00CB11DA /* MyProfileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProfileService.swift; sourceTree = "<group>"; };
 		B943A54E2195DCD100CB11DA /* VKAPI+Method.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VKAPI+Method.swift"; sourceTree = "<group>"; };
 		B943A5512195E10300CB11DA /* VKAPIFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIFactory.swift; sourceTree = "<group>"; };
@@ -183,7 +183,7 @@
 		B943A5482195DC6500CB11DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B943A5492195DC6C00CB11DA /* VKAPIArrayResponse.swift */,
+				B943A5492195DC6C00CB11DA /* VKAPI+Response.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -421,7 +421,7 @@
 				B9CAA0FD2195A02900DAB134 /* TokenStore.swift in Sources */,
 				B943A54D2195DC8D00CB11DA /* MyProfileService.swift in Sources */,
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
-				B943A54A2195DC6C00CB11DA /* VKAPIArrayResponse.swift in Sources */,
+				B943A54A2195DC6C00CB11DA /* VKAPI+Response.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,
 				B90F570A2195874A001B11CE /* FeedController.swift in Sources */,
 				B9CAA1052195B6D700DAB134 /* Dependency.swift in Sources */,

@@ -66,6 +66,13 @@ final class FeedController: UIViewController {
 
         bindViewModel()
         postCollection.contentInset.top = 36
+
+        let s = TokenStore()
+        let t = s.get()!
+        let f = VKAPIFactory(token: t)
+        let ss = FeedService(api: f.makeFeedService())
+
+        ss.getNews()
     }
 
     // MARK: - Members

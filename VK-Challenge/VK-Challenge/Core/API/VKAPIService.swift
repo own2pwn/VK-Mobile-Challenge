@@ -8,7 +8,7 @@
 
 import Foundation
 
-final class VKAPIService<M: VKAPIMethod, F: VKAPIField> {
+final class VKAPIService<M: VKAPIMethod, T: VKAPIFilter, F: VKAPIField> {
     // MARK: - Members
 
     private let token: String
@@ -26,12 +26,12 @@ final class VKAPIService<M: VKAPIMethod, F: VKAPIField> {
 
     // MARK: - Interface
 
-    func getArray<R: Decodable>(_ method: M, fields: [F], completion: @escaping (([R]) -> Void)) {
+    func getArray<R: Decodable>(_ method: M, filters: [T] = [], fields: [F], completion: @escaping (([R]) -> Void)) {
         var concrete = endpoint
         concrete.appendPathComponent(method.value)
 
         guard var components = URLComponents(url: concrete, resolvingAgainstBaseURL: false) else { return }
-        components.queryItems = makeQueryItems(with: fields)
+        components.queryItems = makeQueryItems(with: filters, params: fields)
 
         guard let url = components.url else {
             return
@@ -49,7 +49,37 @@ final class VKAPIService<M: VKAPIMethod, F: VKAPIField> {
         task.resume()
     }
 
+    func getSingle<R: Decodable>(_ method: M, filters: [T] = [], fields: [F], completion: @escaping ((R) -> Void)) {
+        var concrete = endpoint
+        concrete.appendPathComponent(method.value)
+
+        guard var components = URLComponents(url: concrete, resolvingAgainstBaseURL: false) else { return }
+        components.queryItems = makeQueryItems(with: filters, params: fields)
+
+        guard let url = components.url else {
+            return
+        }
+
+        let task = session.dataTask(with: url) { data, response, error in
+            guard let data = data else {
+                print("^W: [\(String(describing: error))] | [\(String(describing: response))]")
+                return
+            }
+
+            self.handleSingleResponse(data, httpResponse: response, error: error, with: completion)
+        }
+
+        task.resume()
+    }
+
     // MARK: - Helpers
+
+    private func handleSingleResponse<R: Decodable>(_ data: Data, httpResponse: URLResponse?, error: Error?, with completion: @escaping ((R) -> Void)) {
+        let decoder = JSONDecoder()
+        if let model = try? decoder.decode(VKAPIResponse<R>.self, from: data) {
+            completion(model.response)
+        }
+    }
 
     private func handleArrayResponse<R: Decodable>(_ data: Data, httpResponse: URLResponse?, error: Error?, with completion: @escaping (([R]) -> Void)) {
         let decoder = JSONDecoder()
@@ -58,12 +88,17 @@ final class VKAPIService<M: VKAPIMethod, F: VKAPIField> {
         }
     }
 
-    private func makeQueryItems(with params: [F]) -> [URLQueryItem] {
+    private func makeQueryItems(with filters: [T], params: [F]) -> [URLQueryItem] {
         let fields = params.map { $0.value }.joined(separator: ",")
+        let filterStr = filters.map { $0.value }.joined(separator: ",")
 
-        let dict = ["fields": fields,
+        var dict = ["fields": fields,
                     "access_token": token,
                     "v": CONST.VK.apiVersion]
+
+        if !filters.isEmpty {
+            dict["filters"] = filterStr
+        }
 
         var result = [URLQueryItem]()
         for (k, v) in dict {

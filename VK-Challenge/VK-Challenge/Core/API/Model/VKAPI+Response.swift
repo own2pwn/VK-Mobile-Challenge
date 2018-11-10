@@ -8,6 +8,10 @@
 
 import Foundation
 
+struct VKAPIResponse<T: Decodable>: Decodable {
+    let response: T
+}
+
 struct VKAPIArrayResponse<T: Decodable>: Decodable {
     let response: [T]
 }

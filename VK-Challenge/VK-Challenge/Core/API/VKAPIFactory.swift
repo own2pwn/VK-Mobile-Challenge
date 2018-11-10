@@ -8,7 +8,9 @@
 
 import Foundation
 
-typealias VKAPIProfileService = VKAPIService<VKAPIMethodUsers, VKAPIUsersField>
+typealias VKAPIProfileService = VKAPIService<VKAPIMethodUsers, VKAPIAnyFilter, VKAPIUsersField>
+
+typealias VKAPIFeedService = VKAPIService<VKAPIMethodFeed, VKAPIFeedFilter, VKAPIFeedField>
 
 final class VKAPIFactory {
     // MARK: - Members
@@ -19,6 +21,10 @@ final class VKAPIFactory {
 
     func makeProfileService() -> VKAPIProfileService {
         return VKAPIProfileService(token: token)
+    }
+
+    func makeFeedService() -> VKAPIFeedService {
+        return VKAPIFeedService(token: token)
     }
 
     // MARK: - Init

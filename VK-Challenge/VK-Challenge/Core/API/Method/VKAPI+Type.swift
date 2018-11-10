@@ -16,3 +16,10 @@ protocol VKAPIField {
     var value: String { get }
 }
 
+protocol VKAPIFilter {
+    var value: String { get }
+}
+
+enum VKAPIAnyFilter: VKAPIFilter {
+    var value: String { return "ABSTRACT" }
+}
