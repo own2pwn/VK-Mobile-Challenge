@@ -28,7 +28,7 @@ final class FeedController: UIViewController {
 
     // MARK: - Members
 
-    private var items: [VKFeedItem] = []
+    private var datasource: [FeedCellViewModel] = []
 
     private let viewModel: FeedViewModel = { Dependency.makeFeedViewModel() }()
 
@@ -37,6 +37,10 @@ final class FeedController: UIViewController {
     private func bindViewModel() {
         viewModel.onAvatarLoaded = { [unowned self] avatar in
             self.avatarImageView.image = avatar
+        }
+        viewModel.onNewItemsLoaded = { [unowned self] items in
+            self.datasource.append(contentsOf: items)
+            self.postCollection.reloadData()
         }
     }
 
@@ -47,7 +51,7 @@ final class FeedController: UIViewController {
 
     @IBAction
     private func testCode() {
-        viewModel.loadInitialData()
+        // viewModel.loadInitialData()
         // let scope: [VKScope] = [.friends, .photos, .wall, .offline]
         // authorize(with: scope)
     }
@@ -78,14 +82,19 @@ final class FeedController: UIViewController {
 
 extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return datasource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
-        cell.testWidth()
+        let model = getViewModel(at: indexPath)
+        cell.setup(with: model)
 
         return cell
+    }
+
+    private func getViewModel(at indexPath: IndexPath) -> FeedCellViewModel {
+        return datasource[indexPath.row]
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {

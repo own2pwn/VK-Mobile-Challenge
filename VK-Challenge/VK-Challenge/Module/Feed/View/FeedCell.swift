@@ -8,6 +8,10 @@
 
 import UIKit
 
+struct FeedCellViewModel {
+    let contentText: NSAttributedString?
+}
+
 final class FeedCell: UICollectionViewCell {
     // MARK: - Outlets
 
@@ -41,6 +45,13 @@ final class FeedCell: UICollectionViewCell {
 
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = 10
+        contentView.clipsToBounds = true
+    }
+
+    // MARK: - Setup
+
+    func setup(with viewModel: FeedCellViewModel) {
+        contentLabel.attributedText = viewModel.contentText
     }
 
     // MARK: - Layout
