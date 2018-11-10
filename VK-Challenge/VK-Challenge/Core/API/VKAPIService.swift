@@ -8,6 +8,14 @@
 
 import Foundation
 
+final class _VKAPIService {
+    // MARK: - Members
+
+    private let token: String
+
+    private let endpoint: URL
+}
+
 final class VKAPIService<M: VKAPIMethod, T: VKAPIFilter, F: VKAPIField> {
     // MARK: - Members
 
@@ -86,7 +94,7 @@ final class VKAPIService<M: VKAPIMethod, T: VKAPIFilter, F: VKAPIField> {
     private func handleArrayResponse<R: Decodable>(_ data: Data, httpResponse: URLResponse?, error: Error?, with completion: @escaping (([R]) -> Void)) {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .secondsSince1970
-        
+
         if let model = try? decoder.decode(VKAPIArrayResponse<R>.self, from: data) {
             completion(model.response)
         }
