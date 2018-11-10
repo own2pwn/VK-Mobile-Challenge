@@ -27,23 +27,3 @@ final class MyProfileService {
         self.api = api
     }
 }
-
-final class FeedService {
-    // MARK: - Members
-
-    private let api: VKAPIFeedService
-
-    // MARK: - Interface
-
-    func getNews(completion: @escaping ((VKFeedResponseModel) -> Void)) {
-        api.getSingle(.feedGet, filters: [.post], fields: [.photo100]) { (response: VKFeedResponseModel) in
-            completion(response)
-        }
-    }
-
-    // MARK: - Init
-
-    init(api: VKAPIFeedService) {
-        self.api = api
-    }
-}

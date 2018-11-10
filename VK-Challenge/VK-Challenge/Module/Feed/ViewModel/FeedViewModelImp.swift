@@ -30,7 +30,7 @@ final class FeedViewModelImp: FeedViewModel {
 
     private let staticCellHeight: CGFloat = 64 + 44
 
-    private var loadedItemsCount = 0
+    private var nextPageToken: String?
 
     // MARK: - Init
 
@@ -47,7 +47,11 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Methods
 
-    func loadInitialData() {
+    func loadNextPage() {
+
+    }
+
+    private func loadInitialData() {
         profileService.getMyProfile(completion: loadMyAvatar)
         loadPosts()
     }
@@ -61,13 +65,15 @@ final class FeedViewModelImp: FeedViewModel {
     private func loadPosts() {
         feedService.getNews { response in
             let cells = self.makeCellViewModels(from: response)
-            self.loadedItemsCount += response.items.count
+            self.nextPageToken = response.next
 
             DispatchQueue.main.async {
                 self.onNewItemsLoaded?(cells)
             }
         }
     }
+
+    // MARK: - Helpers
 
     private func makeCellViewModels(from response: VKFeedResponseModel) -> [FeedCellViewModel] {
         var result = [FeedCellViewModel]()

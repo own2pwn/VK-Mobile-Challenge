@@ -14,4 +14,6 @@ protocol FeedViewModelOutput: class {
     var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
 }
 
-protocol FeedViewModel: FeedViewModelOutput {}
+protocol FeedViewModel: FeedViewModelOutput {
+    func loadNextPage()
+}

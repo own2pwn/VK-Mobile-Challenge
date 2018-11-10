@@ -47,7 +47,7 @@ final class FeedController: UIViewController {
     }
 
     private func setupCollectionView() {
-        postCollection.contentInset.top = 36
+        postCollection.contentInset.top = 24
         postCollection.contentInset.bottom = 64
     }
 
@@ -102,6 +102,12 @@ extension FeedController: UICollectionViewDataSource {
         }
 
         return UICollectionReusableView()
+    }
+
+    func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
+        if elementKind == UICollectionElementKindSectionFooter && !datasource.isEmpty {
+            print("gotta load more!")
+        }
     }
 }
 
