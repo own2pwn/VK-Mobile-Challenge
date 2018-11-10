@@ -151,12 +151,18 @@ final class FeedCell: UICollectionViewCell {
         dateLabel.frame.origin = titleLabel.frame.origin
         dateLabel.frame.origin.y = titleLabel.frame.maxY + 1
 
-        let contentRect = CGSize(width: frame.width - 24, height: 0)
-        let textRect = contentLabel.attributedText?.boundingRect(with: contentRect, options: .usesLineFragmentOrigin, context: nil)
-
-        contentLabel.frame.size = contentRect
-        contentLabel.frame.size.height = textRect?.height ?? 0
+        let contentHeight = getTextHeight()
+        contentLabel.frame.size.width = frame.width - 24
+        contentLabel.frame.size.height = contentHeight
         contentLabel.frame.origin = CGPoint(x: 12, y: avatarImageView.frame.maxY + 10)
+    }
+
+    private func getTextHeight() -> CGFloat {
+        if isExpanded {
+            return viewModel?.contentHeight ?? 0
+        } else {
+            return viewModel?.shortContentHeight ?? viewModel?.contentHeight ?? 0
+        }
     }
 
     private func layoutFooter() {
