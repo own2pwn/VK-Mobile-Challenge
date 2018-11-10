@@ -151,10 +151,10 @@ final class FeedCell: UICollectionViewCell {
         dateLabel.frame.origin = titleLabel.frame.origin
         dateLabel.frame.origin.y = titleLabel.frame.maxY + 1
 
-        let contentHeight = getTextHeight()
+        let maxY = avatarImageView.frame.maxY
         contentLabel.frame.size.width = frame.width - 24
-        contentLabel.frame.size.height = contentHeight
-        contentLabel.frame.origin = CGPoint(x: 12, y: avatarImageView.frame.maxY + 10)
+        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44
+        contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
     }
 
     private func getTextHeight() -> CGFloat {
