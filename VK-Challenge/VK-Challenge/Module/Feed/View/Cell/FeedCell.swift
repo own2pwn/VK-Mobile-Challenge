@@ -34,10 +34,22 @@ final class FeedCell: UICollectionViewCell {
     private var contentLabel: UILabel!
 
     @IBOutlet
+    private var footerView: UIView!
+
+    @IBOutlet
+    private var likeImageView: UIImageView!
+
+    @IBOutlet
     private var likesCountLabel: UILabel!
 
     @IBOutlet
+    private var commentImageView: UIImageView!
+
+    @IBOutlet
     private var commentsCountLabel: UILabel!
+
+    @IBOutlet
+    private var repostImageView: UIImageView!
 
     @IBOutlet
     private var repostsCountLabel: UILabel!
@@ -120,26 +132,24 @@ final class FeedCell: UICollectionViewCell {
         super.layoutSubviews()
 
         layoutHeader()
-
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
+        layoutFooter()
     }
 
     private func layoutHeader() {
         avatarImageView.frame.size = CGSize(width: 36, height: 36)
         avatarImageView.frame.origin = CGPoint(x: 12, y: 12)
+        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
 
-        var maxLeftX = avatarImageView.frame.maxX
+        let maxLeftX = avatarImageView.frame.maxX
 
         titleLabel.frame.size = CGSize(width: frame.width - maxLeftX - 10 - 12, height: titleLabel.font.lineHeight)
         titleLabel.frame.origin = avatarImageView.frame.origin
         titleLabel.frame.origin.x = maxLeftX + 10
-        titleLabel.drawText(in: titleLabel.frame)
 
         dateLabel.frame.size = titleLabel.frame.size
         dateLabel.frame.size.height = dateLabel.font.lineHeight
         dateLabel.frame.origin = titleLabel.frame.origin
         dateLabel.frame.origin.y = titleLabel.frame.maxY + 1
-        dateLabel.drawText(in: dateLabel.frame)
 
         let contentRect = CGSize(width: frame.width - 24, height: 0)
         let textRect = contentLabel.attributedText?.boundingRect(with: contentRect, options: .usesLineFragmentOrigin, context: nil)
@@ -147,6 +157,55 @@ final class FeedCell: UICollectionViewCell {
         contentLabel.frame.size = contentRect
         contentLabel.frame.size.height = textRect?.height ?? 0
         contentLabel.frame.origin = CGPoint(x: 12, y: avatarImageView.frame.maxY + 10)
+    }
+
+    private func layoutFooter() {
+        footerView.frame.size.width = frame.width
+        footerView.frame.size.height = 44
+        footerView.frame.origin.x = 0
+        footerView.frame.origin.y = frame.height - 44
+
+        likeImageView.frame.size = CGSize(width: 24, height: 24)
+        likeImageView.frame.origin = CGPoint(x: 16, y: 10)
+
+        var maxLeftX = likeImageView.frame.maxX
+        let labelsWidth = (frame.width / 4.3) - 40
+
+        likesCountLabel.frame.size.width = labelsWidth
+        likesCountLabel.frame.size.height = likesCountLabel.font.lineHeight
+        likesCountLabel.center.y = likeImageView.center.y
+        likesCountLabel.frame.origin.x = maxLeftX + 4
+        maxLeftX = likesCountLabel.frame.maxX
+
+        commentImageView.frame.size = CGSize(width: 24, height: 24)
+        commentImageView.center.y = likeImageView.center.y
+        commentImageView.frame.origin.x = maxLeftX + 16
+        maxLeftX = commentImageView.frame.maxX
+
+        commentsCountLabel.frame.size.width = labelsWidth
+        commentsCountLabel.frame.size.height = commentsCountLabel.font.lineHeight
+        commentsCountLabel.center.y = likeImageView.center.y
+        commentsCountLabel.frame.origin.x = maxLeftX + 4
+        maxLeftX = commentsCountLabel.frame.maxX
+
+        repostImageView.frame.size = CGSize(width: 24, height: 24)
+        repostImageView.center.y = likeImageView.center.y
+        repostImageView.frame.origin.x = maxLeftX + 16
+        maxLeftX = repostImageView.frame.maxX
+
+        repostsCountLabel.frame.size.width = labelsWidth
+        repostsCountLabel.frame.size.height = repostsCountLabel.font.lineHeight
+        repostsCountLabel.center.y = likeImageView.center.y
+        repostsCountLabel.frame.origin.x = maxLeftX + 4
+        maxLeftX = repostsCountLabel.frame.maxX
+
+        viewsCountLabel.sizeToFit()
+        viewsCountLabel.center.y = likeImageView.center.y
+        viewsCountLabel.frame.origin.x = frame.width - 16 - viewsCountLabel.frame.width
+
+        viewsCountImageView.frame.size = CGSize(width: 20, height: 20)
+        viewsCountImageView.center.y = likeImageView.center.y
+        viewsCountImageView.frame.origin.x = viewsCountLabel.frame.minX - 2 - 20
     }
 
     // MARK: - Actions
