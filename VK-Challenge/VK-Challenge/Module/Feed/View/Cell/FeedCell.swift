@@ -119,7 +119,34 @@ final class FeedCell: UICollectionViewCell {
     override func layoutSubviews() {
         super.layoutSubviews()
 
+        layoutHeader()
+
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
+    }
+
+    private func layoutHeader() {
+        avatarImageView.frame.size = CGSize(width: 36, height: 36)
+        avatarImageView.frame.origin = CGPoint(x: 12, y: 12)
+
+        var maxLeftX = avatarImageView.frame.maxX
+
+        titleLabel.frame.size = CGSize(width: frame.width - maxLeftX - 10 - 12, height: titleLabel.font.lineHeight)
+        titleLabel.frame.origin = avatarImageView.frame.origin
+        titleLabel.frame.origin.x = maxLeftX + 10
+        titleLabel.drawText(in: titleLabel.frame)
+
+        dateLabel.frame.size = titleLabel.frame.size
+        dateLabel.frame.size.height = dateLabel.font.lineHeight
+        dateLabel.frame.origin = titleLabel.frame.origin
+        dateLabel.frame.origin.y = titleLabel.frame.maxY + 1
+        dateLabel.drawText(in: dateLabel.frame)
+
+        let contentRect = CGSize(width: frame.width - 24, height: 0)
+        let textRect = contentLabel.attributedText?.boundingRect(with: contentRect, options: .usesLineFragmentOrigin, context: nil)
+
+        contentLabel.frame.size = contentRect
+        contentLabel.frame.size.height = textRect?.height ?? 0
+        contentLabel.frame.origin = CGPoint(x: 12, y: avatarImageView.frame.maxY + 10)
     }
 
     // MARK: - Actions

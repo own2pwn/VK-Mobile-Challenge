@@ -35,27 +35,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="350" height="443"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgAvatarPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="Zrv-2C-oGM">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="imgAvatarPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="Zrv-2C-oGM">
                                                     <rect key="frame" x="12" y="12" width="36" height="36"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" secondItem="Zrv-2C-oGM" secondAttribute="height" multiplier="1:1" id="4Oq-Q5-Q15"/>
-                                                        <constraint firstAttribute="width" constant="36" id="zTe-UH-x6Z"/>
-                                                    </constraints>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Евгений Петров" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THO-wM-jmE">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Евгений Петров" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THO-wM-jmE">
                                                     <rect key="frame" x="58" y="12" width="110" height="17"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                     <color key="textColor" red="0.17254901960784313" green="0.1764705882352941" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9 апр в 16:36" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LqY-I4-gcX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="9 апр в 16:36" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LqY-I4-gcX">
                                                     <rect key="frame" x="58" y="30" width="78" height="14.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.50588235294117645" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9x-LA-4ZZ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9x-LA-4ZZ">
                                                     <rect key="frame" x="12" y="58" width="326" height="125.5"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <string key="text">Одной из ключевых ценностей ВКонтакте является то, что здесь сосредоточено огромное количество уникального контента. Сотни тысяч авторов и пабликов ежедневно создают миллионы материалов, которые невозможно найти нигде, кроме ВКонтакте.
 Показать полностью…</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -152,18 +152,7 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="LSw-T7-0Up" secondAttribute="trailing" id="1Hh-Gt-n66"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LqY-I4-gcX" secondAttribute="trailing" constant="12" id="56r-fu-PiK"/>
-                                            <constraint firstItem="LqY-I4-gcX" firstAttribute="top" secondItem="THO-wM-jmE" secondAttribute="bottom" constant="1" id="6eX-Yu-ol1"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="THO-wM-jmE" secondAttribute="trailing" constant="12" id="Boy-rO-HhI"/>
-                                            <constraint firstItem="THO-wM-jmE" firstAttribute="leading" secondItem="Zrv-2C-oGM" secondAttribute="trailing" constant="10" id="C4s-ef-B5Q"/>
-                                            <constraint firstAttribute="trailing" secondItem="V9x-LA-4ZZ" secondAttribute="trailing" constant="12" id="JbG-iy-pYj"/>
-                                            <constraint firstItem="THO-wM-jmE" firstAttribute="top" secondItem="Zrv-2C-oGM" secondAttribute="top" id="SPd-yF-Y8r"/>
-                                            <constraint firstItem="LqY-I4-gcX" firstAttribute="leading" secondItem="THO-wM-jmE" secondAttribute="leading" id="cGc-zD-E6e"/>
                                             <constraint firstAttribute="bottom" secondItem="LSw-T7-0Up" secondAttribute="bottom" id="dys-3g-HbY"/>
-                                            <constraint firstItem="Zrv-2C-oGM" firstAttribute="top" secondItem="3GG-Ad-64M" secondAttribute="top" constant="12" id="gj5-qn-hxk"/>
-                                            <constraint firstItem="V9x-LA-4ZZ" firstAttribute="leading" secondItem="3GG-Ad-64M" secondAttribute="leading" constant="12" id="jMa-OR-v3w"/>
-                                            <constraint firstItem="V9x-LA-4ZZ" firstAttribute="top" secondItem="Zrv-2C-oGM" secondAttribute="bottom" constant="10" id="nFt-C3-00U"/>
-                                            <constraint firstItem="Zrv-2C-oGM" firstAttribute="leading" secondItem="3GG-Ad-64M" secondAttribute="leading" constant="12" id="sk9-3y-4C3"/>
                                             <constraint firstItem="LSw-T7-0Up" firstAttribute="leading" secondItem="3GG-Ad-64M" secondAttribute="leading" id="vR7-56-32k"/>
                                         </constraints>
                                         <connections>
