@@ -125,7 +125,7 @@
                                             <outlet property="avatarImageView" destination="Zrv-2C-oGM" id="bkw-te-wby"/>
                                             <outlet property="contentLabel" destination="V9x-LA-4ZZ" id="ukP-Z0-f1E"/>
                                             <outlet property="dateLabel" destination="LqY-I4-gcX" id="4oV-NP-TL0"/>
-                                            <outlet property="nameLabel" destination="THO-wM-jmE" id="c09-Ip-ayf"/>
+                                            <outlet property="titleLabel" destination="THO-wM-jmE" id="c09-Ip-ayf"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

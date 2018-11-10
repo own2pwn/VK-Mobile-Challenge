@@ -69,19 +69,50 @@ final class FeedViewModelImp: FeedViewModel {
         let str = "Читатель Спарка напоминает, как стоит относиться к бизнес-литературе. \n\nБизнес-литература дает лишь общие теоретические знания, от которых нет практической пользы, и пользоваться ей стоит как учебником.\nhttps://spark.ru/startup/the-red-button/blog/32894/pochemu-biznes-literatura-bespolezna-na-90"
 
         let text = textManager.makeTextToDisplay(from: str)
-        let content = FeedCellViewModel(contentText: text)
+        // let content = FeedCellViewModel(contentText: text)
 
-        DispatchQueue.main.async {
-            self.onNewItemsLoaded?([content])
+//        DispatchQueue.main.async {
+//            self.onNewItemsLoaded?([content])
+//        }
+
+        feedService.getNews { response in
+            let cells = self.makeCellViewModels(from: response)
+
+            DispatchQueue.main.async {
+                self.onNewItemsLoaded?(cells)
+            }
+        }
+    }
+
+    private func makeCellViewModels(from response: VKFeedResponseModel) -> [FeedCellViewModel] {
+        var result = [FeedCellViewModel]()
+
+        for item in response.items {
+            let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
+            let (full, short) = textManager.makeTextToDisplay(from: item.text)
+
+            let viewModel = FeedCellViewModel(titleText: title, dateText: item.date.humanString,
+                                              contentText: full, shortText: short,
+                                              avatarURL: avatar, imageLoader: imageLoader)
+
+            result.append(viewModel)
         }
 
-        return;
+        return result
+    }
 
-        feedService.getNews { items in
-//            let content = items.map { $0.text }
-//                .map { self.textManager.makeTextToDisplay(from: $0) }
-//                .compactMap { FeedCellViewModel(contentText: $0) }
+    private func getTitleAndAvatar(for id: Int, in profiles: [VKProfileModel], groups: [VKGroupModel]) -> (String, String) {
+        let valueToFind = abs(id)
+        if let profile = profiles.first(where: { $0.id == valueToFind }) {
+            let name = "\(profile.firstName) \(profile.lastName)"
+            return (name, profile.avatarURL100)
         }
+        if let group = groups.first(where: { $0.id == valueToFind }) {
+            return (group.name, group.avatarURL100)
+        }
+
+        assertionFailure()
+        return ("", "")
     }
 
     func kek() {
@@ -128,19 +159,34 @@ private final class FeedCellTextManager {
 
     // MARK: - Interface
 
-    func makeTextToDisplay(from string: String) -> NSAttributedString {
-        let styledText = NSMutableAttributedString(string: string)
-        styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: NSMakeRange(0, styledText.length))
+    func makeTextToDisplay(from string: String) -> (NSAttributedString, NSAttributedString?) {
+        let styledText = makeStyledText(from: string)
+        let styledTextHeight = textHeight(styledText)
 
-        guard getTextHeight(styledText) <= maxTextHeight else {
-            // return makeClippedText(from: string)
-            return getShortText(from: styledText)
+        if getTextHeight(styledText) != styledTextHeight, !string.isEmpty {
+            let diff = getTextHeight(styledText) - styledTextHeight
+            print("^ there's a diff [\(diff)]")
+            // print("^ for [\(string)] getTextHeight => \(getTextHeight(styledText)) | while [\(styledTextHeight)]")
         }
 
-        return styledText
+        guard styledTextHeight <= maxTextHeight else {
+            // return makeClippedText(from: string)
+            return (styledText, getShortText(from: styledText))
+        }
+
+        return (styledText, nil)
     }
 
     // MARK: - Helpers
+
+    private func makeStyledText(from string: String) -> NSAttributedString {
+        let styledText = NSMutableAttributedString(string: string)
+        styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: styledText.range)
+        styledText.addAttribute(.font, value: textFont, range: styledText.range)
+        // styledText.addAttribute(.foregroundColor, value: UIColor.green, range: styledText.range)
+
+        return styledText
+    }
 
     private func makeClippedText(from string: String) -> NSAttributedString {
         let tail = "\nПоказать полностью…"
@@ -149,8 +195,6 @@ private final class FeedCellTextManager {
     }
 
     private func getTextHeight(_ text: NSAttributedString) -> CGFloat {
-        let t2 = text.string.boundingRect(with: maxFrame, options: .usesLineFragmentOrigin, attributes: [NSAttributedStringKey.font: textFont, .paragraphStyle: textPragraphStyle], context: nil)
-
         let result = text.boundingRect(with: maxFrame,
                                        options: .usesLineFragmentOrigin,
                                        context: nil)
@@ -182,7 +226,19 @@ private final class FeedCellTextManager {
         }
         let linesText = string.attributedSubstring(from: NSRange(location: 0, length: breakAt))
         let mutable = NSMutableAttributedString(attributedString: linesText)
-        mutable.append("\nПоказать полностью...".nsString)
+
+        let showMoreText = "\nПоказать полностью..."
+        let showMoreLen = showMoreText.count - 1
+
+        mutable.append(showMoreText.nsString)
+        mutable.addAttribute(.paragraphStyle, value: textPragraphStyle, range: mutable.range)
+
+        let showMoreFont = UIFont.systemFont(ofSize: 15, weight: .medium)
+        let showMoreRange = NSMakeRange(mutable.length - showMoreLen, showMoreLen)
+        let showMoreColor = UIColor.rgb(82, 139, 204)
+
+        mutable.addAttribute(.font, value: showMoreFont, range: showMoreRange)
+        mutable.addAttribute(.foregroundColor, value: showMoreColor, range: showMoreRange)
 
         return mutable
     }
@@ -191,7 +247,7 @@ private final class FeedCellTextManager {
         let frameSetter = CTFramesetterCreateWithAttributedString(text)
         let frame = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, text.CFRange, nil, maxFrame, nil)
 
-        return frame.height
+        return ceil(frame.height)
     }
 }
 
@@ -204,5 +260,29 @@ private extension String {
 private extension NSAttributedString {
     var CFRange: CFRange {
         return CFRangeMake(0, length)
+    }
+
+    var range: NSRange {
+        return NSMakeRange(0, length)
+    }
+}
+
+private extension Date {
+    var humanString: String {
+        let cal = Calendar.current
+        let fmt = DateFormatter()
+
+        if cal.isDateInThisYear(self) {
+            fmt.dateFormat = "d MMM в HH:mm"
+        } else {
+            fmt.dateFormat = "d MMM yyyy"
+        }
+        return fmt.string(from: self)
+    }
+}
+
+public extension Calendar {
+    public func isDateInThisYear(_ date: Date) -> Bool {
+        return compare(Date(), to: date, toGranularity: .year) == .orderedSame
     }
 }

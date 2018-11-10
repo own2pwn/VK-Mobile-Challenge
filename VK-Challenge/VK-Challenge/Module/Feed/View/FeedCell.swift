@@ -9,7 +9,12 @@
 import UIKit
 
 struct FeedCellViewModel {
-    let contentText: NSAttributedString?
+    let titleText: String
+    let dateText: String
+    let contentText: NSAttributedString
+    let shortText: NSAttributedString?
+    let avatarURL: String
+    let imageLoader: ImageLoader
 }
 
 final class FeedCell: UICollectionViewCell {
@@ -19,7 +24,7 @@ final class FeedCell: UICollectionViewCell {
     private var avatarImageView: UIImageView!
 
     @IBOutlet
-    private var nameLabel: UILabel!
+    private var titleLabel: UILabel!
 
     @IBOutlet
     private var dateLabel: UILabel!
@@ -27,7 +32,21 @@ final class FeedCell: UICollectionViewCell {
     @IBOutlet
     private var contentLabel: UILabel!
 
-    // MARK: - Init
+    // MARK: - Private
+
+    private var isExpanded = false
+
+    private var imageLoadingTask: URLSessionDataTask?
+
+    // MARK: - Methods
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        imageLoadingTask?.cancel()
+        imageLoadingTask = nil
+        isExpanded = false
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -51,7 +70,18 @@ final class FeedCell: UICollectionViewCell {
     // MARK: - Setup
 
     func setup(with viewModel: FeedCellViewModel) {
-        contentLabel.attributedText = viewModel.contentText
+        titleLabel.text = viewModel.titleText
+        dateLabel.text = viewModel.dateText
+
+        if let shortText = viewModel.shortText {
+            contentLabel.attributedText = shortText
+        } else {
+            contentLabel.attributedText = viewModel.contentText
+        }
+
+        imageLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
+            self?.avatarImageView.image = image
+        }
     }
 
     // MARK: - Layout

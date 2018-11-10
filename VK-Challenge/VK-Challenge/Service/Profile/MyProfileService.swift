@@ -35,9 +35,9 @@ final class FeedService {
 
     // MARK: - Interface
 
-    func getNews(completion: @escaping (([VKFeedItem]) -> Void)) {
+    func getNews(completion: @escaping ((VKFeedResponseModel) -> Void)) {
         api.getSingle(.feedGet, filters: [.post], fields: [.photo100]) { (response: VKFeedResponseModel) in
-            completion(response.items)
+            completion(response)
         }
     }
 
