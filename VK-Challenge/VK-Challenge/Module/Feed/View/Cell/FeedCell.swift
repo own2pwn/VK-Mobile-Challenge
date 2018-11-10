@@ -125,7 +125,7 @@ final class FeedCell: UICollectionViewCell {
             self?.avatarImageView.image = image
         }
 
-        layoutViews()
+        layoutViewsCount()
     }
 
     // MARK: - Layout
@@ -157,14 +157,6 @@ final class FeedCell: UICollectionViewCell {
         contentLabel.frame.size.width = frame.width - 24
         contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44
         contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
-    }
-
-    private func getTextHeight() -> CGFloat {
-        if isExpanded {
-            return viewModel?.contentHeight ?? 0
-        } else {
-            return viewModel?.shortContentHeight ?? viewModel?.contentHeight ?? 0
-        }
     }
 
     private func layoutFooter() {
@@ -207,10 +199,10 @@ final class FeedCell: UICollectionViewCell {
         repostsCountLabel.frame.origin.x = maxLeftX + 4
         maxLeftX = repostsCountLabel.frame.maxX
 
-        layoutViews()
+        layoutViewsCount()
     }
 
-    private func layoutViews() {
+    private func layoutViewsCount() {
         viewsCountLabel.sizeToFit()
         viewsCountLabel.center.y = likeImageView.center.y
         viewsCountLabel.frame.origin.x = frame.width - 16 - viewsCountLabel.frame.width

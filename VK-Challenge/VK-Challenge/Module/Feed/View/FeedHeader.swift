@@ -28,24 +28,3 @@ final class FeedHeader: UICollectionReusableView {
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
     }
 }
-
-final class FeedFooter: UICollectionReusableView {
-    // MARK: - Outlets
-
-    @IBOutlet
-    private var loadedPostCountLabel: UILabel!
-
-    // MARK: - Setup
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        loadedPostCountLabel.text = nil
-    }
-
-    // MARK: - Interface
-
-    func setLoadedPostCount(_ count: Int) {
-        loadedPostCountLabel.text = count > 0 ? "\(count) записей" : nil
-    }
-}

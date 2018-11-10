@@ -13,13 +13,13 @@ typealias ImageCompletion = (UIImage) -> Void
 final class ImageLoader {
     // MARK: - Members
 
+    private var cached: [String: Data] = [:]
+
     private let maxCacheSize: Int = {
         let pxInOneMB = 1024 * 1024 / 4
 
         return 7 * pxInOneMB
     }()
-
-    private var cached: [String: Data] = [:]
 
     private lazy var session: URLSession = {
         var config = URLSession.shared.configuration

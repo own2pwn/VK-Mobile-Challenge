@@ -30,6 +30,7 @@
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
 		DE08DD9121975A150055A6CA /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE08DD9021975A150055A6CA /* FeedService.swift */; };
+		DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F001C21978550004974D7 /* FeedFooter.swift */; };
 		DE68CAD821977C05001D18F9 /* String+QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACC21977C05001D18F9 /* String+QueryItem.swift */; };
 		DE68CAD921977C05001D18F9 /* QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACE21977C05001D18F9 /* QueryItem.swift */; };
 		DE68CADA21977C05001D18F9 /* RequestAdapterImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAD021977C05001D18F9 /* RequestAdapterImp.swift */; };
@@ -84,6 +85,7 @@
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		DE08DD9021975A150055A6CA /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		DE4F001C21978550004974D7 /* FeedFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFooter.swift; sourceTree = "<group>"; };
 		DE68CACC21977C05001D18F9 /* String+QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryItem.swift"; sourceTree = "<group>"; };
 		DE68CACE21977C05001D18F9 /* QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryItem.swift; sourceTree = "<group>"; };
 		DE68CAD021977C05001D18F9 /* RequestAdapterImp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestAdapterImp.swift; sourceTree = "<group>"; };
@@ -316,8 +318,8 @@
 		B9CAA1132195C88500DAB134 /* Feed */ = {
 			isa = PBXGroup;
 			children = (
-				DE725AE72196CAB30031B35A /* ViewModel */,
 				DEB250E92195FE0C003388EA /* View */,
+				DE725AE72196CAB30031B35A /* ViewModel */,
 				B90F57092195874A001B11CE /* FeedController.swift */,
 			);
 			path = Feed;
@@ -444,6 +446,7 @@
 			children = (
 				DECB59BF21973483007419F8 /* Cell */,
 				DE725AEA2196F65C0031B35A /* FeedHeader.swift */,
+				DE4F001C21978550004974D7 /* FeedFooter.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				B943A5522195E10300CB11DA /* VKAPIFactory.swift in Sources */,
 				DE68CADC21977C05001D18F9 /* RequestSenderImp.swift in Sources */,
 				B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */,
+				DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */,
 				DE68CAEC21977C3F001D18F9 /* VKAPIMethod.swift in Sources */,
 				DE68CAE921977C3F001D18F9 /* VKAPIField.swift in Sources */,
 				B943A5552195EC8200CB11DA /* ImageLoader.swift in Sources */,
