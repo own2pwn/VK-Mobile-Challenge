@@ -14,6 +14,9 @@ final class FeedController: UIViewController {
     @IBOutlet
     private var postCollection: UICollectionView!
 
+    @IBOutlet
+    private var postCollectionBottomConstraint: NSLayoutConstraint!
+
     // MARK: - Overrides
 
     override func viewDidLoad() {
@@ -49,6 +52,8 @@ final class FeedController: UIViewController {
     private func setupCollectionView() {
         postCollection.contentInset.top = 24
         postCollection.contentInset.bottom = 64
+
+        setupKeyboardHandling()
     }
 
     private func updateAvatar(with image: UIImage?) {
@@ -60,6 +65,44 @@ final class FeedController: UIViewController {
     private func updateFooter() {
         if let footer = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
             footer.setLoadedPostCount(datasource.count)
+        }
+    }
+
+    // MARK: - Keyboard
+
+    private func setupKeyboardHandling() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEditingInHeader))
+        postCollection.addGestureRecognizer(tap)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+    }
+
+    @objc
+    private func endEditingInHeader() {
+        if let header = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
+            header.endEditing(true)
+        }
+    }
+
+    @objc
+    private func onKeyboardWillShow(_ notification: Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect else { return }
+
+        postCollectionBottomConstraint.constant = keyboardFrame.size.height
+
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    @objc
+    private func onKeyboardWillHide() {
+        postCollectionBottomConstraint.constant = 0
+        UIView.animate(withDuration: 0.25) {
+            self.view.layoutIfNeeded()
         }
     }
 }
@@ -106,7 +149,7 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionElementKindSectionFooter && !datasource.isEmpty {
-            viewModel.loadNextPage()
+            // viewModel.loadNextPage()
         }
     }
 }

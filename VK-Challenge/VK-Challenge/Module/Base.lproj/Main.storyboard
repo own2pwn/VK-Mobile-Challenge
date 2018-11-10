@@ -227,6 +227,7 @@
                     </view>
                     <connections>
                         <outlet property="postCollection" destination="iye-8H-upb" id="gX4-4w-nrM"/>
+                        <outlet property="postCollectionBottomConstraint" destination="f5b-f5-fgt" id="eHs-7h-PIP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
