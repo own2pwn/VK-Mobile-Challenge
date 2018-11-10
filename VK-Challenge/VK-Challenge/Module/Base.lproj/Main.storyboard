@@ -42,14 +42,14 @@
                                                         <constraint firstAttribute="width" constant="36" id="zTe-UH-x6Z"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Андрей Рогозов" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THO-wM-jmE">
-                                                    <rect key="frame" x="58" y="12" width="111.5" height="17"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Евгений Петров" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THO-wM-jmE">
+                                                    <rect key="frame" x="58" y="12" width="110" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                                                     <color key="textColor" red="0.17254901960784313" green="0.1764705882352941" blue="0.1803921568627451" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9 апр в 16:36" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LqY-I4-gcX">
-                                                    <rect key="frame" x="58" y="30" width="280" height="14.5"/>
+                                                    <rect key="frame" x="58" y="30" width="78" height="14.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <color key="textColor" red="0.50588235294117645" green="0.5490196078431373" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -152,7 +152,7 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="trailing" secondItem="LSw-T7-0Up" secondAttribute="trailing" id="1Hh-Gt-n66"/>
-                                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="LqY-I4-gcX" secondAttribute="trailing" constant="12" id="56r-fu-PiK"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="LqY-I4-gcX" secondAttribute="trailing" constant="12" id="56r-fu-PiK"/>
                                             <constraint firstItem="LqY-I4-gcX" firstAttribute="top" secondItem="THO-wM-jmE" secondAttribute="bottom" constant="1" id="6eX-Yu-ol1"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="THO-wM-jmE" secondAttribute="trailing" constant="12" id="Boy-rO-HhI"/>
                                             <constraint firstItem="THO-wM-jmE" firstAttribute="leading" secondItem="Zrv-2C-oGM" secondAttribute="trailing" constant="10" id="C4s-ef-B5Q"/>
@@ -184,11 +184,11 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Поиск" translatesAutoresizingMaskIntoConstraints="NO" id="DMK-yM-MTd">
-                                            <rect key="frame" x="0.0" y="0.0" width="252" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="307" height="56"/>
                                             <textInputTraits key="textInputTraits"/>
                                         </searchBar>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blr-nm-vn6">
-                                            <rect key="frame" x="260" y="6" width="44" height="44"/>
+                                            <rect key="frame" x="315" y="6" width="44" height="44"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imgAvatarPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="Njk-Ug-dXh">
                                                     <rect key="frame" x="4" y="4" width="36" height="36"/>

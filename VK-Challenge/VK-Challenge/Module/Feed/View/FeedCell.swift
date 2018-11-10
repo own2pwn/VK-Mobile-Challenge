@@ -20,9 +20,26 @@ struct FeedCellViewModel {
     let commentsCount: Int
     let repostCount: Int
     let viewsCount: Int?
+
+    let contentHeight: CGFloat
+    let shortContentHeight: CGFloat?
+}
+
+protocol FeedCellExpandDelegate: class {
+    func cell(_ cell: FeedCell, wantsExpand: Bool)
 }
 
 final class FeedCell: UICollectionViewCell {
+    // MARK: - Output
+
+    var onNeedShowFull: ((Bool) -> Void)?
+
+    // MARK: - Interface
+
+    weak var expandDelegate: FeedCellExpandDelegate?
+
+    var isExpanded = false
+
     // MARK: - Outlets
 
     @IBOutlet
@@ -56,8 +73,6 @@ final class FeedCell: UICollectionViewCell {
 
     private lazy var pan
         = UITapGestureRecognizer(target: self, action: #selector(toggleTextCollapse))
-
-    private var isExpanded = false
 
     private var imageLoadingTask: URLSessionDataTask?
 
@@ -114,6 +129,14 @@ final class FeedCell: UICollectionViewCell {
         }
     }
 
+    func setExpanded(_ expanded: Bool) {
+        if expanded {
+            contentLabel.attributedText = viewModel?.contentText
+        } else {
+            contentLabel.attributedText = viewModel?.shortText
+        }
+    }
+
     // MARK: - Layout
 
     override func layoutSubviews() {
@@ -127,14 +150,10 @@ final class FeedCell: UICollectionViewCell {
     @objc
     private func toggleTextCollapse() {
         guard viewModel?.shortText != nil else { return }
+        isExpanded.toggle()
 
-        defer { isExpanded.toggle() }
-
-        if isExpanded {
-            contentLabel.attributedText = viewModel?.shortText
-        } else {
-            contentLabel.attributedText = viewModel?.contentText
-        }
+        expandDelegate?.cell(self, wantsExpand: isExpanded)
+        setExpanded(isExpanded)
     }
 }
 

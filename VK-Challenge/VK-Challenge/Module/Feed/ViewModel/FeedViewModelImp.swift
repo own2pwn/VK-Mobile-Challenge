@@ -86,7 +86,11 @@ final class FeedViewModelImp: FeedViewModel {
 
         for item in response.items {
             let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
-            let (full, short) = textManager.makeTextToDisplay(from: item.text)
+            let (full, short, fullHeight, shortHeight) = textManager.makeTextToDisplay(from: item.text)
+            var shortHeightValue: CGFloat?
+            if let shortValue = shortHeight {
+                shortHeightValue = shortValue + 64 + 44
+            }
 
             let viewModel = FeedCellViewModel(titleText: title, dateText: item.date.humanString,
                                               contentText: full, shortText: short,
@@ -94,7 +98,9 @@ final class FeedViewModelImp: FeedViewModel {
                                               likesCount: item.likes.count,
                                               commentsCount: item.comments.count,
                                               repostCount: item.reposts.count,
-                                              viewsCount: item.views?.count)
+                                              viewsCount: item.views?.count,
+                                              contentHeight: fullHeight + 64 + 44,
+                                              shortContentHeight: shortHeightValue)
 
             result.append(viewModel)
         }
@@ -160,22 +166,18 @@ private final class FeedCellTextManager {
 
     // MARK: - Interface
 
-    func makeTextToDisplay(from string: String) -> (NSAttributedString, NSAttributedString?) {
+    func makeTextToDisplay(from string: String) -> (NSAttributedString, NSAttributedString?, CGFloat, CGFloat?) {
         let styledText = makeStyledText(from: string)
-        let styledTextHeight = textHeight(styledText)
-
-        if getTextHeight(styledText) != styledTextHeight, !string.isEmpty {
-            let diff = getTextHeight(styledText) - styledTextHeight
-            print("^ there's a diff [\(diff)]")
-            // print("^ for [\(string)] getTextHeight => \(getTextHeight(styledText)) | while [\(styledTextHeight)]")
-        }
+        let styledTextHeight = getTextHeight(styledText)
 
         guard styledTextHeight <= maxTextHeight else {
-            // return makeClippedText(from: string)
-            return (styledText, getShortText(from: styledText))
+            let shortText = getShortText(from: styledText)
+            let shortTextHeight = getTextHeight(shortText)
+
+            return (styledText, shortText, styledTextHeight, shortTextHeight)
         }
 
-        return (styledText, nil)
+        return (styledText, nil, styledTextHeight, nil)
     }
 
     // MARK: - Helpers

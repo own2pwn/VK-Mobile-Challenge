@@ -25,6 +25,10 @@ final class FeedController: UIViewController {
 
     // MARK: - Members
 
+    private var expandedIndexPath: IndexPath?
+
+    private var isCellExpanded = false
+
     private var datasource: [FeedCellViewModel] = []
 
     private let viewModel: FeedViewModel = { Dependency.makeFeedViewModel() }()
@@ -59,6 +63,7 @@ extension FeedController: UICollectionViewDataSource {
         let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
         let model = getViewModel(at: indexPath)
         cell.setup(with: model)
+        cell.expandDelegate = self
 
         return cell
     }
@@ -74,9 +79,38 @@ extension FeedController: UICollectionViewDataSource {
     }
 }
 
+extension FeedController: FeedCellExpandDelegate {
+    func cell(_ cell: FeedCell, wantsExpand: Bool) {
+        expandedIndexPath = postCollection.indexPath(for: cell)
+        isCellExpanded = wantsExpand
+        if let path = expandedIndexPath {
+            postCollection.reloadItems(at: [path])
+            //cell.setExpanded(true)
+        }
+    }
+}
+
 extension FeedController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 256)
+        let row = indexPath.row
+        guard row < datasource.count else {
+            return CGSize(width: collectionView.frame.width, height: 256)
+        }
+        let model = getViewModel(at: indexPath)
+        let cellHeight = model.shortContentHeight ?? model.contentHeight
+
+        if indexPath == expandedIndexPath {
+            defer {
+                expandedIndexPath = nil
+                isCellExpanded = false
+            }
+
+            if isCellExpanded {
+                return CGSize(width: collectionView.frame.width, height: model.contentHeight)
+            }
+        }
+
+        return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
