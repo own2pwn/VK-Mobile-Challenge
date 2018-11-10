@@ -1,29 +1,27 @@
 //
-//  FeedService.swift
+//  VKAPIProfileService.swift
 //  VK-Challenge
 //
-//  Created by Evgeniy on 10/11/2018.
+//  Created by Evgeniy on 09.11.18.
 //  Copyright © 2018 Evgeniy. All rights reserved.
 //
 
 import Foundation
 
-typealias VKFeedBlock = (VKFeedResponseModel) -> Void
+typealias VKProfileBlock = (VKProfileModel) -> Void
 
-final class FeedService {
+final class ProfileService {
     // MARK: - Members
 
     private let api: VKAPIClient
 
     // MARK: - Interface
 
-    func getNews(result: @escaping VKFeedBlock) {
-        let filters = makeQueryItem(field: .filters, params: [.post])
+    func getMyProfile(completion: @escaping VKProfileBlock) {
         let fields = makeQueryItem(field: .fields, params: [.photo100])
-
-        let query = [filters, fields]
-
-        api.send(method: .feedGet, params: query, completion: result)
+        api.send(method: VKAPIMethod.usersGet, params: [fields]) { (response: [VKProfileModel]) in
+            if let me = response.first { completion(me) }
+        }
     }
 
     // MARK: - Helpers

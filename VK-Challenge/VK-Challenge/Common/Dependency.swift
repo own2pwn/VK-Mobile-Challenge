@@ -33,9 +33,9 @@ final class Dependency {
     // MARK: - Private
 
     private static func makeFeedService() -> FeedService {
-        let apiService = vkAPIFactory.makeFeedService()
+        let feedService = vkAPIFactory.makeFeedService()
 
-        return FeedService(api: apiService)
+        return feedService
     }
 
     private static func makeImageLoader() -> ImageLoader {
@@ -44,10 +44,10 @@ final class Dependency {
         return loader
     }
 
-    private static func makeMyProfileService() -> MyProfileService {
-        let apiService = vkAPIFactory.makeProfileService()
+    private static func makeMyProfileService() -> ProfileService {
+        let profileService = vkAPIFactory.makeProfileService()
 
-        return MyProfileService(api: apiService)
+        return profileService
     }
 
     private static func makeAuthService() -> AuthService {

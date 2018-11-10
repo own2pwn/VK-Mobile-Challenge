@@ -18,7 +18,7 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Members
 
-    private let profileService: MyProfileService
+    private let profileService: ProfileService
 
     private let feedService: FeedService
 
@@ -34,7 +34,7 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Init
 
-    init(profileService: MyProfileService,
+    init(profileService: ProfileService,
          feedService: FeedService,
          imageLoader: ImageLoader) {
         self.profileService = profileService
@@ -47,9 +47,7 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Methods
 
-    func loadNextPage() {
-
-    }
+    func loadNextPage() {}
 
     private func loadInitialData() {
         profileService.getMyProfile(completion: loadMyAvatar)
