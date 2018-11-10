@@ -42,9 +42,9 @@ final class FeedController: UIViewController {
     }
 
     private func updateAvatar(with image: UIImage?) {
-        let header = postCollection.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: IndexPath(row: 0, section: 0)) as! FeedHeader
-
-        header.setAvatar(image)
+        if let header = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
+            header.setAvatar(image)
+        }
     }
 }
 
