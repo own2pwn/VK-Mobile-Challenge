@@ -1,50 +1,12 @@
 //
-//  VKProfileModel.swift
+//  VKFeedItem.swift
 //  VK-Challenge
 //
-//  Created by Evgeniy on 09.11.18.
+//  Created by Evgeniy on 10/11/2018.
 //  Copyright © 2018 Evgeniy. All rights reserved.
 //
 
 import Foundation
-
-struct VKProfileModel: Decodable {
-    let id: Int
-    let firstName: String
-    let lastName: String
-    let avatarURL100: String
-}
-
-extension VKProfileModel {
-    enum CodingKeys: String, CodingKey {
-        case id
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case avatarURL100 = "photo_100"
-    }
-}
-
-struct VKGroupModel: Decodable {
-    let id: Int
-    let name: String
-    let avatarURL100: String
-}
-
-extension VKGroupModel {
-    enum CodingKeys: String, CodingKey {
-        case id, name
-        case avatarURL100 = "photo_100"
-    }
-}
-
-// ==
-
-struct VKFeedResponseModel: Decodable {
-    let items: [VKFeedItem]
-    let profiles: [VKProfileModel]
-    let groups: [VKGroupModel]
-    let next: String
-}
 
 struct VKFeedItem: Decodable {
     let type: String
@@ -94,12 +56,5 @@ extension VKFeedItem {
         case sourceID = "source_id"
         case postID = "post_id"
         case postType = "post_type"
-    }
-}
-
-extension VKFeedResponseModel {
-    enum CodingKeys: String, CodingKey {
-        case items, profiles, groups
-        case next = "next_from"
     }
 }

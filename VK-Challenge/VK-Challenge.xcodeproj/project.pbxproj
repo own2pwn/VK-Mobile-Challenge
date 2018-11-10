@@ -38,6 +38,11 @@
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
 		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
 		DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C02197348A007419F8 /* FeedCellViewModel.swift */; };
+		DECB59C321973553007419F8 /* FeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C221973553007419F8 /* FeedViewModel.swift */; };
+		DECB59C521973662007419F8 /* Calendar+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C421973662007419F8 /* Calendar+Date.swift */; };
+		DECB59C8219736DE007419F8 /* VKGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C7219736DE007419F8 /* VKGroupModel.swift */; };
+		DECB59CA219736EC007419F8 /* VKFeedResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */; };
+		DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59CB21973704007419F8 /* VKFeedItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +81,11 @@
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
 		DECB59C02197348A007419F8 /* FeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewModel.swift; sourceTree = "<group>"; };
+		DECB59C221973553007419F8 /* FeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModel.swift; sourceTree = "<group>"; };
+		DECB59C421973662007419F8 /* Calendar+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Date.swift"; sourceTree = "<group>"; };
+		DECB59C7219736DE007419F8 /* VKGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKGroupModel.swift; sourceTree = "<group>"; };
+		DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedResponseModel.swift; sourceTree = "<group>"; };
+		DECB59CB21973704007419F8 /* VKFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,17 +163,18 @@
 		B943A53D2195DBCF00CB11DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B943A53E2195DBD300CB11DA /* User */,
+				DECB59C6219736D0007419F8 /* Feed */,
+				B943A53E2195DBD300CB11DA /* Profile */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		B943A53E2195DBD300CB11DA /* User */ = {
+		B943A53E2195DBD300CB11DA /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				B943A53F2195DBE300CB11DA /* VKProfileModel.swift */,
 			);
-			path = User;
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		B943A5412195DBFC00CB11DA /* Core */ = {
@@ -254,6 +265,7 @@
 				DEB250EC2195FE48003388EA /* Cell+Reuse.swift */,
 				B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */,
 				B9943A26219597FA0045D56C /* VK+Scope.swift */,
+				DECB59C421973662007419F8 /* Calendar+Date.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -308,6 +320,7 @@
 		DE725AE72196CAB30031B35A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				DECB59C221973553007419F8 /* FeedViewModel.swift */,
 				DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */,
 			);
 			path = ViewModel;
@@ -329,6 +342,16 @@
 				DECB59C02197348A007419F8 /* FeedCellViewModel.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		DECB59C6219736D0007419F8 /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				DECB59C7219736DE007419F8 /* VKGroupModel.swift */,
+				DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */,
+				DECB59CB21973704007419F8 /* VKFeedItem.swift */,
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -449,14 +472,19 @@
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B943A54A2195DC6C00CB11DA /* VKAPI+Response.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,
+				DECB59C8219736DE007419F8 /* VKGroupModel.swift in Sources */,
 				B90F570A2195874A001B11CE /* FeedController.swift in Sources */,
 				B9CAA1052195B6D700DAB134 /* Dependency.swift in Sources */,
+				DECB59CA219736EC007419F8 /* VKFeedResponseModel.swift in Sources */,
 				B90F57082195874A001B11CE /* AppDelegate.swift in Sources */,
 				DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */,
 				B9943A24219597140045D56C /* Constants.swift in Sources */,
+				DECB59C521973662007419F8 /* Calendar+Date.swift in Sources */,
 				B943A5472195DC4B00CB11DA /* VKAPIService.swift in Sources */,
+				DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */,
 				B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */,
 				B943A5452195DC1900CB11DA /* VKAPI+Type.swift in Sources */,
+				DECB59C321973553007419F8 /* FeedViewModel.swift in Sources */,
 				B9943A27219597FA0045D56C /* VK+Scope.swift in Sources */,
 				DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */,
 				B9CAA1072195B6F200DAB134 /* AuthService.swift in Sources */,

@@ -9,16 +9,6 @@
 import CoreText
 import UIKit
 
-protocol FeedViewModelOutput: class {
-    var onAvatarLoaded: ((UIImage?) -> Void)? { get set }
-
-    var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
-}
-
-protocol FeedViewModel: FeedViewModelOutput {
-    func loadInitialData()
-}
-
 final class FeedViewModelImp: FeedViewModel {
     // MARK: - Output
 
@@ -35,6 +25,12 @@ final class FeedViewModelImp: FeedViewModel {
     private let imageLoader: ImageLoader
 
     private let textManager: FeedCellTextManager
+
+    // MARK: - Private
+
+    private let staticCellHeight: CGFloat = 64 + 44
+
+    private var loadedItemsCount = 0
 
     // MARK: - Init
 
@@ -63,17 +59,9 @@ final class FeedViewModelImp: FeedViewModel {
     }
 
     private func loadPosts() {
-        let str = "Читатель Спарка напоминает, как стоит относиться к бизнес-литературе. \n\nБизнес-литература дает лишь общие теоретические знания, от которых нет практической пользы, и пользоваться ей стоит как учебником.\nhttps://spark.ru/startup/the-red-button/blog/32894/pochemu-biznes-literatura-bespolezna-na-90"
-
-        let text = textManager.makeTextToDisplay(from: str)
-        // let content = FeedCellViewModel(contentText: text)
-
-//        DispatchQueue.main.async {
-//            self.onNewItemsLoaded?([content])
-//        }
-
         feedService.getNews { response in
             let cells = self.makeCellViewModels(from: response)
+            self.loadedItemsCount += response.items.count
 
             DispatchQueue.main.async {
                 self.onNewItemsLoaded?(cells)
@@ -86,20 +74,22 @@ final class FeedViewModelImp: FeedViewModel {
 
         for item in response.items {
             let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
-            let (full, short, fullHeight, shortHeight) = textManager.makeTextToDisplay(from: item.text)
+            let (fullText, shortText, fullHeight, shortHeight)
+                = textManager.makeTextToDisplay(from: item.text)
+
             var shortHeightValue: CGFloat?
             if let shortValue = shortHeight {
-                shortHeightValue = shortValue + 64 + 44
+                shortHeightValue = shortValue + staticCellHeight
             }
 
             let viewModel = FeedCellViewModel(titleText: title, dateText: item.date.humanString,
-                                              contentText: full, shortText: short,
+                                              contentText: fullText, shortText: shortText,
                                               avatarURL: avatar, imageLoader: imageLoader,
                                               likesCount: item.likes.count,
                                               commentsCount: item.comments.count,
                                               repostCount: item.reposts.count,
                                               viewsCount: item.views?.count,
-                                              contentHeight: fullHeight + 64 + 44,
+                                              contentHeight: fullHeight + staticCellHeight,
                                               shortContentHeight: shortHeightValue)
 
             result.append(viewModel)
@@ -110,6 +100,7 @@ final class FeedViewModelImp: FeedViewModel {
 
     private func getTitleAndAvatar(for id: Int, in profiles: [VKProfileModel], groups: [VKGroupModel]) -> (String, String) {
         let valueToFind = abs(id)
+
         if let profile = profiles.first(where: { $0.id == valueToFind }) {
             let name = "\(profile.firstName) \(profile.lastName)"
             return (name, profile.avatarURL100)
@@ -121,30 +112,12 @@ final class FeedViewModelImp: FeedViewModel {
         assertionFailure()
         return ("", "")
     }
-
-    func kek() {
-        let s = TokenStore()
-        let t = s.get()!
-        let f = VKAPIFactory(token: t)
-        let ss = FeedService(api: f.makeFeedService())
-
-        ss.getNews { _ in
-            DispatchQueue.main.async {
-                // self.items.append(contentsOf: items)
-                // self.postCollection.reloadData()
-            }
-        }
-    }
-
-    // MARK: - Text width
-
-    // private lazy var maxText = <#value#>
-
-    private func processNewItems(_ items: [VKFeedItem]) {}
 }
 
 private final class FeedCellTextManager {
     // MARK: - Members
+
+    private let foldableLinesNumber = 6
 
     private var textFont = UIFont.systemFont(ofSize: 15)
 
@@ -186,15 +159,8 @@ private final class FeedCellTextManager {
         let styledText = NSMutableAttributedString(string: string)
         styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: styledText.range)
         styledText.addAttribute(.font, value: textFont, range: styledText.range)
-        // styledText.addAttribute(.foregroundColor, value: UIColor.green, range: styledText.range)
 
         return styledText
-    }
-
-    private func makeClippedText(from string: String) -> NSAttributedString {
-        let tail = "\nПоказать полностью…"
-
-        return NSAttributedString(string: "")
     }
 
     private func getTextHeight(_ text: NSAttributedString) -> CGFloat {
@@ -217,8 +183,6 @@ private final class FeedCellTextManager {
     }
 
     // ====
-
-    let foldableLinesNumber = 6
 
     private func getShortText(from string: NSAttributedString) -> NSAttributedString {
         let typeSetter = CTTypesetterCreateWithAttributedString(string)
@@ -281,11 +245,5 @@ private extension Date {
             fmt.dateFormat = "d MMM yyyy"
         }
         return fmt.string(from: self)
-    }
-}
-
-public extension Calendar {
-    public func isDateInThisYear(_ date: Date) -> Bool {
-        return compare(Date(), to: date, toGranularity: .year) == .orderedSame
     }
 }
