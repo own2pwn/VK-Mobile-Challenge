@@ -37,7 +37,7 @@ final class ImageLoader {
         guard let endpoint = URL(string: url) else { return nil }
 
         if let data = cached[url], let image = UIImage(data: data) {
-            completion(image)
+            DispatchQueue.main.async { completion(image) }
             return nil
         }
 
@@ -46,7 +46,7 @@ final class ImageLoader {
                 let data = data,
                 let image = UIImage(data: data) else { return }
 
-            completion(image)
+            DispatchQueue.main.async { completion(image) }
             self.cache(url, data)
         }
         task.resume()

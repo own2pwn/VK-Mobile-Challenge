@@ -34,6 +34,7 @@
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
 		DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */; };
+		DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AEA2196F65C0031B35A /* FeedHeader.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
 		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
 /* End PBXBuildFile section */
@@ -70,6 +71,7 @@
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelImp.swift; sourceTree = "<group>"; };
+		DE725AEA2196F65C0031B35A /* FeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeader.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -313,6 +315,7 @@
 			isa = PBXGroup;
 			children = (
 				DEB250EA2195FE15003388EA /* FeedCell.swift */,
+				DE725AEA2196F65C0031B35A /* FeedHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -437,6 +440,7 @@
 				B90F570A2195874A001B11CE /* FeedController.swift in Sources */,
 				B9CAA1052195B6D700DAB134 /* Dependency.swift in Sources */,
 				B90F57082195874A001B11CE /* AppDelegate.swift in Sources */,
+				DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */,
 				B9943A24219597140045D56C /* Constants.swift in Sources */,
 				B943A5472195DC4B00CB11DA /* VKAPIService.swift in Sources */,
 				B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */,

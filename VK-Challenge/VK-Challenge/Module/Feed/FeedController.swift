@@ -12,9 +12,6 @@ final class FeedController: UIViewController {
     // MARK: - Outlets
 
     @IBOutlet
-    private var avatarImageView: UIImageView!
-
-    @IBOutlet
     private var postCollection: UICollectionView!
 
     // MARK: - Overrides
@@ -36,7 +33,7 @@ final class FeedController: UIViewController {
 
     private func bindViewModel() {
         viewModel.onAvatarLoaded = { [unowned self] avatar in
-            self.avatarImageView.image = avatar
+            self.updateAvatar(with: avatar)
         }
         viewModel.onNewItemsLoaded = { [unowned self] items in
             self.datasource.append(contentsOf: items)
@@ -44,37 +41,10 @@ final class FeedController: UIViewController {
         }
     }
 
-    private func authorize(with scope: [VKScope]) {
-        let perms = scope.map { $0.rawValue }
-        VK_SDK.authorize(perms)
-    }
+    private func updateAvatar(with image: UIImage?) {
+        let header = postCollection.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: IndexPath(row: 0, section: 0)) as! FeedHeader
 
-    @IBAction
-    private func testCode() {
-        // viewModel.loadInitialData()
-        // let scope: [VKScope] = [.friends, .photos, .wall, .offline]
-        // authorize(with: scope)
-    }
-
-    @IBAction
-    private func testDeauth() {
-        VK_SDK.forceLogout()
-        Router.replace(with: .auth)
-    }
-
-    private func showFailedAuthAlert(with error: Error? = nil) {
-        let alert = UIAlertController(title: "Authorization failed", message: error?.localizedDescription, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
-        alert.addAction(ok)
-        present(alert, animated: true)
-    }
-
-    // MARK: - Layout
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        avatarImageView.layer.cornerRadius = avatarImageView.frame.height / 2
+        header.setAvatar(image)
     }
 }
 

@@ -39,7 +39,7 @@ final class VKAPIService<M: VKAPIMethod, T: VKAPIFilter, F: VKAPIField> {
 
         let task = session.dataTask(with: url) { data, response, error in
             guard let data = data else {
-                print("^W: [\(String(describing: error))] | [\(String(describing: response))]")
+                assertionFailure()
                 return
             }
 
@@ -62,7 +62,7 @@ final class VKAPIService<M: VKAPIMethod, T: VKAPIFilter, F: VKAPIField> {
 
         let task = session.dataTask(with: url) { data, response, error in
             guard let data = data else {
-                print("^W: [\(String(describing: error))] | [\(String(describing: response))]")
+                assertionFailure()
                 return
             }
 

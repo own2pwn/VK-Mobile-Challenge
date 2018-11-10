@@ -54,14 +54,11 @@ final class FeedViewModelImp: FeedViewModel {
     func loadInitialData() {
         profileService.getMyProfile(completion: loadMyAvatar)
         loadPosts()
-
-        let test = "Одной из ключевых ценностей ВКонтакте является то, что здесь сосредоточено огромное количество уникального контента. Сотни тысяч авторов и пабликов ежедневно создают миллионы материалов, которые невозможно найти нигде, кроме ВКонтакте. Здесь бы добавить немного текста чтобы его начало хватать на 8 строк но кто же знает когда жто начнется. Так вот и пишу я и код свой и  челлендж и много всего другого...."
-        textManager.makeTextToDisplay(from: test)
     }
 
     private func loadMyAvatar(from profile: VKProfileModel) {
         imageLoader.load(from: profile.avatarURL100) { avatar in
-            DispatchQueue.main.async { self.onAvatarLoaded?(avatar) }
+            self.onAvatarLoaded?(avatar)
         }
     }
 
