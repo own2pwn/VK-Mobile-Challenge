@@ -43,6 +43,7 @@
 		DE68CAEA21977C3F001D18F9 /* VKAPIFeedField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAE621977C3F001D18F9 /* VKAPIFeedField.swift */; };
 		DE68CAEB21977C3F001D18F9 /* VKAPIFieldValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAE721977C3F001D18F9 /* VKAPIFieldValue.swift */; };
 		DE68CAEC21977C3F001D18F9 /* VKAPIMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAE821977C3F001D18F9 /* VKAPIMethod.swift */; };
+		DE68CAF021978134001D18F9 /* VKAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */; };
 		DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */; };
 		DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AEA2196F65C0031B35A /* FeedHeader.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
@@ -96,6 +97,7 @@
 		DE68CAE621977C3F001D18F9 /* VKAPIFeedField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKAPIFeedField.swift; sourceTree = "<group>"; };
 		DE68CAE721977C3F001D18F9 /* VKAPIFieldValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKAPIFieldValue.swift; sourceTree = "<group>"; };
 		DE68CAE821977C3F001D18F9 /* VKAPIMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKAPIMethod.swift; sourceTree = "<group>"; };
+		DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIResponse.swift; sourceTree = "<group>"; };
 		DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelImp.swift; sourceTree = "<group>"; };
 		DE725AEA2196F65C0031B35A /* FeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeader.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 		B943A53D2195DBCF00CB11DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DE68CAEE2197812A001D18F9 /* Base */,
 				DECB59C6219736D0007419F8 /* Feed */,
 				B943A53E2195DBD300CB11DA /* Profile */,
 			);
@@ -419,6 +422,14 @@
 			path = Stack;
 			sourceTree = "<group>";
 		};
+		DE68CAEE2197812A001D18F9 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
 		DE725AE72196CAB30031B35A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -602,6 +613,7 @@
 				DE68CAE921977C3F001D18F9 /* VKAPIField.swift in Sources */,
 				B943A5552195EC8200CB11DA /* ImageLoader.swift in Sources */,
 				B9CAA1122195B81900DAB134 /* Router.swift in Sources */,
+				DE68CAF021978134001D18F9 /* VKAPIResponse.swift in Sources */,
 				DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */,
 				DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */,
 				DE68CADE21977C05001D18F9 /* ResponseProvider.swift in Sources */,

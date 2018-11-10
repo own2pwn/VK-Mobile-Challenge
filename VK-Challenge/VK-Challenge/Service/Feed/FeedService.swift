@@ -23,7 +23,7 @@ final class FeedService {
 
         let query = [filters, fields]
 
-        api.send(method: .feedGet, params: query, completion: result)
+        api.get(method: .feedGet, params: query, completion: result)
     }
 
     // MARK: - Helpers

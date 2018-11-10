@@ -19,9 +19,20 @@ final class VKAPIClient {
 
     // MARK: - Interface
 
-    func send<M: Decodable>(method: VKAPIMethod, params: [QueryItem], completion: @escaping ModelBlock<M>) {
+    func get<M: Decodable>(method: VKAPIMethod, params: [QueryItem], completion: @escaping ModelBlock<M>) {
         let query = fillQuery(params)
-        provider.get(url: method.value, query: query, completion: completion)
+
+        provider.get(url: method.value, query: query) { (response: VKAPIResponse<M>) in
+            completion(response.response)
+        }
+    }
+
+    func getArray<M: Decodable>(method: VKAPIMethod, params: [QueryItem], completion: @escaping ModelBlock<[M]>) {
+        let query = fillQuery(params)
+
+        provider.get(url: method.value, query: query) { (response: VKAPIArrayResponse<M>) in
+            completion(response.response)
+        }
     }
 
     private func fillQuery(_ params: [QueryItem]) -> [QueryItem] {

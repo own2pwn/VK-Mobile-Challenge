@@ -17,7 +17,7 @@ extension VKAPIField {
     var value: String {
         switch self {
         case .version:
-            return "version"
+            return "v"
         case .token:
             return "access_token"
         }

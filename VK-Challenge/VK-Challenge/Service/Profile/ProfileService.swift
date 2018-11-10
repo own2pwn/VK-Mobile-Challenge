@@ -19,7 +19,8 @@ final class ProfileService {
 
     func getMyProfile(completion: @escaping VKProfileBlock) {
         let fields = makeQueryItem(field: .fields, params: [.photo100])
-        api.send(method: VKAPIMethod.usersGet, params: [fields]) { (response: [VKProfileModel]) in
+
+        api.getArray(method: .usersGet, params: [fields]) { (response: [VKProfileModel]) in
             if let me = response.first { completion(me) }
         }
     }
