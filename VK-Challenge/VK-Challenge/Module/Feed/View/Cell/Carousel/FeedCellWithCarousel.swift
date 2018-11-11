@@ -117,6 +117,23 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
         postImageCollection.register(FeedCellCarouselCell.self)
         postImageCollection.dataSource = self
         postImageCollection.delegate = self
+        postImageCollection.contentInset.left = 12
+        postImageCollection.contentInset.right = postImageCollection.contentInset.left
+
+        setupPageControl()
+    }
+
+    private func setupPageControl() {
+        postImagePageControl.addTarget(self, action: #selector(changePage(_:)), for: .valueChanged)
+    }
+
+    @objc
+    private func changePage(_ sender: UIPageControl) {
+        let page = sender.currentPage
+        guard postImageCollection.numberOfItems(inSection: 0) >= page else { return }
+
+        let newPath = IndexPath(row: page, section: 0)
+        postImageCollection.scrollToItem(at: newPath, at: .centeredHorizontally, animated: true)
     }
 
     // MARK: - Setup
@@ -178,7 +195,7 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     private func layoutContent() {
         let maxY = avatarImageView.frame.maxY
         contentLabel.frame.size.width = frame.width - 24
-        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44
+        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44 - 34
         contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
 
         guard let viewModel = viewModel else { return }
@@ -194,7 +211,7 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
         postImagePageControl.numberOfPages = viewModel.postImages.count
         postImagePageControl.sizeToFit()
         postImagePageControl.center.x = center.x
-        postImagePageControl.frame.origin.y = postImageCollection.frame.maxY + 16
+        postImagePageControl.frame.origin.y = postImageCollection.frame.maxY
     }
 
     private func layoutFooter() {
@@ -241,7 +258,6 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     }
 
     private func layoutViewsCount() {
-        viewsCountLabel.sizeToFit()
         viewsCountLabel.center.y = likeImageView.center.y
         viewsCountLabel.frame.origin.x = frame.width - 16 - viewsCountLabel.frame.width
 
@@ -273,37 +289,6 @@ private extension Int {
     }
 }
 
-final class FeedCellCarouselCell: UICollectionViewCell {
-    // MARK: - Views
-
-    private let imageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-
-        return imageView
-    }()
-
-    // MARK: - Init
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        contentView.addSubview(imageView)
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Layout
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        imageView.frame = frame
-    }
-}
-
 extension FeedCellWithCarousel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.postImages.count ?? 0
@@ -317,7 +302,16 @@ extension FeedCellWithCarousel: UICollectionViewDataSource {
 }
 
 extension FeedCellWithCarousel: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat { return 0 }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let viewModel = viewModel else { return .zero }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat { return 4 }
+        return CGSize(width: frame.width - 28, height: viewModel.photoHeight)
+    }
+}
+
+extension FeedCellWithCarousel {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        postImagePageControl.currentPage = Int(pageNumber)
+    }
 }

@@ -67,7 +67,6 @@ final class FeedController: UIViewController {
     }
 
     private func setupCollectionView() {
-        postCollection.register(FeedCellWithCarousel.self)
         postCollection.contentInset.top = 24
         postCollection.contentInset.bottom = 64
 

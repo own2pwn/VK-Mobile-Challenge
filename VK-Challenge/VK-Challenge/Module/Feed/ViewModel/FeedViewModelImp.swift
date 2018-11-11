@@ -139,44 +139,79 @@ final class FeedViewModelImp: FeedViewModel {
             let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
             let (fullText, shortText, fullHeight, shortHeight) = textManager.makeTextToDisplay(from: item.text)
 
-            let photos = item.attachmentsOrEmpty
-                .compactMap { $0.photo }
-                .compactMap { $0.displayableSize }
-
-            var photoHeight: CGFloat = 0
-            var photoUrls = [String]()
-
-            if let photo = photos.first, photos.count == 1 {
-                let fHeight = CGFloat(photo.height)
-                let fWidth = CGFloat(photo.width)
-                let ratio = fWidth / fHeight
-
-                photoHeight = cardWidth / ratio
-                photoUrls.append(photo.url)
-            }
+            let photos = getPhotos(from: item)
+            let maxPhotoHeight = getMaxPhotoHeight(from: photos)
+            let carouselMargin = getCarouselMargin(from: photos)
+            let photoUrls = photos.map { $0.url }
 
             var shortHeightValue: CGFloat?
             if let shortValue = shortHeight {
-                shortHeightValue = shortValue + staticCellHeight + photoHeight
+                shortHeightValue = shortValue + staticCellHeight
+                    + maxPhotoHeight + carouselMargin
             }
+
+            let contentHeight: CGFloat = fullHeight + staticCellHeight
+                + maxPhotoHeight + carouselMargin
 
             let viewModel = FeedCellViewModel(postID: item.postID, titleText: title,
                                               dateText: item.date.humanString,
                                               contentText: fullText, shortText: shortText,
                                               avatarURL: avatar, imageLoader: imageLoader,
                                               postImages: photoUrls,
-                                              photoHeight: photoHeight,
+                                              photoHeight: maxPhotoHeight,
                                               likesCount: item.likes.count,
                                               commentsCount: item.comments.count,
                                               repostCount: item.reposts.count,
                                               viewsCount: item.views?.count,
-                                              contentHeight: fullHeight + staticCellHeight + photoHeight,
+                                              contentHeight: contentHeight,
                                               shortContentHeight: shortHeightValue)
 
             result.append(viewModel)
         }
 
         return result
+    }
+
+    private func getPhotos(from item: VKFeedItem) -> [VKAttachmentPhotoSize] {
+        let photos = item.attachmentsOrEmpty
+            .compactMap { $0.photo }
+            .compactMap { $0.displayableSize }
+
+        return photos
+    }
+
+    private func getMaxPhotoHeight(from photos: [VKAttachmentPhotoSize]) -> CGFloat {
+        guard !photos.isEmpty else { return 0 }
+        if photos.count == 1 {
+            return getPhotoHeight(photos[0])
+        }
+        let heights = photos.map { getPhotoHeightCarousel($0) }
+
+        return heights.max()!
+    }
+
+    private func getPhotoHeight(_ photo: VKAttachmentPhotoSize) -> CGFloat {
+        let fHeight = CGFloat(photo.height)
+        let fWidth = CGFloat(photo.width)
+        let ratio = fWidth / fHeight
+
+        let photoHeight = cardWidth / ratio
+
+        return photoHeight
+    }
+
+    private func getPhotoHeightCarousel(_ photo: VKAttachmentPhotoSize) -> CGFloat {
+        let fHeight = CGFloat(photo.height)
+        let fWidth = CGFloat(photo.width)
+        let ratio = fWidth / fHeight
+
+        let photoHeight = (cardWidth - 28) / ratio
+
+        return photoHeight
+    }
+
+    private func getCarouselMargin(from photos: [VKAttachmentPhotoSize]) -> CGFloat {
+        return photos.count > 1 ? 34 : 0
     }
 
     private func getTitleAndAvatar(for id: Int, in profiles: [VKProfileModel], groups: [VKGroupModel]) -> (String, String) {
