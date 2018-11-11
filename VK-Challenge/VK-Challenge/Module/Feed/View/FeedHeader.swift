@@ -9,13 +9,19 @@
 import UIKit
 
 protocol FeedHeaderDelegate: class {
-    func header(_ header: FeedHeader, didEnter text: String)
+    func header(_ header: FeedHeader, wantsSearch text: String)
 }
 
 final class FeedHeader: UICollectionReusableView {
     // MARK: - Interface
 
     weak var delegate: FeedHeaderDelegate?
+
+    // MARK: - Members
+
+    private var currentTimer: DispatchSourceTimer?
+
+    private var currentText: String?
 
     // MARK: - Outlets
 
@@ -39,6 +45,31 @@ final class FeedHeader: UICollectionReusableView {
         searchBar.delegate = self
     }
 
+    // MARK: - Methods
+
+    private func makeBouncer() {
+        let queue = DispatchQueue(label: "own2pwn.svc.tmr", qos: .utility, attributes: .concurrent)
+        let newTimer = DispatchSource.makeTimerSource(queue: queue)
+
+        newTimer.schedule(deadline: .now() + 0.8, repeating: .seconds(1), leeway: .milliseconds(500))
+        newTimer.setEventHandler { [weak self] in
+            self?.onBounce()
+        }
+        newTimer.resume()
+
+        currentTimer = newTimer
+    }
+
+    private func onBounce() {
+        guard let searchText = currentText else { return }
+
+        delegate?.header(self, wantsSearch: searchText)
+
+        if searchText.isEmpty {
+            currentText = nil
+        }
+    }
+
     // MARK: - Layout
 
     override func layoutSubviews() {
@@ -50,10 +81,20 @@ final class FeedHeader: UICollectionReusableView {
 
 extension FeedHeader: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("new text: \(searchText)")
+        currentText = searchText
+    }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        if currentTimer == nil {
+            makeBouncer()
+        }
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print("end 2")
+        onBounce()
+
+        currentTimer?.cancel()
+        currentTimer = nil
+        currentText = nil
     }
 }

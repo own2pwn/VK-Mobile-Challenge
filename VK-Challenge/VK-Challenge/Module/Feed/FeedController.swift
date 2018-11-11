@@ -162,7 +162,10 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath) as! FeedHeader
+            header.delegate = self
+
+            return header
         }
 
         if kind == UICollectionView.elementKindSectionFooter {
@@ -220,6 +223,11 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
 extension FeedController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset
+
+        if scrollOffset.y >= 8 {
+            scrollView.endEditing(true)
+        }
+
         if scrollOffset.y <= -150 {
             if !didReachRefreshThreshold {
                 Haptic.trigger(with: .medium)
@@ -232,5 +240,13 @@ extension FeedController {
         if didReachRefreshThreshold {
             viewModel.reloadData(with: datasource)
         }
+    }
+}
+
+// MARK: - Searchbar
+
+extension FeedController: FeedHeaderDelegate {
+    func header(_ header: FeedHeader, wantsSearch text: String) {
+        print("wants search [\(text)]")
     }
 }
