@@ -107,6 +107,7 @@ final class FeedController: UIViewController {
         if let footer = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
             let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
             footer.setLoadedPostCount(count)
+            footer.setIsLoading(false)
         }
     }
 
@@ -212,6 +213,10 @@ extension FeedController: UICollectionViewDataSource {
             if !didReachFooter {
                 Haptic.trigger(with: .medium)
                 didReachFooter = true
+            }
+
+            if let footer = view as? FeedFooter {
+                footer.setIsLoading(true)
             }
 
             if shouldDisplaySearch {
