@@ -9,7 +9,6 @@
 import Foundation
 
 struct VKFeedItem: Decodable {
-    let type: String
     let sourceID: Int
     let date: Date
     let postID: Int
@@ -22,7 +21,7 @@ struct VKFeedItem: Decodable {
     let views: VKFeedItemView?
 }
 
-extension VKFeedItem {
+extension VKFeedItem: VKModelWithAttachment {
     var attachmentsOrEmpty: [VKAttachment] {
         return attachments ?? []
     }
@@ -56,7 +55,7 @@ struct VKFeedItemView: Decodable {
 
 extension VKFeedItem {
     enum CodingKeys: String, CodingKey {
-        case type, date, text
+        case date, text
         case comments, likes
         case reposts, views
         case attachments

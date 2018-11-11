@@ -46,6 +46,12 @@ final class FeedController: UIViewController {
 
     private var didReachFooter = false
 
+    // MARK: - Search
+
+    private var searchDatasource: [FeedCellViewModel] = []
+
+    private var shouldDisplaySearch = false
+
     // MARK: - Methods
 
     private func bindViewModel() {
@@ -64,6 +70,19 @@ final class FeedController: UIViewController {
             self.postCollection.reloadData()
             self.didReachRefreshThreshold = false
         }
+        viewModel.onSearchResultLoaded = { [unowned self] items in
+            self.searchDatasource = items
+            self.shouldDisplaySearch = true
+            self.updateFooter()
+            self.postCollection.reloadData()
+            self.didReachRefreshThreshold = false
+        }
+        viewModel.onNewSearchItemsLoaded = { [unowned self] items in
+            self.searchDatasource.append(contentsOf: items)
+            self.updateFooter()
+            self.postCollection.reloadData()
+            self.didReachFooter = false
+        }
     }
 
     private func setupCollectionView() {
@@ -81,7 +100,8 @@ final class FeedController: UIViewController {
 
     private func updateFooter() {
         if let footer = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
-            footer.setLoadedPostCount(datasource.count)
+            let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
+            footer.setLoadedPostCount(count)
         }
     }
 
@@ -134,7 +154,7 @@ extension FeedController: FeedCellExpandDelegate {
 
 extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return datasource.count
+        return shouldDisplaySearch ? searchDatasource.count : datasource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -155,7 +175,7 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     private func getViewModel(at indexPath: IndexPath) -> FeedCellViewModel {
-        return datasource[indexPath.row]
+        return shouldDisplaySearch ? searchDatasource[indexPath.row] : datasource[indexPath.row]
     }
 
     // MARK: - Header
@@ -169,7 +189,12 @@ extension FeedController: UICollectionViewDataSource {
         }
 
         if kind == UICollectionView.elementKindSectionFooter {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath)
+            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath) as! FeedFooter
+
+            let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
+            footer.setLoadedPostCount(count)
+
+            return footer
         }
 
         return UICollectionReusableView()
@@ -184,7 +209,11 @@ extension FeedController: UICollectionViewDataSource {
                 didReachFooter = true
             }
 
-            viewModel.loadNextPage()
+            if shouldDisplaySearch {
+                viewModel.loadNextSearchPage()
+            } else {
+                viewModel.loadNextPage()
+            }
         }
     }
 }
@@ -238,7 +267,11 @@ extension FeedController {
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if didReachRefreshThreshold {
-            viewModel.reloadData(with: datasource)
+            if shouldDisplaySearch {
+                viewModel.reloadSearchData(with: datasource)
+            } else {
+                viewModel.reloadData(with: datasource)
+            }
         }
     }
 }
@@ -246,7 +279,15 @@ extension FeedController {
 // MARK: - Searchbar
 
 extension FeedController: FeedHeaderDelegate {
-    func header(_ header: FeedHeader, wantsSearch text: String) {
+    func header(_ header: FeedHeader, wantsSearch text: String?) {
+        guard let text = text else {
+            shouldDisplaySearch = false
+            searchDatasource = []
+            postCollection.reloadData()
+            viewModel.search(nil)
+            return
+        }
+
         viewModel.search(text)
     }
 }

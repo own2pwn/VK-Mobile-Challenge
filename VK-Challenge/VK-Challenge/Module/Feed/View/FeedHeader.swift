@@ -9,19 +9,13 @@
 import UIKit
 
 protocol FeedHeaderDelegate: class {
-    func header(_ header: FeedHeader, wantsSearch text: String)
+    func header(_ header: FeedHeader, wantsSearch text: String?)
 }
 
 final class FeedHeader: UICollectionReusableView {
     // MARK: - Interface
 
     weak var delegate: FeedHeaderDelegate?
-
-    // MARK: - Members
-
-    private var currentTimer: DispatchSourceTimer?
-
-    private var currentText: String?
 
     // MARK: - Outlets
 
@@ -45,31 +39,6 @@ final class FeedHeader: UICollectionReusableView {
         searchBar.delegate = self
     }
 
-    // MARK: - Methods
-
-    private func makeBouncer() {
-        let queue = DispatchQueue(label: "own2pwn.svc.tmr", qos: .utility, attributes: .concurrent)
-        let newTimer = DispatchSource.makeTimerSource(queue: queue)
-
-        newTimer.schedule(deadline: .now() + 0.8, repeating: .seconds(1), leeway: .milliseconds(500))
-        newTimer.setEventHandler { [weak self] in
-            self?.onBounce()
-        }
-        newTimer.resume()
-
-        currentTimer = newTimer
-    }
-
-    private func onBounce() {
-        guard let searchText = currentText else { return }
-
-        delegate?.header(self, wantsSearch: searchText)
-
-        if searchText.isEmpty {
-            currentText = nil
-        }
-    }
-
     // MARK: - Layout
 
     override func layoutSubviews() {
@@ -80,21 +49,15 @@ final class FeedHeader: UICollectionReusableView {
 }
 
 extension FeedHeader: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text else { return }
+
+        delegate?.header(self, wantsSearch: searchText)
+    }
+
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        currentText = searchText
-    }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        if currentTimer == nil {
-            makeBouncer()
+        if searchText.isEmpty {
+            delegate?.header(self, wantsSearch: nil)
         }
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        onBounce()
-
-        currentTimer?.cancel()
-        currentTimer = nil
-        currentText = nil
     }
 }

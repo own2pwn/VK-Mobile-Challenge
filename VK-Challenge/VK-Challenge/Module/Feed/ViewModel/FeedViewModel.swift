@@ -14,10 +14,18 @@ protocol FeedViewModelOutput: class {
     var onItemsReloaded: (([FeedCellViewModel]) -> Void)? { get set }
 
     var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
+
+    var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)? { get set }
+
+    var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
 }
 
 protocol FeedViewModel: FeedViewModelOutput {
     func reloadData(with currentLoadedData: [FeedCellViewModel])
+    func reloadSearchData(with currentLoadedData: [FeedCellViewModel])
+
     func loadNextPage()
-    func search(_ searchText: String)
+    func loadNextSearchPage()
+    
+    func search(_ searchText: String?)
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 struct VKSearchResponseModel: Decodable {
-    let items: [VKFeedItem]
+    let items: [VKSearchItem]
     let profiles: [VKProfileModel]
     let groups: [VKGroupModel]
     let next: String?

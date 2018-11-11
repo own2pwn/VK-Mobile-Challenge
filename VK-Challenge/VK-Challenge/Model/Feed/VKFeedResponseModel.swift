@@ -12,7 +12,7 @@ struct VKFeedResponseModel: Decodable {
     let items: [VKFeedItem]
     let profiles: [VKProfileModel]
     let groups: [VKGroupModel]
-    let next: String
+    let next: String?
 }
 
 extension VKFeedResponseModel {

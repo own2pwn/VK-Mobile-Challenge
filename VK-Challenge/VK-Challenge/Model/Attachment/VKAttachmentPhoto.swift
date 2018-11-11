@@ -15,7 +15,6 @@ struct VKAttachmentPhoto: Decodable {
     let text: String
     let date: Date
     let postID: Int?
-    let accessKey: String
 }
 
 extension VKAttachmentPhoto {
@@ -38,6 +37,5 @@ extension VKAttachmentPhoto {
 
         case ownerID = "owner_id"
         case postID = "post_id"
-        case accessKey = "access_key"
     }
 }

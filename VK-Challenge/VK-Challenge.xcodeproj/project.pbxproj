@@ -51,6 +51,9 @@
 		DE68CAF021978134001D18F9 /* VKAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */; };
 		DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */; };
 		DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AEA2196F65C0031B35A /* FeedHeader.swift */; };
+		DEAA0406219874E500D04994 /* StringRange+NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA0405219874E500D04994 /* StringRange+NSRange.swift */; };
+		DEAA040821987A7E00D04994 /* VKModelWithAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA040721987A7E00D04994 /* VKModelWithAttachment.swift */; };
+		DEAA040A21987A8900D04994 /* VKSearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA040921987A8900D04994 /* VKSearchItem.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
 		DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EC2195FE48003388EA /* Cell+Reuse.swift */; };
 		DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C02197348A007419F8 /* FeedCellViewModel.swift */; };
@@ -112,6 +115,9 @@
 		DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIResponse.swift; sourceTree = "<group>"; };
 		DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelImp.swift; sourceTree = "<group>"; };
 		DE725AEA2196F65C0031B35A /* FeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeader.swift; sourceTree = "<group>"; };
+		DEAA0405219874E500D04994 /* StringRange+NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringRange+NSRange.swift"; sourceTree = "<group>"; };
+		DEAA040721987A7E00D04994 /* VKModelWithAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKModelWithAttachment.swift; sourceTree = "<group>"; };
+		DEAA040921987A8900D04994 /* VKSearchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchItem.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		DEB250EC2195FE48003388EA /* Cell+Reuse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cell+Reuse.swift"; sourceTree = "<group>"; };
 		DECB59C02197348A007419F8 /* FeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellViewModel.swift; sourceTree = "<group>"; };
@@ -288,6 +294,7 @@
 				B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */,
 				B9943A26219597FA0045D56C /* VK+Scope.swift */,
 				DECB59C421973662007419F8 /* Calendar+Date.swift */,
+				DEAA0405219874E500D04994 /* StringRange+NSRange.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -353,6 +360,7 @@
 			children = (
 				DE214ED421981632004BD2A5 /* VKAttachment.swift */,
 				DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */,
+				DEAA040721987A7E00D04994 /* VKModelWithAttachment.swift */,
 			);
 			path = Attachment;
 			sourceTree = "<group>";
@@ -524,6 +532,7 @@
 			isa = PBXGroup;
 			children = (
 				DECCA63C219866F900B45CAE /* VKSearchResponseModel.swift */,
+				DEAA040921987A8900D04994 /* VKSearchItem.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -645,6 +654,7 @@
 				DE68CAEA21977C3F001D18F9 /* VKAPIFeedField.swift in Sources */,
 				DE68CADA21977C05001D18F9 /* RequestAdapterImp.swift in Sources */,
 				DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */,
+				DEAA0406219874E500D04994 /* StringRange+NSRange.swift in Sources */,
 				DE214EDA219818CE004BD2A5 /* FeedCellWithCarousel.swift in Sources */,
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,
@@ -683,11 +693,13 @@
 				DE68CAF021978134001D18F9 /* VKAPIResponse.swift in Sources */,
 				DEB250ED2195FE48003388EA /* Cell+Reuse.swift in Sources */,
 				DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */,
+				DEAA040A21987A8900D04994 /* VKSearchItem.swift in Sources */,
 				DE68CADE21977C05001D18F9 /* ResponseProvider.swift in Sources */,
 				DE68CADB21977C05001D18F9 /* RequestAdapter.swift in Sources */,
 				DECCA63D219866F900B45CAE /* VKSearchResponseModel.swift in Sources */,
 				B9CAA1032195B3D700DAB134 /* Common+Types.swift in Sources */,
 				DE68CAEB21977C3F001D18F9 /* VKAPIFieldValue.swift in Sources */,
+				DEAA040821987A7E00D04994 /* VKModelWithAttachment.swift in Sources */,
 				B9CAA1012195A2BF00DAB134 /* UIColor+Init.swift in Sources */,
 				B9CAA10A2195B6FB00DAB134 /* AuthServiceImp.swift in Sources */,
 			);

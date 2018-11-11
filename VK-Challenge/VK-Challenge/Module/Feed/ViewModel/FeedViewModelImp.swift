@@ -18,6 +18,10 @@ final class FeedViewModelImp: FeedViewModel {
 
     var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)?
 
+    var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)?
+
+    var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)?
+
     // MARK: - Members
 
     private let profileService: ProfileService
@@ -36,9 +40,15 @@ final class FeedViewModelImp: FeedViewModel {
 
     private var nextPageToken: String?
 
+    private var nextSearchPageToken: String?
+
+    private var lastSearchQuery: String?
+
     private var isReloadingData = false
 
     private var isLoadingSearch = false
+
+    private var isLoadingNextPage = false
 
     // MARK: - Init
 
@@ -75,20 +85,71 @@ final class FeedViewModelImp: FeedViewModel {
         }
     }
 
+    func reloadSearchData(with currentLoadedData: [FeedCellViewModel]) {
+        guard
+            !isReloadingData,
+            let query = lastSearchQuery else { return }
+
+        isReloadingData = true
+        feedService.search(query) { response in
+            let newCells = self.makeCellViewModels(from: response, highlight: query)
+            let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
+
+            DispatchQueue.main.async {
+                self.onSearchResultLoaded?(updatedCells)
+                self.isReloadingData = false
+            }
+        }
+    }
+
     func loadNextPage() {
-        guard let token = nextPageToken else { return }
+        guard
+            !isLoadingNextPage,
+            let token = nextPageToken else { return }
+
+        isLoadingNextPage = true
 
         feedService.getNextPage(token: token) { response in
+            self.isLoadingNextPage = false
             self.handleNewPosts(response)
         }
     }
 
-    func search(_ searchText: String) {
-        guard !isLoadingSearch else { return }
-        isLoadingSearch = true
+    func loadNextSearchPage() {
+        guard
+            !isLoadingNextPage,
+            let token = nextSearchPageToken,
+            let query = lastSearchQuery else { return }
 
-        feedService.search(searchText) { (response: VKSearchResponseModel) in
-            print(response)
+        isLoadingNextPage = true
+        feedService.getNextSearchPage(token: token, searchText: query) { response in
+            self.isLoadingNextPage = false
+            self.handleNewSearch(response, query: query)
+        }
+    }
+
+    func search(_ searchText: String?) {
+        guard let searchText = searchText else {
+            lastSearchQuery = nil
+            return
+        }
+
+        guard
+            !isLoadingSearch,
+            !searchText.isEmpty,
+            searchText != lastSearchQuery else { return }
+
+        isLoadingSearch = true
+        lastSearchQuery = searchText
+
+        feedService.search(searchText) { response in
+            self.isLoadingSearch = false
+            self.nextSearchPageToken = response.next
+
+            let cells = self.makeCellViewModels(from: response, highlight: searchText)
+            DispatchQueue.main.async {
+                self.onSearchResultLoaded?(cells)
+            }
         }
     }
 
@@ -113,6 +174,60 @@ final class FeedViewModelImp: FeedViewModel {
         DispatchQueue.main.async {
             self.onNewItemsLoaded?(cells)
         }
+    }
+}
+
+// MARK: - Search
+
+private extension FeedViewModelImp {
+    private func handleNewSearch(_ response: VKSearchResponseModel, query: String) {
+        let cells = makeCellViewModels(from: response, highlight: query)
+        nextSearchPageToken = response.next
+
+        DispatchQueue.main.async {
+            self.onNewSearchItemsLoaded?(cells)
+        }
+    }
+
+    private func makeCellViewModels(from response: VKSearchResponseModel, highlight partToHighlight: String) -> [FeedCellViewModel] {
+        var result = [FeedCellViewModel]()
+
+        for item in response.items {
+            let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
+            let (fullText, shortText, fullHeight, shortHeight)
+                = textManager.makeTextToDisplay(from: item.text, highlight: partToHighlight)
+
+            let photos = getPhotos(from: item)
+            let maxPhotoHeight = getMaxPhotoHeight(from: photos)
+            let carouselMargin = getCarouselMargin(from: photos)
+            let photoUrls = photos.map { $0.url }
+
+            var shortHeightValue: CGFloat?
+            if let shortValue = shortHeight {
+                shortHeightValue = shortValue + staticCellHeight
+                    + maxPhotoHeight + carouselMargin
+            }
+
+            let contentHeight: CGFloat = fullHeight + staticCellHeight
+                + maxPhotoHeight + carouselMargin
+
+            let viewModel = FeedCellViewModel(postID: item.sourceID, titleText: title,
+                                              dateText: item.date.humanString,
+                                              contentText: fullText, shortText: shortText,
+                                              avatarURL: avatar, imageLoader: imageLoader,
+                                              postImages: photoUrls,
+                                              photoHeight: maxPhotoHeight,
+                                              likesCount: item.likes.count,
+                                              commentsCount: item.comments.count,
+                                              repostCount: item.reposts.count,
+                                              viewsCount: item.views?.count,
+                                              contentHeight: contentHeight,
+                                              shortContentHeight: shortHeightValue)
+
+            result.append(viewModel)
+        }
+
+        return result
     }
 }
 
@@ -191,7 +306,7 @@ private extension FeedViewModelImp {
         return result
     }
 
-    private func getPhotos(from item: VKFeedItem) -> [VKAttachmentPhotoSize] {
+    private func getPhotos(from item: VKModelWithAttachment) -> [VKAttachmentPhotoSize] {
         let photos = item.attachmentsOrEmpty
             .compactMap { $0.photo }
             .compactMap { $0.displayableSize }
@@ -245,7 +360,7 @@ private extension FeedViewModelImp {
         }
 
         assertionFailure()
-        return ("", "")
+        return ("-none-", "-none-")
     }
 }
 
@@ -274,6 +389,20 @@ private final class FeedCellTextManager {
 
     // MARK: - Interface
 
+    func makeTextToDisplay(from string: String, highlight partToHighlight: String) -> (NSAttributedString, NSAttributedString?, CGFloat, CGFloat?) {
+        let styledText = makeStyledText(from: string, highlight: partToHighlight)
+        let styledTextHeight = getTextHeight(styledText)
+
+        guard styledTextHeight <= maxTextHeight else {
+            let shortText = getShortText(from: styledText)
+            let shortTextHeight = getTextHeightCF(shortText)
+
+            return (styledText, shortText, styledTextHeight, shortTextHeight)
+        }
+
+        return (styledText, nil, styledTextHeight, nil)
+    }
+
     func makeTextToDisplay(from string: String) -> (NSAttributedString, NSAttributedString?, CGFloat, CGFloat?) {
         let styledText = makeStyledText(from: string)
         let styledTextHeight = getTextHeight(styledText)
@@ -290,10 +419,25 @@ private final class FeedCellTextManager {
 
     // MARK: - Helpers
 
+    private func makeStyledText(from string: String, highlight partToHighlight: String) -> NSAttributedString {
+        let styledText = NSMutableAttributedString(string: string)
+        styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: styledText.nsRange)
+        styledText.addAttribute(.font, value: textFont, range: styledText.nsRange)
+
+        if let rangeToHighlight = string.range(of: partToHighlight, options: .caseInsensitive) {
+            let highlightRange = NSRange(rangeToHighlight, in: string)
+            let highlightColor = UIColor.rgb(255, 160, 0).withAlphaComponent(0.12)
+
+            styledText.addAttribute(.backgroundColor, value: highlightColor, range: highlightRange)
+        }
+
+        return styledText
+    }
+
     private func makeStyledText(from string: String) -> NSAttributedString {
         let styledText = NSMutableAttributedString(string: string)
-        styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: styledText.range)
-        styledText.addAttribute(.font, value: textFont, range: styledText.range)
+        styledText.addAttribute(.paragraphStyle, value: textPragraphStyle, range: styledText.nsRange)
+        styledText.addAttribute(.font, value: textFont, range: styledText.nsRange)
 
         return styledText
     }
@@ -333,7 +477,7 @@ private final class FeedCellTextManager {
         let showMoreLen = showMoreText.count - 1
 
         mutable.append(showMoreText.nsString)
-        mutable.addAttribute(.paragraphStyle, value: textPragraphStyle, range: mutable.range)
+        mutable.addAttribute(.paragraphStyle, value: textPragraphStyle, range: mutable.nsRange)
 
         let showMoreFont = UIFont.systemFont(ofSize: 15, weight: .medium)
         let showMoreRange = NSMakeRange(mutable.length - showMoreLen, showMoreLen)
@@ -364,7 +508,7 @@ private extension NSAttributedString {
         return CFRangeMake(0, length)
     }
 
-    var range: NSRange {
+    var nsRange: NSRange {
         return NSMakeRange(0, length)
     }
 }
