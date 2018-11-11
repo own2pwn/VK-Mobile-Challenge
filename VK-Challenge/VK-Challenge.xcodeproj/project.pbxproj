@@ -51,7 +51,6 @@
 		DE68CAF021978134001D18F9 /* VKAPIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */; };
 		DE725AE92196CABD0031B35A /* FeedViewModelImp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */; };
 		DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE725AEA2196F65C0031B35A /* FeedHeader.swift */; };
-		DEAA0406219874E500D04994 /* StringRange+NSRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA0405219874E500D04994 /* StringRange+NSRange.swift */; };
 		DEAA040821987A7E00D04994 /* VKModelWithAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA040721987A7E00D04994 /* VKModelWithAttachment.swift */; };
 		DEAA040A21987A8900D04994 /* VKSearchItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEAA040921987A8900D04994 /* VKSearchItem.swift */; };
 		DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEB250EA2195FE15003388EA /* FeedCell.swift */; };
@@ -115,7 +114,6 @@
 		DE68CAEF21978134001D18F9 /* VKAPIResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAPIResponse.swift; sourceTree = "<group>"; };
 		DE725AE82196CABD0031B35A /* FeedViewModelImp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewModelImp.swift; sourceTree = "<group>"; };
 		DE725AEA2196F65C0031B35A /* FeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedHeader.swift; sourceTree = "<group>"; };
-		DEAA0405219874E500D04994 /* StringRange+NSRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StringRange+NSRange.swift"; sourceTree = "<group>"; };
 		DEAA040721987A7E00D04994 /* VKModelWithAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKModelWithAttachment.swift; sourceTree = "<group>"; };
 		DEAA040921987A8900D04994 /* VKSearchItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchItem.swift; sourceTree = "<group>"; };
 		DEB250EA2195FE15003388EA /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
@@ -294,7 +292,6 @@
 				B9CAA1002195A2BE00DAB134 /* UIColor+Init.swift */,
 				B9943A26219597FA0045D56C /* VK+Scope.swift */,
 				DECB59C421973662007419F8 /* Calendar+Date.swift */,
-				DEAA0405219874E500D04994 /* StringRange+NSRange.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -654,7 +651,6 @@
 				DE68CAEA21977C3F001D18F9 /* VKAPIFeedField.swift in Sources */,
 				DE68CADA21977C05001D18F9 /* RequestAdapterImp.swift in Sources */,
 				DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */,
-				DEAA0406219874E500D04994 /* StringRange+NSRange.swift in Sources */,
 				DE214EDA219818CE004BD2A5 /* FeedCellWithCarousel.swift in Sources */,
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,
