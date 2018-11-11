@@ -8,6 +8,11 @@
 
 import UIKit
 
+/*
+ * It's better to code base cell class just in code
+ * And subclass it w/ image cell and w/ image collection cell
+*/
+
 protocol FeedCellExpandDelegate: class {
     func cell(_ cell: FeedCell, wantsExpand: Bool)
 }

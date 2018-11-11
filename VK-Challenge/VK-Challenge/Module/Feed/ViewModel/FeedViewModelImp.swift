@@ -220,7 +220,7 @@ private final class FeedCellTextManager {
 
         guard styledTextHeight <= maxTextHeight else {
             let shortText = getShortText(from: styledText)
-            let shortTextHeight = getTextHeight(shortText)
+            let shortTextHeight = getTextHeightCF(shortText)
 
             return (styledText, shortText, styledTextHeight, shortTextHeight)
         }
@@ -285,11 +285,11 @@ private final class FeedCellTextManager {
         return mutable
     }
 
-    private func textHeight(_ text: NSAttributedString) -> CGFloat {
+    private func getTextHeightCF(_ text: NSAttributedString) -> CGFloat {
         let frameSetter = CTFramesetterCreateWithAttributedString(text)
         let frame = CTFramesetterSuggestFrameSizeWithConstraints(frameSetter, text.CFRange, nil, maxFrame, nil)
 
-        return ceil(frame.height)
+        return ceil(frame.height) + 3
     }
 }
 
