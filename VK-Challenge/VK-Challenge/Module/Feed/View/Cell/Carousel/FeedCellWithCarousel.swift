@@ -45,6 +45,9 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     private var footerView: UIView!
 
     @IBOutlet
+    private var footerSeparator: UIView!
+
+    @IBOutlet
     private var likeImageView: UIImageView!
 
     @IBOutlet
@@ -198,7 +201,7 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     private func layoutContent() {
         let maxY = avatarImageView.frame.maxY
         contentLabel.frame.size.width = frame.width - 24
-        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44 - 34
+        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44 - 38
         contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
 
         guard let viewModel = viewModel else { return }
@@ -222,6 +225,10 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
         footerView.frame.size.height = 44
         footerView.frame.origin.x = 0
         footerView.frame.origin.y = frame.height - 44
+
+        footerSeparator.frame.size.width = frame.width - 24
+        footerSeparator.frame.size.height = 0.5
+        footerSeparator.frame.origin = CGPoint(x: 12, y: 0)
 
         likeImageView.frame.size = CGSize(width: 24, height: 24)
         likeImageView.frame.origin = CGPoint(x: 16, y: 10)
@@ -320,7 +327,7 @@ extension FeedCellWithCarousel: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard let viewModel = viewModel else { return .zero }
 
-        return CGSize(width: frame.width - 28, height: viewModel.photoHeight)
+        return CGSize(width: frame.width - 24, height: viewModel.photoHeight)
     }
 }
 

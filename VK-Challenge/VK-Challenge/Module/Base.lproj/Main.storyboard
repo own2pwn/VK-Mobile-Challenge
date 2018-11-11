@@ -214,6 +214,11 @@
                                                     <rect key="frame" x="0.0" y="412" width="350" height="44"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
+                                                        <view userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ejc-l6-VR5">
+                                                            <rect key="frame" x="12" y="0.0" width="335" height="1"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <color key="backgroundColor" red="0.84313725490196079" green="0.84705882352941175" blue="0.85098039215686272" alpha="1" colorSpace="calibratedRGB"/>
+                                                        </view>
                                                         <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icnLike" translatesAutoresizingMaskIntoConstraints="NO" id="3dI-wM-yHh">
                                                             <rect key="frame" x="16" y="10" width="24" height="24"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -275,6 +280,7 @@
                                             <outlet property="commentsCountLabel" destination="s2s-Pk-UNP" id="z67-Nd-sOu"/>
                                             <outlet property="contentLabel" destination="rWP-Cy-Pwf" id="56D-6X-ecl"/>
                                             <outlet property="dateLabel" destination="6Al-pp-0Dm" id="pOr-7Q-IMW"/>
+                                            <outlet property="footerSeparator" destination="ejc-l6-VR5" id="gkL-0I-LNW"/>
                                             <outlet property="footerView" destination="Yjv-jX-sJd" id="cQz-Qm-HJK"/>
                                             <outlet property="likeImageView" destination="3dI-wM-yHh" id="MWs-Rg-JdB"/>
                                             <outlet property="likesCountLabel" destination="szG-OL-4rg" id="aUx-n0-hr2"/>

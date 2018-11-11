@@ -211,7 +211,7 @@ final class FeedViewModelImp: FeedViewModel {
     }
 
     private func getCarouselMargin(from photos: [VKAttachmentPhotoSize]) -> CGFloat {
-        return photos.count > 1 ? 34 : 0
+        return photos.count > 1 ? 38 : 0
     }
 
     private func getTitleAndAvatar(for id: Int, in profiles: [VKProfileModel], groups: [VKGroupModel]) -> (String, String) {
