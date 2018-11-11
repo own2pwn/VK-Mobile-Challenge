@@ -34,6 +34,8 @@ final class FeedViewModelImp: FeedViewModel {
 
     private var nextPageToken: String?
 
+    private var isReloadingData = false
+
     // MARK: - Init
 
     init(profileService: ProfileService,
@@ -50,12 +52,16 @@ final class FeedViewModelImp: FeedViewModel {
     // MARK: - Methods
 
     func reloadData(with currentLoadedData: [FeedCellViewModel]) {
+        guard !isReloadingData else { return }
+        isReloadingData = true
+
         feedService.getNews { response in
             let newCells = self.makeCellViewModels(from: response)
             let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
 
             DispatchQueue.main.async {
                 self.onItemsReloaded?(updatedCells)
+                self.isReloadingData = false
             }
         }
     }
@@ -95,7 +101,40 @@ final class FeedViewModelImp: FeedViewModel {
     }
 
     private func mergePostsReload(oldData: [FeedCellViewModel], newData: [FeedCellViewModel]) -> [FeedCellViewModel] {
-        
+        var postIdsToUpdate = Set<Int>()
+        let cellsToUpdate = newData.filter { (newCell: FeedCellViewModel) -> Bool in
+            let shouldUpdate = oldData.contains(where: { $0.postID == newCell.postID })
+            if shouldUpdate {
+                postIdsToUpdate.insert(newCell.postID)
+            }
+
+            return shouldUpdate
+        }
+
+        let cellsToInsert = newData.filter { (newCell: FeedCellViewModel) -> Bool in
+            return !oldData.contains(where: { $0.postID == newCell.postID })
+        }
+
+        var merged = cellsToInsert + oldData
+        for (idx, cell) in merged.enumerated() {
+            let thisPostId = cell.postID
+            if postIdsToUpdate.contains(thisPostId) {
+                if let cellToReplace = cellsToUpdate.first(where: { $0.postID == thisPostId }) {
+                    merged[idx] = cellToReplace
+                }
+            }
+        }
+
+//        merged.indices.forEach { (idx: Int) -> Void in
+//            let thisPostId = merged[idx].postID
+//            if postIdsToUpdate.contains(thisPostId) {
+//                if let cellToReplace = cellsToUpdate.first(where: { $0.postID == thisPostId }) {
+//                    merged[idx] = cellToReplace
+//                }
+//            }
+//        }
+
+        return merged
     }
 
     // MARK: - Helpers
@@ -113,7 +152,8 @@ final class FeedViewModelImp: FeedViewModel {
                 shortHeightValue = shortValue + staticCellHeight
             }
 
-            let viewModel = FeedCellViewModel(titleText: title, dateText: item.date.humanString,
+            let viewModel = FeedCellViewModel(postID: item.postID, titleText: title,
+                                              dateText: item.date.humanString,
                                               contentText: fullText, shortText: shortText,
                                               avatarURL: avatar, imageLoader: imageLoader,
                                               likesCount: item.likes.count,

@@ -47,6 +47,11 @@ final class FeedController: UIViewController {
             self.updateFooter()
             self.postCollection.reloadData()
         }
+        viewModel.onItemsReloaded = { [unowned self] items in
+            self.datasource = items
+            self.updateFooter()
+            self.postCollection.reloadData()
+        }
     }
 
     private func setupCollectionView() {
@@ -135,6 +140,8 @@ extension FeedController: UICollectionViewDataSource {
         return datasource[indexPath.row]
     }
 
+    // MARK: - Header
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         if kind == UICollectionView.elementKindSectionHeader {
             return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
@@ -147,6 +154,8 @@ extension FeedController: UICollectionViewDataSource {
         return UICollectionReusableView()
     }
 
+    // MARK: - Footer
+
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionView.elementKindSectionFooter && !datasource.isEmpty {
             viewModel.loadNextPage()
@@ -155,6 +164,8 @@ extension FeedController: UICollectionViewDataSource {
 }
 
 extension FeedController: UICollectionViewDelegateFlowLayout {
+    // MARK: - Cell size
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard indexPath.row < datasource.count else {
             return CGSize(width: collectionView.frame.width, height: 256)
@@ -170,11 +181,24 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
 
+    // MARK: - Header / footer
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 58)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 64)
+    }
+}
+
+// MARK: - P2R
+
+extension FeedController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset
+        if scrollOffset.y <= -150 {
+            viewModel.reloadData(with: datasource)
+        }
     }
 }

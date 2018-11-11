@@ -17,6 +17,6 @@ protocol FeedViewModelOutput: class {
 }
 
 protocol FeedViewModel: FeedViewModelOutput {
-    //func reloadData()
+    func reloadData(with currentLoadedData: [FeedCellViewModel])
     func loadNextPage()
 }
