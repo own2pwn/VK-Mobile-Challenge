@@ -88,8 +88,6 @@ final class ImageLoader {
     private func removeHeaviest() {
         cached.sort(by: >)
         cached.removeFirst(2)
-
-        print("clear cache")
     }
 
     private func cacheNewItem(_ key: String, _ value: Data) {
