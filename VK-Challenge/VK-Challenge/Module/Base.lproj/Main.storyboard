@@ -300,7 +300,7 @@
                                     <subviews>
                                         <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Поиск" translatesAutoresizingMaskIntoConstraints="NO" id="DMK-yM-MTd">
                                             <rect key="frame" x="0.0" y="0.0" width="346" height="56"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
                                         </searchBar>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blr-nm-vn6">
                                             <rect key="frame" x="354" y="6" width="44" height="44"/>
@@ -335,6 +335,7 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="avatarImageView" destination="Njk-Ug-dXh" id="8mc-OZ-Gnr"/>
+                                        <outlet property="searchBar" destination="DMK-yM-MTd" id="XwV-vW-0mI"/>
                                     </connections>
                                 </collectionReusableView>
                                 <collectionReusableView key="sectionFooterView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="FeedFooter" id="lUD-T1-sV5" customClass="FeedFooter" customModule="VK_Challenge" customModuleProvider="target">
