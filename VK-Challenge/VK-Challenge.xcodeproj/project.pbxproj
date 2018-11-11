@@ -30,6 +30,7 @@
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
 		DE08DD9121975A150055A6CA /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE08DD9021975A150055A6CA /* FeedService.swift */; };
+		DE38956D21980E30009926B1 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE38956C21980E30009926B1 /* Haptic.swift */; };
 		DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F001C21978550004974D7 /* FeedFooter.swift */; };
 		DE68CAD821977C05001D18F9 /* String+QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACC21977C05001D18F9 /* String+QueryItem.swift */; };
 		DE68CAD921977C05001D18F9 /* QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACE21977C05001D18F9 /* QueryItem.swift */; };
@@ -85,6 +86,7 @@
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		DE08DD9021975A150055A6CA /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		DE38956C21980E30009926B1 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		DE4F001C21978550004974D7 /* FeedFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFooter.swift; sourceTree = "<group>"; };
 		DE68CACC21977C05001D18F9 /* String+QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryItem.swift"; sourceTree = "<group>"; };
 		DE68CACE21977C05001D18F9 /* QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryItem.swift; sourceTree = "<group>"; };
@@ -205,6 +207,7 @@
 		B943A5412195DBFC00CB11DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				DE38956B21980DDE009926B1 /* Haptic */,
 				DE68CACA21977C05001D18F9 /* Network */,
 				B943A5532195EC5900CB11DA /* Image */,
 			);
@@ -331,6 +334,14 @@
 				DE08DD9021975A150055A6CA /* FeedService.swift */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		DE38956B21980DDE009926B1 /* Haptic */ = {
+			isa = PBXGroup;
+			children = (
+				DE38956C21980E30009926B1 /* Haptic.swift */,
+			);
+			path = Haptic;
 			sourceTree = "<group>";
 		};
 		DE68CACA21977C05001D18F9 /* Network */ = {
@@ -603,6 +614,7 @@
 				DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */,
 				B9CAA10D2195B77F00DAB134 /* AuthControllerViewModelImp.swift in Sources */,
 				DE08DD9121975A150055A6CA /* FeedService.swift in Sources */,
+				DE38956D21980E30009926B1 /* Haptic.swift in Sources */,
 				DE68CAD921977C05001D18F9 /* QueryItem.swift in Sources */,
 				DECB59C321973553007419F8 /* FeedViewModel.swift in Sources */,
 				B9943A27219597FA0045D56C /* VK+Scope.swift in Sources */,
