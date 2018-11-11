@@ -11,15 +11,17 @@ import UIKit
 protocol FeedViewModelOutput: class {
     var onAvatarLoaded: ((UIImage?) -> Void)? { get set }
 
-    var onItemsReloaded: (([FeedCellViewModel]) -> Void)? { get set }
+    var onItemsReloaded: (([FeedCellViewModel], Bool) -> Void)? { get set }
 
-    var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
+    var onNewItemsLoaded: (([FeedCellViewModel], Bool) -> Void)? { get set }
 
-    var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)? { get set }
+    var onSearchResultLoaded: (([FeedCellViewModel], Bool) -> Void)? { get set }
 
-    var onSearchResultReloaded: (([FeedCellViewModel]) -> Void)? { get set }
+    var onSearchResultReloaded: (([FeedCellViewModel], Bool) -> Void)? { get set }
 
-    var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
+    var onNewSearchItemsLoaded: (([FeedCellViewModel], Bool) -> Void)? { get set }
+
+    var hasMoreDataChanged: ((Bool) -> Void)? { get set }
 }
 
 protocol FeedViewModel: FeedViewModelOutput {
@@ -28,6 +30,6 @@ protocol FeedViewModel: FeedViewModelOutput {
 
     func loadNextPage()
     func loadNextSearchPage()
-    
+
     func search(_ searchText: String?)
 }

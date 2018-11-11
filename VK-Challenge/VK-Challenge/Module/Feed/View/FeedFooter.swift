@@ -9,6 +9,7 @@
 import UIKit
 
 final class FeedFooter: UICollectionReusableView {
+
     // MARK: - Outlets
 
     @IBOutlet
@@ -44,6 +45,6 @@ final class FeedFooter: UICollectionReusableView {
     }
 
     func setLoadedPostCount(_ count: Int) {
-        loadedPostCountLabel.text = count > 0 ? "\(count) записей" : nil
+        loadedPostCountLabel.text = count > 0 ? "\(count) записей" : "ничего не нашлось"
     }
 }

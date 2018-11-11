@@ -300,7 +300,7 @@
                                     <subviews>
                                         <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Поиск" translatesAutoresizingMaskIntoConstraints="NO" id="DMK-yM-MTd">
                                             <rect key="frame" x="0.0" y="0.0" width="346" height="56"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                         </searchBar>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blr-nm-vn6">
                                             <rect key="frame" x="354" y="6" width="44" height="44"/>

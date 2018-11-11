@@ -14,15 +14,17 @@ final class FeedViewModelImp: FeedViewModel {
 
     var onAvatarLoaded: ((UIImage?) -> Void)?
 
-    var onItemsReloaded: (([FeedCellViewModel]) -> Void)?
+    var onItemsReloaded: (([FeedCellViewModel], Bool) -> Void)?
 
-    var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)?
+    var onNewItemsLoaded: (([FeedCellViewModel], Bool) -> Void)?
 
-    var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)?
+    var onSearchResultLoaded: (([FeedCellViewModel], Bool) -> Void)?
 
-    var onSearchResultReloaded: (([FeedCellViewModel]) -> Void)?
+    var onSearchResultReloaded: (([FeedCellViewModel], Bool) -> Void)?
 
-    var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)?
+    var onNewSearchItemsLoaded: (([FeedCellViewModel], Bool) -> Void)?
+
+    var hasMoreDataChanged: ((Bool) -> Void)?
 
     // MARK: - Members
 
@@ -39,6 +41,10 @@ final class FeedViewModelImp: FeedViewModel {
     private let staticCellHeight: CGFloat = 64 + 44
 
     private let cardWidth = (UIScreen.main.bounds.width - 16)
+
+    private let feedBatchSize = 50
+
+    private let searchBatchSize = 30
 
     private var nextPageToken: String?
 
@@ -81,7 +87,7 @@ final class FeedViewModelImp: FeedViewModel {
             let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
 
             DispatchQueue.main.async {
-                self.onItemsReloaded?(updatedCells)
+                self.onItemsReloaded?(updatedCells, updatedCells.count >= self.feedBatchSize)
                 self.isReloadingData = false
             }
         }
@@ -98,19 +104,21 @@ final class FeedViewModelImp: FeedViewModel {
             let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
 
             DispatchQueue.main.async {
-                self.onSearchResultReloaded?(updatedCells)
+                self.onSearchResultReloaded?(updatedCells, updatedCells.count >= self.searchBatchSize)
                 self.isReloadingData = false
             }
         }
     }
 
     func loadNextPage() {
-        guard
-            !isLoadingNextPage,
-            let token = nextPageToken else { return }
+        guard !isLoadingNextPage else { return }
+
+        guard let token = nextPageToken else {
+            hasMoreDataChanged?(false)
+            return
+        }
 
         isLoadingNextPage = true
-
         feedService.getNextPage(token: token) { response in
             self.isLoadingNextPage = false
             self.handleNewPosts(response)
@@ -118,10 +126,14 @@ final class FeedViewModelImp: FeedViewModel {
     }
 
     func loadNextSearchPage() {
+        guard !isLoadingNextPage else { return }
+
         guard
-            !isLoadingNextPage,
             let token = nextSearchPageToken,
-            let query = lastSearchQuery else { return }
+            let query = lastSearchQuery else {
+            hasMoreDataChanged?(false)
+            return
+        }
 
         isLoadingNextPage = true
         feedService.getNextSearchPage(token: token, searchText: query) { response in
@@ -150,7 +162,7 @@ final class FeedViewModelImp: FeedViewModel {
 
             let cells = self.makeCellViewModels(from: response, highlight: searchText)
             DispatchQueue.main.async {
-                self.onSearchResultLoaded?(cells)
+                self.onSearchResultLoaded?(cells, response.next != nil)
             }
         }
     }
@@ -174,7 +186,7 @@ final class FeedViewModelImp: FeedViewModel {
         nextPageToken = response.next
 
         DispatchQueue.main.async {
-            self.onNewItemsLoaded?(cells)
+            self.onNewItemsLoaded?(cells, response.next != nil)
         }
     }
 }
@@ -187,7 +199,7 @@ private extension FeedViewModelImp {
         nextSearchPageToken = response.next
 
         DispatchQueue.main.async {
-            self.onNewSearchItemsLoaded?(cells)
+            self.onNewSearchItemsLoaded?(cells, response.next != nil)
         }
     }
 
