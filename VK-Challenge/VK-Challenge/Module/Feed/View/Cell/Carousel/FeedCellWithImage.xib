@@ -46,8 +46,18 @@
                         <color key="textColor" red="0.17254901959999999" green="0.1764705882" blue="0.18039215689999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YQd-TP-Cb3">
-                        <rect key="frame" x="0.0" y="350" width="426" height="44"/>
+                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Our-i6-Eka">
+                        <rect key="frame" x="0.0" y="182" width="426" height="213"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AOj-Nx-eN3">
+                            <size key="itemSize" width="50" height="50"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                    </collectionView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQd-TP-Cb3">
+                        <rect key="frame" x="0.0" y="427" width="426" height="44"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" alpha="0.40000000596046448" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icnLike" translatesAutoresizingMaskIntoConstraints="NO" id="DxE-o0-ONs">
                                 <rect key="frame" x="16" y="10" width="24" height="24"/>
@@ -103,32 +113,31 @@
                             <constraint firstAttribute="height" constant="44" id="d4s-N9-S1i"/>
                         </constraints>
                     </view>
-                    <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="Our-i6-Eka">
-                        <rect key="frame" x="9" y="182" width="240" height="128"/>
+                    <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="rw6-V5-TdE">
+                        <rect key="frame" x="194" y="396" width="39" height="37"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="AOj-Nx-eN3">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                    </collectionView>
+                        <color key="pageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="currentPageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </pageControl>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="1SD-Iw-y9Y" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="A1t-kb-joR"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bzw-BH-GS4" secondAttribute="trailing" constant="12" id="EDm-xH-hMJ"/>
+                <constraint firstItem="Our-i6-Eka" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="JpB-iK-Xau"/>
                 <constraint firstItem="1SD-Iw-y9Y" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="MCr-9R-iEo"/>
                 <constraint firstItem="bzw-BH-GS4" firstAttribute="leading" secondItem="1SD-Iw-y9Y" secondAttribute="trailing" constant="4" id="NGb-HF-Jw7"/>
                 <constraint firstAttribute="trailing" secondItem="YQd-TP-Cb3" secondAttribute="trailing" id="NhW-4d-9WV"/>
                 <constraint firstItem="a4c-n7-dui" firstAttribute="top" secondItem="1SD-Iw-y9Y" secondAttribute="bottom" constant="10" id="TW8-3t-Pf8"/>
                 <constraint firstItem="bzw-BH-GS4" firstAttribute="top" secondItem="1SD-Iw-y9Y" secondAttribute="top" id="TXT-fj-HSK"/>
+                <constraint firstAttribute="trailing" secondItem="Our-i6-Eka" secondAttribute="trailing" id="Vs2-iR-hXF"/>
                 <constraint firstItem="Q0a-ll-auO" firstAttribute="top" secondItem="bzw-BH-GS4" secondAttribute="bottom" constant="1" id="WdE-um-eG8"/>
+                <constraint firstItem="Our-i6-Eka" firstAttribute="top" secondItem="a4c-n7-dui" secondAttribute="bottom" constant="6" id="Xh2-N8-eQe"/>
                 <constraint firstAttribute="trailing" secondItem="a4c-n7-dui" secondAttribute="trailing" constant="12" id="dzM-yq-xiK"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Q0a-ll-auO" secondAttribute="trailing" constant="12" id="jfs-0F-bDq"/>
                 <constraint firstItem="Q0a-ll-auO" firstAttribute="leading" secondItem="bzw-BH-GS4" secondAttribute="leading" id="n7e-VM-l5s"/>
                 <constraint firstItem="YQd-TP-Cb3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="nKK-k4-Eea"/>
+                <constraint firstAttribute="bottom" secondItem="YQd-TP-Cb3" secondAttribute="bottom" id="py4-YN-byl"/>
                 <constraint firstItem="a4c-n7-dui" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="zmO-XD-Lu7"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>

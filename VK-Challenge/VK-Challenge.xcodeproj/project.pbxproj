@@ -354,6 +354,24 @@
 			path = Attachment;
 			sourceTree = "<group>";
 		};
+		DE214EDC21982A37004BD2A5 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				DEB250EA2195FE15003388EA /* FeedCell.swift */,
+				DECB59C02197348A007419F8 /* FeedCellViewModel.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		DE214EDD21982A3A004BD2A5 /* Carousel */ = {
+			isa = PBXGroup;
+			children = (
+				DE214ED8219818CE004BD2A5 /* FeedCellWithImage.swift */,
+				DE214ED9219818CE004BD2A5 /* FeedCellWithImage.xib */,
+			);
+			path = Carousel;
+			sourceTree = "<group>";
+		};
 		DE38956B21980DDE009926B1 /* Haptic */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,10 +501,8 @@
 		DECB59BF21973483007419F8 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				DE214ED8219818CE004BD2A5 /* FeedCellWithImage.swift */,
-				DE214ED9219818CE004BD2A5 /* FeedCellWithImage.xib */,
-				DEB250EA2195FE15003388EA /* FeedCell.swift */,
-				DECB59C02197348A007419F8 /* FeedCellViewModel.swift */,
+				DE214EDD21982A3A004BD2A5 /* Carousel */,
+				DE214EDC21982A37004BD2A5 /* Base */,
 			);
 			path = Cell;
 			sourceTree = "<group>";

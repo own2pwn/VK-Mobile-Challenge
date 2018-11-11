@@ -20,10 +20,7 @@ struct VKAttachmentPhoto: Decodable {
 
 extension VKAttachmentPhoto {
     var displayableSize: VKAttachmentPhotoSize? {
-        let v = sizes.first(where: { $0.type == "r" })
-        assert(v != nil)
-
-        return sizes.first(where: { $0.type == "r" })
+        return sizes.first(where: { $0.type == "x" })
     }
 }
 

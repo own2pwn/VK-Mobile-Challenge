@@ -32,6 +32,8 @@ final class FeedViewModelImp: FeedViewModel {
 
     private let staticCellHeight: CGFloat = 64 + 44
 
+    private let cardWidth = (UIScreen.main.bounds.width - 16)
+
     private var nextPageToken: String?
 
     private var isReloadingData = false
@@ -145,7 +147,11 @@ final class FeedViewModelImp: FeedViewModel {
             var photoUrls = [String]()
 
             if let photo = photos.first, photos.count == 1 {
-                photoHeight = CGFloat(photo.height)
+                let fHeight = CGFloat(photo.height)
+                let fWidth = CGFloat(photo.width)
+                let ratio = fWidth / fHeight
+
+                photoHeight = cardWidth / ratio
                 photoUrls.append(photo.url)
             }
 
