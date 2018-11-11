@@ -11,13 +11,19 @@ import UIKit
 /*
  * It's better to code base cell class just in code
  * And subclass it w/ image cell and w/ image carousel cell
-*/
+ */
 
 protocol FeedCellExpandDelegate: class {
-    func cell(_ cell: FeedCell, wantsExpand: Bool)
+    func cell(_ cell: UICollectionViewCell, wantsExpand: Bool)
 }
 
-final class FeedCell: UICollectionViewCell {
+protocol AnyFeedCell: class {
+    var expandDelegate: FeedCellExpandDelegate? { get set }
+
+    func setup(with viewModel: FeedCellViewModel, isExpanded: Bool)
+}
+
+final class FeedCell: UICollectionViewCell, AnyFeedCell {
     // MARK: - Interface
 
     weak var expandDelegate: FeedCellExpandDelegate?

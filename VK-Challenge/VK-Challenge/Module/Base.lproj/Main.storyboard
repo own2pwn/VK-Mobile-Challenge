@@ -141,7 +141,7 @@
                                             <outlet property="viewsCountLabel" destination="si7-tu-rZq" id="sbU-Qc-1pw"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FeedCellWithImage" id="4x0-H3-lPe" customClass="FeedCellWithImage" customModule="VK_Challenge" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="" id="4x0-H3-lPe">
                                         <rect key="frame" x="24" y="511" width="350" height="443"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">

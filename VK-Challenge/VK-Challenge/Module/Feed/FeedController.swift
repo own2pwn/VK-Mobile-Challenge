@@ -67,6 +67,7 @@ final class FeedController: UIViewController {
     }
 
     private func setupCollectionView() {
+        postCollection.register(FeedCellWithImage.self)
         postCollection.contentInset.top = 24
         postCollection.contentInset.bottom = 64
 
@@ -125,7 +126,7 @@ final class FeedController: UIViewController {
 }
 
 extension FeedController: FeedCellExpandDelegate {
-    func cell(_ cell: FeedCell, wantsExpand: Bool) {
+    func cell(_ cell: UICollectionViewCell, wantsExpand: Bool) {
         expandedIndexPath = postCollection.indexPath(for: cell)
         isCellExpanded = wantsExpand
         postCollection.collectionViewLayout.invalidateLayout()
@@ -138,10 +139,16 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: FeedCell = collectionView.dequeueReusableCell(at: indexPath)
         let model = getViewModel(at: indexPath)
-        let shouldExpand = indexPath == expandedIndexPath && isCellExpanded
+        let cell: (AnyFeedCell & UICollectionViewCell)
 
+        if model.postImages.count > 1 {
+            cell = collectionView.dequeueReusableCell(ofType: FeedCellWithImage.self, at: indexPath)
+        } else {
+            cell = collectionView.dequeueReusableCell(ofType: FeedCell.self, at: indexPath)
+        }
+
+        let shouldExpand = indexPath == expandedIndexPath && isCellExpanded
         cell.setup(with: model, isExpanded: shouldExpand)
         cell.expandDelegate = self
 

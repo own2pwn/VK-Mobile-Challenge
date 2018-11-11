@@ -56,6 +56,12 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                     </collectionView>
+                    <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="rw6-V5-TdE">
+                        <rect key="frame" x="194" y="396" width="39" height="37"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="pageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="currentPageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </pageControl>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YQd-TP-Cb3">
                         <rect key="frame" x="0.0" y="427" width="426" height="44"/>
                         <subviews>
@@ -113,12 +119,6 @@
                             <constraint firstAttribute="height" constant="44" id="d4s-N9-S1i"/>
                         </constraints>
                     </view>
-                    <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="rw6-V5-TdE">
-                        <rect key="frame" x="194" y="396" width="39" height="37"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="pageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="currentPageIndicatorTintColor" red="0.31764705882352939" green="0.50588235294117645" blue="0.72156862745098038" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </pageControl>
                 </subviews>
             </view>
             <constraints>
@@ -142,6 +142,23 @@
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="426" height="471"/>
+            <connections>
+                <outlet property="avatarImageView" destination="1SD-Iw-y9Y" id="559-OR-wzM"/>
+                <outlet property="commentImageView" destination="l5V-iL-e5Z" id="qsm-4q-Sbs"/>
+                <outlet property="commentsCountLabel" destination="iAE-aj-WQc" id="nUM-em-d1C"/>
+                <outlet property="contentLabel" destination="a4c-n7-dui" id="Wt1-kW-4JJ"/>
+                <outlet property="dateLabel" destination="Q0a-ll-auO" id="K6e-DR-YeV"/>
+                <outlet property="footerView" destination="YQd-TP-Cb3" id="6XF-1a-hBf"/>
+                <outlet property="likeImageView" destination="DxE-o0-ONs" id="FJb-kp-Pp4"/>
+                <outlet property="likesCountLabel" destination="xiY-Hb-cOJ" id="d3o-cr-YiM"/>
+                <outlet property="postImageCollection" destination="Our-i6-Eka" id="OQ1-VK-2ar"/>
+                <outlet property="postImagePageControl" destination="rw6-V5-TdE" id="mMS-n4-os4"/>
+                <outlet property="repostImageView" destination="Qsp-b0-aNP" id="IPM-7L-LeR"/>
+                <outlet property="repostsCountLabel" destination="G5H-X8-ffK" id="lZ8-bm-MX5"/>
+                <outlet property="titleLabel" destination="bzw-BH-GS4" id="ZZk-BJ-di8"/>
+                <outlet property="viewsCountImageView" destination="xjM-X2-Un8" id="ccZ-EZ-mAq"/>
+                <outlet property="viewsCountLabel" destination="P7k-pj-Qt2" id="EP6-mS-UtR"/>
+            </connections>
             <point key="canvasLocation" x="124.8" y="163.26836581709148"/>
         </collectionViewCell>
     </objects>
