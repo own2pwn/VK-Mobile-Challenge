@@ -9,6 +9,7 @@
 import UIKit
 
 struct FeedCellViewModel {
+    let postID: Int
     let titleText: String
     let dateText: String
     let contentText: NSAttributedString

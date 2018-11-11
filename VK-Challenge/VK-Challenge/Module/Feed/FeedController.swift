@@ -47,6 +47,11 @@ final class FeedController: UIViewController {
             self.updateFooter()
             self.postCollection.reloadData()
         }
+        viewModel.onItemsReloaded = { [unowned self] items in
+            self.datasource = items
+            self.updateFooter()
+            self.postCollection.reloadData()
+        }
     }
 
     private func setupCollectionView() {
@@ -57,13 +62,13 @@ final class FeedController: UIViewController {
     }
 
     private func updateAvatar(with image: UIImage?) {
-        if let header = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
+        if let header = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
             header.setAvatar(image)
         }
     }
 
     private func updateFooter() {
-        if let footer = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
+        if let footer = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
             footer.setLoadedPostCount(datasource.count)
         }
     }
@@ -74,13 +79,13 @@ final class FeedController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEditingInHeader))
         postCollection.addGestureRecognizer(tap)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onKeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc
     private func endEditingInHeader() {
-        if let header = postCollection.supplementaryView(forElementKind: UICollectionElementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
+        if let header = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
             header.endEditing(true)
         }
     }
@@ -89,7 +94,7 @@ final class FeedController: UIViewController {
     private func onKeyboardWillShow(_ notification: Notification) {
         guard
             let userInfo = notification.userInfo,
-            let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? CGRect else { return }
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
         postCollectionBottomConstraint.constant = keyboardFrame.size.height
 
@@ -135,26 +140,32 @@ extension FeedController: UICollectionViewDataSource {
         return datasource[indexPath.row]
     }
 
+    // MARK: - Header
+
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if kind == UICollectionElementKindSectionHeader {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
+        if kind == UICollectionView.elementKindSectionHeader {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "FeedHeader", for: indexPath)
         }
 
-        if kind == UICollectionElementKindSectionFooter {
-            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionElementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath)
+        if kind == UICollectionView.elementKindSectionFooter {
+            return collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath)
         }
 
         return UICollectionReusableView()
     }
 
+    // MARK: - Footer
+
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        if elementKind == UICollectionElementKindSectionFooter && !datasource.isEmpty {
-            // viewModel.loadNextPage()
+        if elementKind == UICollectionView.elementKindSectionFooter && !datasource.isEmpty {
+            viewModel.loadNextPage()
         }
     }
 }
 
 extension FeedController: UICollectionViewDelegateFlowLayout {
+    // MARK: - Cell size
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         guard indexPath.row < datasource.count else {
             return CGSize(width: collectionView.frame.width, height: 256)
@@ -170,11 +181,24 @@ extension FeedController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: collectionView.frame.width, height: cellHeight)
     }
 
+    // MARK: - Header / footer
+
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 58)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 64)
+    }
+}
+
+// MARK: - P2R
+
+extension FeedController {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let scrollOffset = scrollView.contentOffset
+        if scrollOffset.y <= -150 {
+            viewModel.reloadData(with: datasource)
+        }
     }
 }

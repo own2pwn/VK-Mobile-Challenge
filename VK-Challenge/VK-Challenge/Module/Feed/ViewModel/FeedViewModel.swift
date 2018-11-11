@@ -11,9 +11,12 @@ import UIKit
 protocol FeedViewModelOutput: class {
     var onAvatarLoaded: ((UIImage?) -> Void)? { get set }
 
+    var onItemsReloaded: (([FeedCellViewModel]) -> Void)? { get set }
+
     var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
 }
 
 protocol FeedViewModel: FeedViewModelOutput {
+    func reloadData(with currentLoadedData: [FeedCellViewModel])
     func loadNextPage()
 }
