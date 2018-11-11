@@ -9,12 +9,7 @@
 import Foundation
 
 struct VKAttachmentPhoto: Decodable {
-    let id: Int
-    let ownerID: Int
     let sizes: [VKAttachmentPhotoSize]
-    let text: String
-    let date: Date
-    let postID: Int?
 }
 
 extension VKAttachmentPhoto {
@@ -28,14 +23,4 @@ struct VKAttachmentPhotoSize: Decodable {
     let url: String
     let width: Int
     let height: Int
-}
-
-extension VKAttachmentPhoto {
-    enum CodingKeys: String, CodingKey {
-        case id, sizes, text
-        case date
-
-        case ownerID = "owner_id"
-        case postID = "post_id"
-    }
 }
