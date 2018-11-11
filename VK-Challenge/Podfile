@@ -1,0 +1,8 @@
+target 'VK-Challenge' do
+  use_frameworks!
+
+  platform :ios, '9.0'
+
+  pod "VK-ios-sdk"
+
+end
