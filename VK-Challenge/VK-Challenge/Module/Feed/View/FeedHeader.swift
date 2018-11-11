@@ -55,8 +55,8 @@ extension FeedHeader: UISearchBarDelegate {
         delegate?.header(self, wantsSearch: searchText)
     }
 
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText.isEmpty {
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        if searchBar.text?.isEmpty ?? false {
             delegate?.header(self, wantsSearch: nil)
         }
     }

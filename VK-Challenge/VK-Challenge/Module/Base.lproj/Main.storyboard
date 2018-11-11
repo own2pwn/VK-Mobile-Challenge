@@ -300,7 +300,7 @@
                                     <subviews>
                                         <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Поиск" translatesAutoresizingMaskIntoConstraints="NO" id="DMK-yM-MTd">
                                             <rect key="frame" x="0.0" y="0.0" width="346" height="56"/>
-                                            <textInputTraits key="textInputTraits" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                            <textInputTraits key="textInputTraits" returnKeyType="search"/>
                                         </searchBar>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Blr-nm-vn6">
                                             <rect key="frame" x="354" y="6" width="44" height="44"/>
@@ -351,10 +351,15 @@
                                                     <color key="textColor" red="0.56470588235294117" green="0.58039215686274503" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="d8L-v0-qK1">
+                                                    <rect key="frame" x="189" y="22" width="20" height="20"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="d8L-v0-qK1" firstAttribute="centerY" secondItem="3LG-F5-wnA" secondAttribute="centerY" id="616-iz-OyK"/>
                                                 <constraint firstItem="SNy-YQ-j1n" firstAttribute="centerX" secondItem="3LG-F5-wnA" secondAttribute="centerX" id="LpW-qk-Mvf"/>
                                                 <constraint firstItem="SNy-YQ-j1n" firstAttribute="centerY" secondItem="3LG-F5-wnA" secondAttribute="centerY" id="XPJ-sd-Mmo"/>
+                                                <constraint firstItem="d8L-v0-qK1" firstAttribute="centerX" secondItem="3LG-F5-wnA" secondAttribute="centerX" id="YGL-cS-tna"/>
                                             </constraints>
                                         </view>
                                     </subviews>
@@ -366,6 +371,7 @@
                                     </constraints>
                                     <connections>
                                         <outlet property="loadedPostCountLabel" destination="SNy-YQ-j1n" id="65u-KZ-0sE"/>
+                                        <outlet property="loadingSpinner" destination="d8L-v0-qK1" id="fMI-Po-EAh"/>
                                     </connections>
                                 </collectionReusableView>
                                 <connections>

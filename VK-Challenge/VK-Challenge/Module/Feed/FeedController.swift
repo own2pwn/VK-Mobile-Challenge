@@ -26,6 +26,12 @@ final class FeedController: UIViewController {
         setupCollectionView()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        didAppear = true
+    }
+
     // MARK: - Members
 
     private var datasource: [FeedCellViewModel] = []
@@ -42,9 +48,15 @@ final class FeedController: UIViewController {
 
     private let refreshThreshold: CGFloat = 150
 
+    private var didAppear = false
+
     private var didReachRefreshThreshold = false
 
+    // MARK: Footer
+
     private var didReachFooter = false
+
+    private var hasMoreData = false
 
     // MARK: - Search
 
@@ -58,35 +70,46 @@ final class FeedController: UIViewController {
         viewModel.onAvatarLoaded = { [unowned self] avatar in
             self.updateAvatar(with: avatar)
         }
-        viewModel.onNewItemsLoaded = { [unowned self] items in
+        viewModel.onNewItemsLoaded = { [unowned self] items, hasMoreData in
             self.datasource.append(contentsOf: items)
             self.updateFooter()
-            self.postCollection.reloadData()
             self.didReachFooter = false
+            self.hasMoreData = hasMoreData
+            self.postCollection.reloadData()
         }
-        viewModel.onItemsReloaded = { [unowned self] items in
+        viewModel.onItemsReloaded = { [unowned self] items, hasMoreData in
             self.datasource = items
             self.updateFooter()
-            self.postCollection.reloadData()
+            self.hasMoreData = hasMoreData
             self.didReachRefreshThreshold = false
+            self.postCollection.reloadData()
         }
-        viewModel.onSearchResultLoaded = { [unowned self] items in
+        viewModel.onSearchResultLoaded = { [unowned self] items, hasMoreData in
             self.searchDatasource = items
             self.shouldDisplaySearch = true
             self.updateFooter()
+            self.hasMoreData = hasMoreData
             self.postCollection.reloadData()
         }
-        viewModel.onSearchResultReloaded = { [unowned self] items in
+        viewModel.onSearchResultReloaded = { [unowned self] items, hasMoreData in
             self.searchDatasource = items
             self.updateFooter()
-            self.postCollection.reloadData()
+            self.hasMoreData = hasMoreData
             self.didReachRefreshThreshold = false
+            self.postCollection.reloadData()
         }
-        viewModel.onNewSearchItemsLoaded = { [unowned self] items in
+        viewModel.onNewSearchItemsLoaded = { [unowned self] items, hasMoreData in
             self.searchDatasource.append(contentsOf: items)
             self.updateFooter()
-            self.postCollection.reloadData()
             self.didReachFooter = false
+            self.hasMoreData = hasMoreData
+            self.postCollection.reloadData()
+        }
+        viewModel.hasMoreDataChanged = { [unowned self] value in
+            self.hasMoreData = value
+            if let footer = self.postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as? FeedFooter {
+                footer.setIsLoading(value)
+            }
         }
     }
 
@@ -98,16 +121,19 @@ final class FeedController: UIViewController {
     }
 
     private func updateAvatar(with image: UIImage?) {
-        if let header = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
-            header.setAvatar(image)
-        }
+        feedHeader?.setAvatar(image)
     }
 
     private func updateFooter() {
-        if let footer = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionFooter, at: IndexPath(row: 0, section: 0)) as? FeedFooter {
-            let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
-            footer.setLoadedPostCount(count)
+        if let footer = feedFooter {
+            updateFooterCount(footer)
+            footer.setIsLoading(false)
         }
+    }
+
+    private func updateFooterCount(_ footer: FeedFooter) {
+        let count = actualDatasource.count
+        footer.setLoadedPostCount(count)
     }
 
     // MARK: - Keyboard
@@ -122,9 +148,7 @@ final class FeedController: UIViewController {
 
     @objc
     private func endEditingInHeader() {
-        if let header = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
-            header.endEditing(true)
-        }
+        feedHeader?.endEditing(true)
     }
 
     @objc
@@ -134,7 +158,6 @@ final class FeedController: UIViewController {
             let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
         postCollectionBottomConstraint.constant = keyboardFrame.size.height
-
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
@@ -149,6 +172,22 @@ final class FeedController: UIViewController {
     }
 }
 
+// MARK: - Helpers
+
+private extension FeedController {
+    var actualDatasource: [FeedCellViewModel] {
+        return shouldDisplaySearch ? searchDatasource : datasource
+    }
+
+    var feedHeader: FeedHeader? {
+        return postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? FeedHeader
+    }
+
+    var feedFooter: FeedFooter? {
+        return postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as? FeedFooter
+    }
+}
+
 extension FeedController: FeedCellExpandDelegate {
     func cell(_ cell: UICollectionViewCell, wantsExpand: Bool) {
         expandedIndexPath = postCollection.indexPath(for: cell)
@@ -159,7 +198,7 @@ extension FeedController: FeedCellExpandDelegate {
 
 extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shouldDisplaySearch ? searchDatasource.count : datasource.count
+        return actualDatasource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -180,7 +219,7 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     private func getViewModel(at indexPath: IndexPath) -> FeedCellViewModel {
-        return shouldDisplaySearch ? searchDatasource[indexPath.row] : datasource[indexPath.row]
+        return actualDatasource[indexPath.row]
     }
 
     // MARK: - Header
@@ -196,9 +235,6 @@ extension FeedController: UICollectionViewDataSource {
         if kind == UICollectionView.elementKindSectionFooter {
             let footer = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "FeedFooter", for: indexPath) as! FeedFooter
 
-            let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
-            footer.setLoadedPostCount(count)
-
             return footer
         }
 
@@ -208,17 +244,31 @@ extension FeedController: UICollectionViewDataSource {
     // MARK: - Footer
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
-        if elementKind == UICollectionView.elementKindSectionFooter && !datasource.isEmpty {
-            if !didReachFooter {
-                Haptic.trigger(with: .medium)
-                didReachFooter = true
-            }
+        guard
+            let footer = view as? FeedFooter,
+            elementKind == UICollectionView.elementKindSectionFooter else { return }
 
-            if shouldDisplaySearch {
-                viewModel.loadNextSearchPage()
-            } else {
-                viewModel.loadNextPage()
-            }
+        if didAppear {
+            updateFooterCount(footer)
+        }
+        guard hasMoreData else {
+            return
+        }
+
+        if (shouldDisplaySearch && searchDatasource.isEmpty) || (!shouldDisplaySearch && datasource.isEmpty) {
+            return
+        }
+
+        footer.setIsLoading(true)
+        if !didReachFooter {
+            Haptic.trigger(with: .medium)
+            didReachFooter = true
+        }
+
+        if shouldDisplaySearch {
+            viewModel.loadNextSearchPage()
+        } else {
+            viewModel.loadNextPage()
         }
     }
 }
@@ -273,7 +323,7 @@ extension FeedController {
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if didReachRefreshThreshold {
             if shouldDisplaySearch {
-                viewModel.reloadSearchData(with: datasource)
+                viewModel.reloadSearchData(with: searchDatasource)
             } else {
                 viewModel.reloadData(with: datasource)
             }
