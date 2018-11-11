@@ -125,15 +125,6 @@ final class FeedViewModelImp: FeedViewModel {
             }
         }
 
-//        merged.indices.forEach { (idx: Int) -> Void in
-//            let thisPostId = merged[idx].postID
-//            if postIdsToUpdate.contains(thisPostId) {
-//                if let cellToReplace = cellsToUpdate.first(where: { $0.postID == thisPostId }) {
-//                    merged[idx] = cellToReplace
-//                }
-//            }
-//        }
-
         return merged
     }
 
@@ -144,8 +135,7 @@ final class FeedViewModelImp: FeedViewModel {
 
         for item in response.items {
             let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
-            let (fullText, shortText, fullHeight, shortHeight)
-                = textManager.makeTextToDisplay(from: item.text)
+            let (fullText, shortText, fullHeight, shortHeight) = textManager.makeTextToDisplay(from: item.text)
 
             var shortHeightValue: CGFloat?
             if let shortValue = shortHeight {

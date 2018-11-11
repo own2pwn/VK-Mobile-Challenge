@@ -165,12 +165,12 @@
 			isa = PBXGroup;
 			children = (
 				B943A5412195DBFC00CB11DA /* Core */,
-				B943A53D2195DBCF00CB11DA /* Model */,
-				B93150052195C8C6000752DD /* support */,
 				B9CAA0FB21959FE300DAB134 /* Service */,
-				B9943A25219597EE0045D56C /* Extension */,
+				B943A53D2195DBCF00CB11DA /* Model */,
 				B9943A222195970B0045D56C /* Common */,
 				B9943A20219596800045D56C /* Module */,
+				B9943A25219597EE0045D56C /* Extension */,
+				B93150052195C8C6000752DD /* support */,
 			);
 			path = "VK-Challenge";
 			sourceTree = "<group>";
