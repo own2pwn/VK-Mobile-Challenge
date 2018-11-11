@@ -28,13 +28,23 @@ final class FeedController: UIViewController {
 
     // MARK: - Members
 
+    private var datasource: [FeedCellViewModel] = []
+
+    private let viewModel: FeedViewModel = { Dependency.makeFeedViewModel() }()
+
+    // MARK: Cell Expand
+
     private var expandedIndexPath: IndexPath?
 
     private var isCellExpanded = false
 
-    private var datasource: [FeedCellViewModel] = []
+    // MARK: P2R
 
-    private let viewModel: FeedViewModel = { Dependency.makeFeedViewModel() }()
+    private let refreshThreshold: CGFloat = 150
+
+    private var didReachRefreshThreshold = false
+
+    private var didReachFooter = false
 
     // MARK: - Methods
 
@@ -46,11 +56,13 @@ final class FeedController: UIViewController {
             self.datasource.append(contentsOf: items)
             self.updateFooter()
             self.postCollection.reloadData()
+            self.didReachFooter = false
         }
         viewModel.onItemsReloaded = { [unowned self] items in
             self.datasource = items
             self.updateFooter()
             self.postCollection.reloadData()
+            self.didReachRefreshThreshold = false
         }
     }
 
@@ -158,6 +170,11 @@ extension FeedController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, willDisplaySupplementaryView view: UICollectionReusableView, forElementKind elementKind: String, at indexPath: IndexPath) {
         if elementKind == UICollectionView.elementKindSectionFooter && !datasource.isEmpty {
+            if !didReachFooter {
+                Haptic.trigger(with: .medium)
+                didReachFooter = true
+            }
+
             viewModel.loadNextPage()
         }
     }
@@ -198,6 +215,15 @@ extension FeedController {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let scrollOffset = scrollView.contentOffset
         if scrollOffset.y <= -150 {
+            if !didReachRefreshThreshold {
+                Haptic.trigger(with: .medium)
+                didReachRefreshThreshold = true
+            }
+        }
+    }
+
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if didReachRefreshThreshold {
             viewModel.reloadData(with: datasource)
         }
     }
