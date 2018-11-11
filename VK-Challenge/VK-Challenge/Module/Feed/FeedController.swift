@@ -247,6 +247,6 @@ extension FeedController {
 
 extension FeedController: FeedHeaderDelegate {
     func header(_ header: FeedHeader, wantsSearch text: String) {
-        print("wants search [\(text)]")
+        viewModel.search(text)
     }
 }

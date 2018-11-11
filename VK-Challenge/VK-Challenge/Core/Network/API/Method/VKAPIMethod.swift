@@ -11,6 +11,7 @@ import Foundation
 enum VKAPIMethod: URLAdaptable {
     case usersGet
     case feedGet
+    case feedSearch
 }
 
 extension VKAPIMethod {
@@ -20,6 +21,8 @@ extension VKAPIMethod {
             return "users.get"
         case .feedGet:
             return "newsfeed.get"
+        case .feedSearch:
+            return "newsfeed.search"
         }
     }
 }

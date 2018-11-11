@@ -60,6 +60,7 @@
 		DECB59CA219736EC007419F8 /* VKFeedResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */; };
 		DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59CB21973704007419F8 /* VKFeedItem.swift */; };
 		DECCA63A2198418D00B45CAE /* FeedCellCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECCA6392198418D00B45CAE /* FeedCellCarouselCell.swift */; };
+		DECCA63D219866F900B45CAE /* VKSearchResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECCA63C219866F900B45CAE /* VKSearchResponseModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +121,7 @@
 		DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedResponseModel.swift; sourceTree = "<group>"; };
 		DECB59CB21973704007419F8 /* VKFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedItem.swift; sourceTree = "<group>"; };
 		DECCA6392198418D00B45CAE /* FeedCellCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellCarouselCell.swift; sourceTree = "<group>"; };
+		DECCA63C219866F900B45CAE /* VKSearchResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKSearchResponseModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -197,6 +199,7 @@
 		B943A53D2195DBCF00CB11DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DECCA63B219866CB00B45CAE /* Search */,
 				DE214ED32198162B004BD2A5 /* Attachment */,
 				DE68CAEE2197812A001D18F9 /* Base */,
 				DECB59C6219736D0007419F8 /* Feed */,
@@ -517,6 +520,14 @@
 			path = Feed;
 			sourceTree = "<group>";
 		};
+		DECCA63B219866CB00B45CAE /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				DECCA63C219866F900B45CAE /* VKSearchResponseModel.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -674,6 +685,7 @@
 				DEB250EB2195FE15003388EA /* FeedCell.swift in Sources */,
 				DE68CADE21977C05001D18F9 /* ResponseProvider.swift in Sources */,
 				DE68CADB21977C05001D18F9 /* RequestAdapter.swift in Sources */,
+				DECCA63D219866F900B45CAE /* VKSearchResponseModel.swift in Sources */,
 				B9CAA1032195B3D700DAB134 /* Common+Types.swift in Sources */,
 				DE68CAEB21977C3F001D18F9 /* VKAPIFieldValue.swift in Sources */,
 				B9CAA1012195A2BF00DAB134 /* UIColor+Init.swift in Sources */,

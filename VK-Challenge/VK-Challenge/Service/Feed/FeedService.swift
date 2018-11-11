@@ -10,6 +10,8 @@ import Foundation
 
 typealias VKFeedBlock = (VKFeedResponseModel) -> Void
 
+typealias VKSearchBlock = (VKSearchResponseModel) -> Void
+
 final class FeedService {
     // MARK: - Members
 
@@ -34,6 +36,14 @@ final class FeedService {
         let query = [filters, fields, nextPage]
 
         api.get(method: .feedGet, params: query, completion: result)
+    }
+
+    func search(_ searchText: String, result: @escaping VKSearchBlock) {
+        let query = QueryItem(field: VKAPIFeedField.query, value: searchText)
+        let extended = QueryItem(field: VKAPIFeedField.extended, value: "1")
+        let fields = makeQueryItem(field: .fields, params: [.photo100])
+
+        api.get(method: .feedSearch, params: [query, extended, fields], completion: result)
     }
 
     // MARK: - Helpers

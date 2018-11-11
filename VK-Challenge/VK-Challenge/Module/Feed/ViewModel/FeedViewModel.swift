@@ -19,4 +19,5 @@ protocol FeedViewModelOutput: class {
 protocol FeedViewModel: FeedViewModelOutput {
     func reloadData(with currentLoadedData: [FeedCellViewModel])
     func loadNextPage()
+    func search(_ searchText: String)
 }

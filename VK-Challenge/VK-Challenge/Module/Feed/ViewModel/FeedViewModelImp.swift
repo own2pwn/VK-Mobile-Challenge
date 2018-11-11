@@ -38,6 +38,8 @@ final class FeedViewModelImp: FeedViewModel {
 
     private var isReloadingData = false
 
+    private var isLoadingSearch = false
+
     // MARK: - Init
 
     init(profileService: ProfileService,
@@ -49,6 +51,11 @@ final class FeedViewModelImp: FeedViewModel {
         textManager = FeedCellTextManager()
 
         loadInitialData()
+    }
+
+    private func loadInitialData() {
+        profileService.getMyProfile(completion: loadMyAvatar)
+        loadPosts()
     }
 
     // MARK: - Methods
@@ -76,10 +83,16 @@ final class FeedViewModelImp: FeedViewModel {
         }
     }
 
-    private func loadInitialData() {
-        profileService.getMyProfile(completion: loadMyAvatar)
-        loadPosts()
+    func search(_ searchText: String) {
+        guard !isLoadingSearch else { return }
+        isLoadingSearch = true
+
+        feedService.search(searchText) { (response: VKSearchResponseModel) in
+            print(response)
+        }
     }
+
+    // MARK: - Private
 
     private func loadMyAvatar(from profile: VKProfileModel) {
         imageLoader.load(from: profile.avatarURL100) { avatar in
@@ -101,7 +114,11 @@ final class FeedViewModelImp: FeedViewModel {
             self.onNewItemsLoaded?(cells)
         }
     }
+}
 
+// MARK: - Feed Reload
+
+private extension FeedViewModelImp {
     private func mergePostsReload(oldData: [FeedCellViewModel], newData: [FeedCellViewModel]) -> [FeedCellViewModel] {
         var postIdsToUpdate = Set<Int>()
         let cellsToUpdate = newData.filter { (newCell: FeedCellViewModel) -> Bool in
@@ -129,9 +146,11 @@ final class FeedViewModelImp: FeedViewModel {
 
         return merged
     }
+}
 
-    // MARK: - Helpers
+// MARK: - Cell ViewModel
 
+private extension FeedViewModelImp {
     private func makeCellViewModels(from response: VKFeedResponseModel) -> [FeedCellViewModel] {
         var result = [FeedCellViewModel]()
 
