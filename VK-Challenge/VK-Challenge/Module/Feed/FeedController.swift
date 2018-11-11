@@ -67,7 +67,7 @@ final class FeedController: UIViewController {
     }
 
     private func setupCollectionView() {
-        postCollection.register(FeedCellWithImage.self)
+        postCollection.register(FeedCellWithCarousel.self)
         postCollection.contentInset.top = 24
         postCollection.contentInset.bottom = 64
 
@@ -143,7 +143,7 @@ extension FeedController: UICollectionViewDataSource {
         let cell: (AnyFeedCell & UICollectionViewCell)
 
         if model.postImages.count > 1 {
-            cell = collectionView.dequeueReusableCell(ofType: FeedCellWithImage.self, at: indexPath)
+            cell = collectionView.dequeueReusableCell(ofType: FeedCellWithCarousel.self, at: indexPath)
         } else {
             cell = collectionView.dequeueReusableCell(ofType: FeedCell.self, at: indexPath)
         }

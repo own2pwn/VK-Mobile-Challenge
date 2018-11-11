@@ -1,5 +1,5 @@
 //
-//  FeedCellWithImage.swift
+//  FeedCellWithCarousel.swift
 //  VK-Challenge
 //
 //  Created by Evgeniy on 11/11/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class FeedCellWithImage: UICollectionViewCell, AnyFeedCell {
+final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     // MARK: - Interface
 
     weak var expandDelegate: FeedCellExpandDelegate?
@@ -304,7 +304,7 @@ final class FeedCellCarouselCell: UICollectionViewCell {
     }
 }
 
-extension FeedCellWithImage: UICollectionViewDataSource {
+extension FeedCellWithCarousel: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.postImages.count ?? 0
     }
@@ -316,7 +316,7 @@ extension FeedCellWithImage: UICollectionViewDataSource {
     }
 }
 
-extension FeedCellWithImage: UICollectionViewDelegateFlowLayout {
+extension FeedCellWithCarousel: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat { return 0 }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat { return 4 }
