@@ -33,10 +33,14 @@ final class AuthServiceImp: NSObject, AuthService {
             }
 
             let isAuthorized = (state == VKAuthorizationState.authorized)
-            completion(isAuthorized, nil)
-            if !isAuthorized {
+            if isAuthorized {
+                if let token = VK_SDK.accessToken()?.accessToken {
+                    self.store.save(token)
+                }
+            } else {
                 self.store.reset()
             }
+            completion(isAuthorized, nil)
         }
     }
 
