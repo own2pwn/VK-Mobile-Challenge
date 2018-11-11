@@ -46,8 +46,8 @@ final class ImageLoader {
                 let data = data,
                 let image = UIImage(data: data) else { return }
 
-            DispatchQueue.main.async { completion(image) }
             self.cache(url, data)
+            DispatchQueue.main.async { completion(image) }
         }
         task.resume()
 

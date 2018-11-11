@@ -18,12 +18,25 @@ final class FeedCellCarouselCell: UICollectionViewCell {
         return imageView
     }()
 
+    // MARK: - Interface
+
+    func setImage(_ image: UIImage?) {
+        imageView.image = image
+    }
+
+    // MARK: - Setup
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        imageView.image = nil
+    }
+
     // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        imageView.backgroundColor = .blue
         contentView.addSubview(imageView)
     }
 

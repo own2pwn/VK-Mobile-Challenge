@@ -75,7 +75,7 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
 
     private var avatarLoadingTask: URLSessionDataTask?
 
-    private var postImageLoadingTask: URLSessionDataTask?
+    private var postImageLoadingTasks: [URLSessionDataTask] = []
 
     private var viewModel: FeedCellViewModel?
 
@@ -84,13 +84,17 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        avatarImageView.image = nil
+
         avatarLoadingTask?.cancel()
         avatarLoadingTask = nil
 
-        postImageLoadingTask?.cancel()
-        postImageLoadingTask = nil
+        postImageLoadingTasks.forEach { $0.cancel() }
+        postImageLoadingTasks = []
 
         isExpanded = false
+        postImageCollection.contentOffset.x = -12
+        postImagePageControl.currentPage = 0
     }
 
     override func awakeFromNib() {
@@ -161,7 +165,6 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
         }
 
         postImageCollection.reloadData()
-
         layoutViewsCount()
     }
 
@@ -258,6 +261,7 @@ final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     }
 
     private func layoutViewsCount() {
+        viewsCountLabel.sizeToFit()
         viewsCountLabel.center.y = likeImageView.center.y
         viewsCountLabel.frame.origin.x = frame.width - 16 - viewsCountLabel.frame.width
 
@@ -296,8 +300,19 @@ extension FeedCellWithCarousel: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: FeedCellCarouselCell = collectionView.dequeueReusableCell(at: indexPath)
+        if let postImageURL = getPostImageURL(at: indexPath) {
+            viewModel?.imageLoader.load(from: postImageURL) { [weak cell] image in
+                cell?.setImage(image)
+            }
+        }
 
         return cell
+    }
+
+    private func getPostImageURL(at indexPath: IndexPath) -> String? {
+        guard let viewModel = viewModel else { return nil }
+
+        return viewModel.postImages[indexPath.row]
     }
 }
 
@@ -310,7 +325,7 @@ extension FeedCellWithCarousel: UICollectionViewDelegateFlowLayout {
 }
 
 extension FeedCellWithCarousel {
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
         postImagePageControl.currentPage = Int(pageNumber)
     }

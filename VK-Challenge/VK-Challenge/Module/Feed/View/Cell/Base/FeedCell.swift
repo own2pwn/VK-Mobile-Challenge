@@ -96,6 +96,8 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
+        avatarImageView.image = nil
+
         avatarLoadingTask?.cancel()
         avatarLoadingTask = nil
 
