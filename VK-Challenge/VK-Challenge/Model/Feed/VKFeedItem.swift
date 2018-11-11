@@ -15,6 +15,7 @@ struct VKFeedItem: Decodable {
     let postID: Int
     let postType: String
     let text: String
+    let attachments: [VKAttachment]
     let comments: VKFeedItemComment
     let likes: VKFeedItemLike
     let reposts: VKFeedItemRepost
@@ -52,6 +53,7 @@ extension VKFeedItem {
         case type, date, text
         case comments, likes
         case reposts, views
+        case attachments
 
         case sourceID = "source_id"
         case postID = "post_id"

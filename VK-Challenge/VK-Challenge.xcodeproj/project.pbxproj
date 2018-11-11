@@ -30,6 +30,8 @@
 		B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */; };
 		B9CAA1122195B81900DAB134 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9CAA1112195B81900DAB134 /* Router.swift */; };
 		DE08DD9121975A150055A6CA /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE08DD9021975A150055A6CA /* FeedService.swift */; };
+		DE214ED521981632004BD2A5 /* VKAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED421981632004BD2A5 /* VKAttachment.swift */; };
+		DE214ED7219816D9004BD2A5 /* VKAttachmentPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */; };
 		DE38956D21980E30009926B1 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE38956C21980E30009926B1 /* Haptic.swift */; };
 		DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F001C21978550004974D7 /* FeedFooter.swift */; };
 		DE68CAD821977C05001D18F9 /* String+QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACC21977C05001D18F9 /* String+QueryItem.swift */; };
@@ -86,6 +88,8 @@
 		B9CAA10E2195B78500DAB134 /* AuthControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthControllerViewModel.swift; sourceTree = "<group>"; };
 		B9CAA1112195B81900DAB134 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		DE08DD9021975A150055A6CA /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
+		DE214ED421981632004BD2A5 /* VKAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAttachment.swift; sourceTree = "<group>"; };
+		DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAttachmentPhoto.swift; sourceTree = "<group>"; };
 		DE38956C21980E30009926B1 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		DE4F001C21978550004974D7 /* FeedFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFooter.swift; sourceTree = "<group>"; };
 		DE68CACC21977C05001D18F9 /* String+QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryItem.swift"; sourceTree = "<group>"; };
@@ -189,6 +193,7 @@
 		B943A53D2195DBCF00CB11DA /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DE214ED32198162B004BD2A5 /* Attachment */,
 				DE68CAEE2197812A001D18F9 /* Base */,
 				DECB59C6219736D0007419F8 /* Feed */,
 				B943A53E2195DBD300CB11DA /* Profile */,
@@ -334,6 +339,15 @@
 				DE08DD9021975A150055A6CA /* FeedService.swift */,
 			);
 			path = Feed;
+			sourceTree = "<group>";
+		};
+		DE214ED32198162B004BD2A5 /* Attachment */ = {
+			isa = PBXGroup;
+			children = (
+				DE214ED421981632004BD2A5 /* VKAttachment.swift */,
+				DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */,
+			);
+			path = Attachment;
 			sourceTree = "<group>";
 		};
 		DE38956B21980DDE009926B1 /* Haptic */ = {
@@ -606,9 +620,11 @@
 				B9CAA1052195B6D700DAB134 /* Dependency.swift in Sources */,
 				DECB59CA219736EC007419F8 /* VKFeedResponseModel.swift in Sources */,
 				B90F57082195874A001B11CE /* AppDelegate.swift in Sources */,
+				DE214ED521981632004BD2A5 /* VKAttachment.swift in Sources */,
 				DE725AEB2196F65C0031B35A /* FeedHeader.swift in Sources */,
 				B9943A24219597140045D56C /* Constants.swift in Sources */,
 				DE68CADF21977C05001D18F9 /* ResponseProviderImp.swift in Sources */,
+				DE214ED7219816D9004BD2A5 /* VKAttachmentPhoto.swift in Sources */,
 				DECB59C521973662007419F8 /* Calendar+Date.swift in Sources */,
 				DE68CAD821977C05001D18F9 /* String+QueryItem.swift in Sources */,
 				DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */,
