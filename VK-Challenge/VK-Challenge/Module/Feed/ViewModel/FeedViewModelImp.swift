@@ -20,6 +20,8 @@ final class FeedViewModelImp: FeedViewModel {
 
     var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)?
 
+    var onSearchResultReloaded: (([FeedCellViewModel]) -> Void)?
+
     var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)?
 
     // MARK: - Members
@@ -96,7 +98,7 @@ final class FeedViewModelImp: FeedViewModel {
             let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
 
             DispatchQueue.main.async {
-                self.onSearchResultLoaded?(updatedCells)
+                self.onSearchResultReloaded?(updatedCells)
                 self.isReloadingData = false
             }
         }

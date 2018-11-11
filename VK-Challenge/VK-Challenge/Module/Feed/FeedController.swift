@@ -75,6 +75,11 @@ final class FeedController: UIViewController {
             self.shouldDisplaySearch = true
             self.updateFooter()
             self.postCollection.reloadData()
+        }
+        viewModel.onSearchResultReloaded = { [unowned self] items in
+            self.searchDatasource = items
+            self.updateFooter()
+            self.postCollection.reloadData()
             self.didReachRefreshThreshold = false
         }
         viewModel.onNewSearchItemsLoaded = { [unowned self] items in

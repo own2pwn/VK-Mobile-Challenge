@@ -17,6 +17,8 @@ protocol FeedViewModelOutput: class {
 
     var onSearchResultLoaded: (([FeedCellViewModel]) -> Void)? { get set }
 
+    var onSearchResultReloaded: (([FeedCellViewModel]) -> Void)? { get set }
+
     var onNewSearchItemsLoaded: (([FeedCellViewModel]) -> Void)? { get set }
 }
 

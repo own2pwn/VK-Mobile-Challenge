@@ -52,7 +52,7 @@ final class FeedService {
         let fields = makeQueryItem(field: .fields, params: [.photo100])
         let nextPage = QueryItem(field: VKAPIFeedField.startFrom, value: token)
 
-        api.get(method: .feedGet, params: [query, extended, fields, nextPage], completion: result)
+        api.get(method: .feedSearch, params: [query, extended, fields, nextPage], completion: result)
     }
 
     // MARK: - Helpers
