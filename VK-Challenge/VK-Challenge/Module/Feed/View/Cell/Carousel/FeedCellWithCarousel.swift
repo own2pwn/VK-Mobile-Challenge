@@ -1,29 +1,14 @@
 //
-//  FeedCell.swift
+//  FeedCellWithCarousel.swift
 //  VK-Challenge
 //
-//  Created by Evgeniy on 09/11/2018.
+//  Created by Evgeniy on 11/11/2018.
 //  Copyright © 2018 Evgeniy. All rights reserved.
 //
 
 import UIKit
 
-/*
- * It's better to code base cell class just in code
- * And subclass it w/ image cell and w/ image carousel cell
- */
-
-protocol FeedCellExpandDelegate: class {
-    func cell(_ cell: UICollectionViewCell, wantsExpand: Bool)
-}
-
-protocol AnyFeedCell: class {
-    var expandDelegate: FeedCellExpandDelegate? { get set }
-
-    func setup(with viewModel: FeedCellViewModel, isExpanded: Bool)
-}
-
-final class FeedCell: UICollectionViewCell, AnyFeedCell {
+final class FeedCellWithCarousel: UICollectionViewCell, AnyFeedCell {
     // MARK: - Interface
 
     weak var expandDelegate: FeedCellExpandDelegate?
@@ -49,7 +34,10 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
     private var contentLabel: UILabel!
 
     @IBOutlet
-    private var postImageView: UIImageView!
+    private var postImageCollection: UICollectionView!
+
+    @IBOutlet
+    private var postImagePageControl: UIPageControl!
 
     // ==== Footer
 
@@ -87,7 +75,7 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
 
     private var avatarLoadingTask: URLSessionDataTask?
 
-    private var postImageLoadingTask: URLSessionDataTask?
+    private var postImageLoadingTasks: [URLSessionDataTask] = []
 
     private var viewModel: FeedCellViewModel?
 
@@ -101,10 +89,12 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
         avatarLoadingTask?.cancel()
         avatarLoadingTask = nil
 
-        postImageLoadingTask?.cancel()
-        postImageLoadingTask = nil
+        postImageLoadingTasks.forEach { $0.cancel() }
+        postImageLoadingTasks = []
 
         isExpanded = false
+        postImageCollection.contentOffset.x = -12
+        postImagePageControl.currentPage = 0
     }
 
     override func awakeFromNib() {
@@ -127,6 +117,27 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
 
         contentLabel.isUserInteractionEnabled = true
         contentLabel.addGestureRecognizer(pan)
+
+        postImageCollection.register(FeedCellCarouselCell.self)
+        postImageCollection.dataSource = self
+        postImageCollection.delegate = self
+        postImageCollection.contentInset.left = 12
+        postImageCollection.contentInset.right = postImageCollection.contentInset.left
+
+        setupPageControl()
+    }
+
+    private func setupPageControl() {
+        postImagePageControl.addTarget(self, action: #selector(changePage(_:)), for: .valueChanged)
+    }
+
+    @objc
+    private func changePage(_ sender: UIPageControl) {
+        let page = sender.currentPage
+        guard postImageCollection.numberOfItems(inSection: 0) >= page else { return }
+
+        let newPath = IndexPath(row: page, section: 0)
+        postImageCollection.scrollToItem(at: newPath, at: .centeredHorizontally, animated: true)
     }
 
     // MARK: - Setup
@@ -153,12 +164,7 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
             self?.avatarImageView.image = image
         }
 
-        if let postImage = viewModel.postImages.first {
-            postImageLoadingTask = viewModel.imageLoader.load(from: postImage) { [weak self] image in
-                self?.postImageView.image = image
-            }
-        }
-
+        postImageCollection.reloadData()
         layoutViewsCount()
     }
 
@@ -192,7 +198,7 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
     private func layoutContent() {
         let maxY = avatarImageView.frame.maxY
         contentLabel.frame.size.width = frame.width - 24
-        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44
+        contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44 - 34
         contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
 
         guard let viewModel = viewModel else { return }
@@ -201,9 +207,14 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
             contentLabel.frame.size = .zero
         }
 
-        postImageView.frame.size.width = frame.width
-        postImageView.frame.size.height = viewModel.photoHeight
-        postImageView.frame.origin = CGPoint(x: 0, y: contentLabel.frame.maxY + 6)
+        postImageCollection.frame.size.width = frame.width
+        postImageCollection.frame.size.height = viewModel.photoHeight
+        postImageCollection.frame.origin = CGPoint(x: 0, y: contentLabel.frame.maxY + 6)
+
+        postImagePageControl.numberOfPages = viewModel.postImages.count
+        postImagePageControl.sizeToFit()
+        postImagePageControl.center.x = center.x
+        postImagePageControl.frame.origin.y = postImageCollection.frame.maxY
     }
 
     private func layoutFooter() {
@@ -279,5 +290,43 @@ final class FeedCell: UICollectionViewCell, AnyFeedCell {
 private extension Int {
     var stringValue: String? {
         return self > 0 ? "\(self)" : nil
+    }
+}
+
+extension FeedCellWithCarousel: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel?.postImages.count ?? 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: FeedCellCarouselCell = collectionView.dequeueReusableCell(at: indexPath)
+        if let postImageURL = getPostImageURL(at: indexPath) {
+            viewModel?.imageLoader.load(from: postImageURL) { [weak cell] image in
+                cell?.setImage(image)
+            }
+        }
+
+        return cell
+    }
+
+    private func getPostImageURL(at indexPath: IndexPath) -> String? {
+        guard let viewModel = viewModel else { return nil }
+
+        return viewModel.postImages[indexPath.row]
+    }
+}
+
+extension FeedCellWithCarousel: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        guard let viewModel = viewModel else { return .zero }
+
+        return CGSize(width: frame.width - 28, height: viewModel.photoHeight)
+    }
+}
+
+extension FeedCellWithCarousel {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageNumber = round(scrollView.contentOffset.x / scrollView.frame.size.width)
+        postImagePageControl.currentPage = Int(pageNumber)
     }
 }

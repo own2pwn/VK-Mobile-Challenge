@@ -32,8 +32,7 @@
 		DE08DD9121975A150055A6CA /* FeedService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE08DD9021975A150055A6CA /* FeedService.swift */; };
 		DE214ED521981632004BD2A5 /* VKAttachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED421981632004BD2A5 /* VKAttachment.swift */; };
 		DE214ED7219816D9004BD2A5 /* VKAttachmentPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */; };
-		DE214EDA219818CE004BD2A5 /* FeedCellWithImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED8219818CE004BD2A5 /* FeedCellWithImage.swift */; };
-		DE214EDB219818CE004BD2A5 /* FeedCellWithImage.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE214ED9219818CE004BD2A5 /* FeedCellWithImage.xib */; };
+		DE214EDA219818CE004BD2A5 /* FeedCellWithCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE214ED8219818CE004BD2A5 /* FeedCellWithCarousel.swift */; };
 		DE38956D21980E30009926B1 /* Haptic.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE38956C21980E30009926B1 /* Haptic.swift */; };
 		DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE4F001C21978550004974D7 /* FeedFooter.swift */; };
 		DE68CAD821977C05001D18F9 /* String+QueryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE68CACC21977C05001D18F9 /* String+QueryItem.swift */; };
@@ -60,6 +59,7 @@
 		DECB59C8219736DE007419F8 /* VKGroupModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C7219736DE007419F8 /* VKGroupModel.swift */; };
 		DECB59CA219736EC007419F8 /* VKFeedResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */; };
 		DECB59CC21973704007419F8 /* VKFeedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECB59CB21973704007419F8 /* VKFeedItem.swift */; };
+		DECCA63A2198418D00B45CAE /* FeedCellCarouselCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECCA6392198418D00B45CAE /* FeedCellCarouselCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -92,8 +92,7 @@
 		DE08DD9021975A150055A6CA /* FeedService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedService.swift; sourceTree = "<group>"; };
 		DE214ED421981632004BD2A5 /* VKAttachment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAttachment.swift; sourceTree = "<group>"; };
 		DE214ED6219816D9004BD2A5 /* VKAttachmentPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKAttachmentPhoto.swift; sourceTree = "<group>"; };
-		DE214ED8219818CE004BD2A5 /* FeedCellWithImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellWithImage.swift; sourceTree = "<group>"; };
-		DE214ED9219818CE004BD2A5 /* FeedCellWithImage.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeedCellWithImage.xib; sourceTree = "<group>"; };
+		DE214ED8219818CE004BD2A5 /* FeedCellWithCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellWithCarousel.swift; sourceTree = "<group>"; };
 		DE38956C21980E30009926B1 /* Haptic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptic.swift; sourceTree = "<group>"; };
 		DE4F001C21978550004974D7 /* FeedFooter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFooter.swift; sourceTree = "<group>"; };
 		DE68CACC21977C05001D18F9 /* String+QueryItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+QueryItem.swift"; sourceTree = "<group>"; };
@@ -120,6 +119,7 @@
 		DECB59C7219736DE007419F8 /* VKGroupModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKGroupModel.swift; sourceTree = "<group>"; };
 		DECB59C9219736EC007419F8 /* VKFeedResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedResponseModel.swift; sourceTree = "<group>"; };
 		DECB59CB21973704007419F8 /* VKFeedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VKFeedItem.swift; sourceTree = "<group>"; };
+		DECCA6392198418D00B45CAE /* FeedCellCarouselCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCellCarouselCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -366,8 +366,8 @@
 		DE214EDD21982A3A004BD2A5 /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
-				DE214ED8219818CE004BD2A5 /* FeedCellWithImage.swift */,
-				DE214ED9219818CE004BD2A5 /* FeedCellWithImage.xib */,
+				DE214ED8219818CE004BD2A5 /* FeedCellWithCarousel.swift */,
+				DECCA6392198418D00B45CAE /* FeedCellCarouselCell.swift */,
 			);
 			path = Carousel;
 			sourceTree = "<group>";
@@ -578,7 +578,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B90F57122195874B001B11CE /* LaunchScreen.storyboard in Resources */,
-				DE214EDB219818CE004BD2A5 /* FeedCellWithImage.xib in Resources */,
 				B90F570F2195874B001B11CE /* Assets.xcassets in Resources */,
 				B90F570D2195874A001B11CE /* Main.storyboard in Resources */,
 			);
@@ -635,7 +634,7 @@
 				DE68CAEA21977C3F001D18F9 /* VKAPIFeedField.swift in Sources */,
 				DE68CADA21977C05001D18F9 /* RequestAdapterImp.swift in Sources */,
 				DECB59C12197348A007419F8 /* FeedCellViewModel.swift in Sources */,
-				DE214EDA219818CE004BD2A5 /* FeedCellWithImage.swift in Sources */,
+				DE214EDA219818CE004BD2A5 /* FeedCellWithCarousel.swift in Sources */,
 				B9CAA0FF2195A24D00DAB134 /* AuthController.swift in Sources */,
 				B943A5402195DBE300CB11DA /* VKProfileModel.swift in Sources */,
 				DECB59C8219736DE007419F8 /* VKGroupModel.swift in Sources */,
@@ -666,6 +665,7 @@
 				B9CAA10F2195B78500DAB134 /* AuthControllerViewModel.swift in Sources */,
 				DE4F001D21978550004974D7 /* FeedFooter.swift in Sources */,
 				DE68CAEC21977C3F001D18F9 /* VKAPIMethod.swift in Sources */,
+				DECCA63A2198418D00B45CAE /* FeedCellCarouselCell.swift in Sources */,
 				DE68CAE921977C3F001D18F9 /* VKAPIField.swift in Sources */,
 				B943A5552195EC8200CB11DA /* ImageLoader.swift in Sources */,
 				B9CAA1122195B81900DAB134 /* Router.swift in Sources */,
