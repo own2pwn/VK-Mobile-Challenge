@@ -10,12 +10,18 @@ import UIKit
 
 struct FeedCellViewModel {
     let postID: Int
+
     let titleText: String
     let dateText: String
+
     let contentText: NSAttributedString
     let shortText: NSAttributedString?
+
     let avatarURL: String
     let imageLoader: ImageLoader
+
+    let postImages: [String]
+    let photoHeight: CGFloat
 
     let likesCount: Int
     let commentsCount: Int

@@ -18,7 +18,7 @@ final class ImageLoader {
     private let maxCacheSize: Int = {
         let pxInOneMB = 1024 * 1024 / 4
 
-        return 7 * pxInOneMB
+        return 12 * pxInOneMB
     }()
 
     private lazy var session: URLSession = {

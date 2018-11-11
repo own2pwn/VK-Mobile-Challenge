@@ -24,9 +24,18 @@ public final class ResponseProviderImp: ResponseProvider {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
 
-            if let model = try? decoder.decode(Model.self, from: data) {
-                completion(model)
-            }
+            #if DEBUG
+                do {
+                    let model = try decoder.decode(Model.self, from: data)
+                    completion(model)
+                } catch {
+                    print(error)
+                }
+            #else
+                if let model = try? decoder.decode(Model.self, from: data) {
+                    completion(model)
+                }
+            #endif
         }
     }
 
@@ -38,9 +47,18 @@ public final class ResponseProviderImp: ResponseProvider {
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
 
-            if let model = try? decoder.decode(Model.self, from: data) {
-                completion(model)
-            }
+            #if DEBUG
+                do {
+                    let model = try decoder.decode(Model.self, from: data)
+                    completion(model)
+                } catch {
+                    print(error)
+                }
+            #else
+                if let model = try? decoder.decode(Model.self, from: data) {
+                    completion(model)
+                }
+            #endif
         }
     }
 

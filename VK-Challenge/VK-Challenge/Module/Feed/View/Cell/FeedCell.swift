@@ -21,6 +21,8 @@ final class FeedCell: UICollectionViewCell {
 
     // MARK: - Outlets
 
+    // ==== Header
+
     @IBOutlet
     private var avatarImageView: UIImageView!
 
@@ -30,8 +32,15 @@ final class FeedCell: UICollectionViewCell {
     @IBOutlet
     private var dateLabel: UILabel!
 
+    // ==== Content
+
     @IBOutlet
     private var contentLabel: UILabel!
+
+    @IBOutlet
+    private var postImageView: UIImageView!
+
+    // ==== Footer
 
     @IBOutlet
     private var footerView: UIView!
@@ -65,7 +74,9 @@ final class FeedCell: UICollectionViewCell {
     private lazy var pan
         = UITapGestureRecognizer(target: self, action: #selector(toggleTextCollapse))
 
-    private var imageLoadingTask: URLSessionDataTask?
+    private var avatarLoadingTask: URLSessionDataTask?
+
+    private var postImageLoadingTask: URLSessionDataTask?
 
     private var viewModel: FeedCellViewModel?
 
@@ -74,8 +85,12 @@ final class FeedCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageLoadingTask?.cancel()
-        imageLoadingTask = nil
+        avatarLoadingTask?.cancel()
+        avatarLoadingTask = nil
+
+        postImageLoadingTask?.cancel()
+        postImageLoadingTask = nil
+
         isExpanded = false
     }
 
@@ -121,8 +136,14 @@ final class FeedCell: UICollectionViewCell {
             contentLabel.attributedText = viewModel.shortText ?? viewModel.contentText
         }
 
-        imageLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
+        avatarLoadingTask = viewModel.imageLoader.load(from: viewModel.avatarURL) { [weak self] image in
             self?.avatarImageView.image = image
+        }
+
+        if let postImage = viewModel.postImages.first {
+            postImageLoadingTask = viewModel.imageLoader.load(from: postImage) { [weak self] image in
+                self?.postImageView.image = image
+            }
         }
 
         layoutViewsCount()
@@ -134,6 +155,7 @@ final class FeedCell: UICollectionViewCell {
         super.layoutSubviews()
 
         layoutHeader()
+        layoutContent()
         layoutFooter()
     }
 
@@ -152,11 +174,23 @@ final class FeedCell: UICollectionViewCell {
         dateLabel.frame.size.height = dateLabel.font.lineHeight
         dateLabel.frame.origin = titleLabel.frame.origin
         dateLabel.frame.origin.y = titleLabel.frame.maxY + 1
+    }
 
+    private func layoutContent() {
         let maxY = avatarImageView.frame.maxY
         contentLabel.frame.size.width = frame.width - 24
         contentLabel.frame.size.height = frame.height - maxY - 10 - 6 - 44
         contentLabel.frame.origin = CGPoint(x: 12, y: maxY + 10)
+
+        guard let viewModel = viewModel else { return }
+        contentLabel.frame.size.height -= viewModel.photoHeight
+        if viewModel.contentText.length == 0 {
+            contentLabel.frame.size = .zero
+        }
+
+        postImageView.frame.size.width = frame.width
+        postImageView.frame.size.height = viewModel.photoHeight
+        postImageView.frame.origin = CGPoint(x: 0, y: contentLabel.frame.maxY + 6)
     }
 
     private func layoutFooter() {

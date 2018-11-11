@@ -137,20 +137,34 @@ final class FeedViewModelImp: FeedViewModel {
             let (title, avatar) = getTitleAndAvatar(for: item.sourceID, in: response.profiles, groups: response.groups)
             let (fullText, shortText, fullHeight, shortHeight) = textManager.makeTextToDisplay(from: item.text)
 
+            let photos = item.attachmentsOrEmpty
+                .compactMap { $0.photo }
+                .compactMap { $0.displayableSize }
+
+            var photoHeight: CGFloat = 0
+            var photoUrls = [String]()
+
+            if let photo = photos.first, photos.count == 1 {
+                photoHeight = CGFloat(photo.height)
+                photoUrls.append(photo.url)
+            }
+
             var shortHeightValue: CGFloat?
             if let shortValue = shortHeight {
-                shortHeightValue = shortValue + staticCellHeight
+                shortHeightValue = shortValue + staticCellHeight + photoHeight
             }
 
             let viewModel = FeedCellViewModel(postID: item.postID, titleText: title,
                                               dateText: item.date.humanString,
                                               contentText: fullText, shortText: shortText,
                                               avatarURL: avatar, imageLoader: imageLoader,
+                                              postImages: photoUrls,
+                                              photoHeight: photoHeight,
                                               likesCount: item.likes.count,
                                               commentsCount: item.comments.count,
                                               repostCount: item.reposts.count,
                                               viewsCount: item.views?.count,
-                                              contentHeight: fullHeight + staticCellHeight,
+                                              contentHeight: fullHeight + staticCellHeight + photoHeight,
                                               shortContentHeight: shortHeightValue)
 
             result.append(viewModel)

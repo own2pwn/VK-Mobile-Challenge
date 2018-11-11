@@ -14,8 +14,17 @@ struct VKAttachmentPhoto: Decodable {
     let sizes: [VKAttachmentPhotoSize]
     let text: String
     let date: Date
-    let postID: Int
+    let postID: Int?
     let accessKey: String
+}
+
+extension VKAttachmentPhoto {
+    var displayableSize: VKAttachmentPhotoSize? {
+        let v = sizes.first(where: { $0.type == "r" })
+        assert(v != nil)
+
+        return sizes.first(where: { $0.type == "r" })
+    }
 }
 
 struct VKAttachmentPhotoSize: Decodable {

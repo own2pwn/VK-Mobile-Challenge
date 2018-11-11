@@ -15,11 +15,17 @@ struct VKFeedItem: Decodable {
     let postID: Int
     let postType: String
     let text: String
-    let attachments: [VKAttachment]
+    let attachments: [VKAttachment]?
     let comments: VKFeedItemComment
     let likes: VKFeedItemLike
     let reposts: VKFeedItemRepost
     let views: VKFeedItemView?
+}
+
+extension VKFeedItem {
+    var attachmentsOrEmpty: [VKAttachment] {
+        return attachments ?? []
+    }
 }
 
 struct VKFeedItemComment: Decodable {
