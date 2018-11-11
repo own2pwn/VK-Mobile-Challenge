@@ -14,6 +14,8 @@ final class FeedViewModelImp: FeedViewModel {
 
     var onAvatarLoaded: ((UIImage?) -> Void)?
 
+    var onItemsReloaded: (([FeedCellViewModel]) -> Void)?
+
     var onNewItemsLoaded: (([FeedCellViewModel]) -> Void)?
 
     // MARK: - Members
@@ -47,6 +49,17 @@ final class FeedViewModelImp: FeedViewModel {
 
     // MARK: - Methods
 
+    func reloadData(with currentLoadedData: [FeedCellViewModel]) {
+        feedService.getNews { response in
+            let newCells = self.makeCellViewModels(from: response)
+            let updatedCells = self.mergePostsReload(oldData: currentLoadedData, newData: newCells)
+
+            DispatchQueue.main.async {
+                self.onItemsReloaded?(updatedCells)
+            }
+        }
+    }
+
     func loadNextPage() {
         guard let token = nextPageToken else { return }
 
@@ -79,6 +92,10 @@ final class FeedViewModelImp: FeedViewModel {
         DispatchQueue.main.async {
             self.onNewItemsLoaded?(cells)
         }
+    }
+
+    private func mergePostsReload(oldData: [FeedCellViewModel], newData: [FeedCellViewModel]) -> [FeedCellViewModel] {
+        
     }
 
     // MARK: - Helpers

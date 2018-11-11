@@ -13,7 +13,7 @@ import VK_ios_sdk
 final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey: Any] = [:]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
         let source = options[.sourceApplication] as? String
         return VKSdk.processOpen(url, fromApplication: source)
     }
