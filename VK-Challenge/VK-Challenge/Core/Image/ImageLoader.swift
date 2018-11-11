@@ -10,10 +10,21 @@ import UIKit
 
 typealias ImageCompletion = (UIImage) -> Void
 
+private struct CacheEntry {
+    let key: String
+    let value: Data
+}
+
+extension CacheEntry: Comparable {
+    static func < (lhs: CacheEntry, rhs: CacheEntry) -> Bool {
+        return lhs.value.count < rhs.value.count
+    }
+}
+
 final class ImageLoader {
     // MARK: - Members
 
-    private var cached: [String: Data] = [:]
+    private var cached: [CacheEntry] = []
 
     private let maxCacheSize: Int = {
         let pxInOneMB = 1024 * 1024 / 4
@@ -36,7 +47,7 @@ final class ImageLoader {
     func load(from url: String, completion: @escaping ImageCompletion) -> URLSessionDataTask? {
         guard let endpoint = URL(string: url) else { return nil }
 
-        if let data = cached[url], let image = UIImage(data: data) {
+        if let data = getData(for: url), let image = UIImage(data: data) {
             DispatchQueue.main.async { completion(image) }
             return nil
         }
@@ -68,16 +79,25 @@ final class ImageLoader {
         }
     }
 
+    private func getData(for key: String) -> Data? {
+        let entry = cached.first(where: { $0.key == key })
+
+        return entry?.value
+    }
+
     private func removeHeaviest() {
-        let topmost = cached.sorted(by: { $0.1.count > $1.1.count })[0]
-        cached[topmost.key] = nil
+        cached.sort(by: >)
+        cached.removeFirst(2)
+
+        print("clear cache")
     }
 
     private func cacheNewItem(_ key: String, _ value: Data) {
-        cached[key] = value
+        let entry = CacheEntry(key: key, value: value)
+        cached.append(entry)
     }
 
     private var currentCacheSize: Int {
-        return cached.values.map { $0.count }.reduce(0, +)
+        return cached.map { $0.value.count }.reduce(0, +)
     }
 }
