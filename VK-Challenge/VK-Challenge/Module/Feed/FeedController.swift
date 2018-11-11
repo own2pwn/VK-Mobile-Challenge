@@ -52,6 +52,8 @@ final class FeedController: UIViewController {
 
     private var didReachRefreshThreshold = false
 
+    // MARK: Footer
+
     private var didReachFooter = false
 
     private var hasMoreData = false
@@ -119,20 +121,18 @@ final class FeedController: UIViewController {
     }
 
     private func updateAvatar(with image: UIImage?) {
-        if let header = postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? FeedHeader {
-            header.setAvatar(image)
-        }
+        feedHeader?.setAvatar(image)
     }
 
     private func updateFooter() {
-        if let footer = postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as? FeedFooter {
+        if let footer = feedFooter {
             updateFooterCount(footer)
             footer.setIsLoading(false)
         }
     }
 
     private func updateFooterCount(_ footer: FeedFooter) {
-        let count = shouldDisplaySearch ? searchDatasource.count : datasource.count
+        let count = actualDatasource.count
         footer.setLoadedPostCount(count)
     }
 
@@ -148,9 +148,7 @@ final class FeedController: UIViewController {
 
     @objc
     private func endEditingInHeader() {
-        if let header = postCollection.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: IndexPath(row: 0, section: 0)) as? FeedHeader {
-            header.endEditing(true)
-        }
+        feedHeader?.endEditing(true)
     }
 
     @objc
@@ -160,7 +158,6 @@ final class FeedController: UIViewController {
             let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return }
 
         postCollectionBottomConstraint.constant = keyboardFrame.size.height
-
         UIView.animate(withDuration: 0.25) {
             self.view.layoutIfNeeded()
         }
@@ -175,6 +172,22 @@ final class FeedController: UIViewController {
     }
 }
 
+// MARK: - Helpers
+
+private extension FeedController {
+    var actualDatasource: [FeedCellViewModel] {
+        return shouldDisplaySearch ? searchDatasource : datasource
+    }
+
+    var feedHeader: FeedHeader? {
+        return postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first as? FeedHeader
+    }
+
+    var feedFooter: FeedFooter? {
+        return postCollection.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionFooter).first as? FeedFooter
+    }
+}
+
 extension FeedController: FeedCellExpandDelegate {
     func cell(_ cell: UICollectionViewCell, wantsExpand: Bool) {
         expandedIndexPath = postCollection.indexPath(for: cell)
@@ -185,7 +198,7 @@ extension FeedController: FeedCellExpandDelegate {
 
 extension FeedController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return shouldDisplaySearch ? searchDatasource.count : datasource.count
+        return actualDatasource.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -206,7 +219,7 @@ extension FeedController: UICollectionViewDataSource {
     }
 
     private func getViewModel(at indexPath: IndexPath) -> FeedCellViewModel {
-        return shouldDisplaySearch ? searchDatasource[indexPath.row] : datasource[indexPath.row]
+        return actualDatasource[indexPath.row]
     }
 
     // MARK: - Header
@@ -238,8 +251,11 @@ extension FeedController: UICollectionViewDataSource {
         if didAppear {
             updateFooterCount(footer)
         }
+        guard hasMoreData else {
+            return
+        }
 
-        if !hasMoreData || (shouldDisplaySearch && searchDatasource.isEmpty) || (!shouldDisplaySearch && datasource.isEmpty) {
+        if (shouldDisplaySearch && searchDatasource.isEmpty) || (!shouldDisplaySearch && datasource.isEmpty) {
             return
         }
 
@@ -249,10 +265,10 @@ extension FeedController: UICollectionViewDataSource {
             didReachFooter = true
         }
 
-        if !shouldDisplaySearch && !datasource.isEmpty {
-            viewModel.loadNextPage()
-        } else if shouldDisplaySearch && !searchDatasource.isEmpty {
+        if shouldDisplaySearch {
             viewModel.loadNextSearchPage()
+        } else {
+            viewModel.loadNextPage()
         }
     }
 }
